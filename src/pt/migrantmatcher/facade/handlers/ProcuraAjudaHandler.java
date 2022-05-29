@@ -1,13 +1,17 @@
 package pt.migrantmatcher.facade.handlers;
 
+import java.util.List;
+
+import pt.migrantmatcher.domain.Ajuda;
 import pt.migrantmatcher.domain.CatalogoMigrantes;
+import pt.migrantmatcher.domain.Regiao;
 
 public class ProcuraAjudaHandler {
 	
 	private CatalogoMigrantes catMigrantes;
 	
 	public ProcuraAjudaHandler() {
-		catMigrantes = new CatalaogoMigrantes();
+		catMigrantes = new CatalogoMigrantes();
 	}
 	
 	public void iniciaRegistoPessoas(String nome, int tel) {

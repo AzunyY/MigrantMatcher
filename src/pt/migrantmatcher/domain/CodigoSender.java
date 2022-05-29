@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.SecureRandom;
 import java.util.Properties;
+import java.util.Random;
 
 import pt.migrantmatcher.plugins.SenderType;
 
@@ -84,11 +85,11 @@ public class CodigoSender {
 	}
 
 	public String generateCod() {
-		return new SecureRandom().ints(6,33,127)
-				.map( x -> (char) x)
-				.collect(StringBuilder::new, 
-						StringBuilder::appendCodePoint,
-						StringBuilder::append)
-				.toString();
+		return new Random().ints(6,33,127)
+						   .map( x -> (char) x)
+						   .collect(StringBuilder::new, 
+								    StringBuilder::appendCodePoint,
+								    StringBuilder::append)
+						   .toString();
 	}
 }
