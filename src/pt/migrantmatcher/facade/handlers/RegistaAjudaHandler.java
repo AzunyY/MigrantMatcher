@@ -34,16 +34,16 @@ public class RegistaAjudaHandler {
 	
 	public void indicaRegiao(Regiao reg) {
 		this.catAj.insereReg(ajCurr, reg);
-		volCurr.enviaCodigo();
+		this.volCurr.enviaCodigo();
 	}
 	
 	public void ofereceItem(String desc){
 		this.catAj.novoItem(desc);
-		volCurr.enviaCodigo();
+		this.volCurr.enviaCodigo();
 	}
 	
-	public void confirmaOferta(int cod) {
-		
+	public void confirmaOferta(String cod) {
+		this.volCurr.checkValidCod(cod);
 	}
 
 }

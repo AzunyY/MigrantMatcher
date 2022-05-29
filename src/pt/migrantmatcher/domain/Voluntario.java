@@ -25,8 +25,12 @@ public class Voluntario {
 	 *  Polimorfismo
 	 **/
 	public void enviaCodigo() {
-		CodigoSender codSender = new CodigoSender();
+		CodigoSender codSender = CodigoSender.getInstance();
 		this.cod = codSender.enviaSMS(tel);	
+	}
+	
+	public boolean checkValidCod(String cod) {
+		return this.cod.equals(cod);
 	}
 
 }
