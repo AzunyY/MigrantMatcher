@@ -26,11 +26,17 @@ public class Voluntario {
 	 **/
 	public void enviaCodigo() {
 		CodigoSender codSender = CodigoSender.getInstance();
-		this.cod = codSender.enviaSMS(tel);	
+		this.cod = codSender.enviaCod(tel);	
 	}
+	
 	
 	public boolean checkValidCod(String cod) {
 		return this.cod.equals(cod);
+	}
+
+	public void enviaSMS(String string) {
+		CodigoSender codSender = CodigoSender.getInstance();
+		this.cod = codSender.enviaSMS(tel, string);	
 	}
 
 }

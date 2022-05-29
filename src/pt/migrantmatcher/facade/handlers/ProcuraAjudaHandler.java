@@ -55,7 +55,7 @@ public class ProcuraAjudaHandler {
 	public void confirmaRegisto() {
 		if (ajCurr.isLivre()) {
 			this.catMigrantes.addAjuda(migCurr, ajCurr);
-			ajCurr.setNotLivre();
+			ajCurr.setNotLivre(migCurr);
 		}
 	}
 	

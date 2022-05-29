@@ -14,5 +14,4 @@ public abstract class Migrantes {
 	public void addAjuda(Ajuda ajCurr) {
 		aj.add(ajCurr);
 	}
-	
 }

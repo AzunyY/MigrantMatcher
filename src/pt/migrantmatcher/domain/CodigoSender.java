@@ -43,7 +43,7 @@ public class CodigoSender {
 		return CodigoSender.INSTANCE;
 	}
 
-	public String enviaSMS(int num) {
+	public String enviaCod(int num) {
 
 		String cod = generateCod();
 
@@ -90,5 +90,43 @@ public class CodigoSender {
 								    StringBuilder::appendCodePoint,
 								    StringBuilder::append)
 						   .toString();
+	}
+	
+	/*ESTAMOS A REPETIR CODIGO VAI TER DE SER ALTERADO*/
+
+	public String enviaSMS(int tel, String string) {
+		
+		try {
+			String className = p.getProperty("SENDERTYPE");
+
+			Class<?> klass = Class.forName(className);
+			SenderType sender = (SenderType) klass.getConstructor().newInstance();
+			
+			sender.enviaSMS(tel, string);
+			
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "error";
 	}
 }

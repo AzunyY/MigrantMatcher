@@ -10,5 +10,9 @@ public class Individual extends Migrantes{
 		this.nome = nome;
 		this.tel = tel;
 	}
+	
+	public String getNome() {
+		return nome;
+	}
 
 }

@@ -22,4 +22,10 @@ public class Familia extends Migrantes {
 	public void addNomeFamilar(String nome) {
 		listFamiliares.add(nome);
 	}
+	
+	public String getNome() {
+		return nome;
+	}
 }
+
+

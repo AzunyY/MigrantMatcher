@@ -6,6 +6,7 @@ package pt.migrantmatcher.domain;
 public abstract class Ajuda {
 		
 	private boolean availability;
+	private Voluntario vol;
 	/**
 	 * Vai-se usar o pattern: Template method  
 	 **/
@@ -18,10 +19,12 @@ public abstract class Ajuda {
 	}
 	
 	public void setVol(Voluntario vol) {
-		vol.addAjuda(this);
+		this.vol = vol;
 	}
 
-	public void setNotLivre() {
+	public void setNotLivre(Migrantes mig) {
+		//vamos ter de usar genericos
+		vol.enviaSMS("O migrante, " + ((Individual) mig).getNome() + " quer a ajuda: " + this.toString());
 		availability = false;
 	};
 }
