@@ -6,38 +6,61 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.security.SecureRandom;
 import java.util.Properties;
 
 import pt.migrantmatcher.plugins.SenderType;
 
+/*USAR SINGLETON*/
+
 public class CodigoSender {
+
+	private Properties p;
+
+	protected CodigoSender(String fileName) {
+
+		p = new Properties();
+
+		try {
+			p.load(new FileInputStream(new File(fileName)));
+
+		}
+		catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static CodigoSender INSTANCE = null; // Lazy loading colocar a null
+
+	public static CodigoSender getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new CodigoSender("senders.properties");
+		}
+
+		return CodigoSender.INSTANCE;
+	}
 
 	public String enviaSMS(int num) {
 
-		Properties p = new Properties();
-		SenderType type = null;
+		String cod = generateCod();
 
 		try {
-
-			p.load(new FileInputStream(new File("sender.properties")));
-
 			String className = p.getProperty("SENDERTYPE");
 
 			@SuppressWarnings("unchecked")
-			Class<SenderType> klass = (Class<SenderType>) Class.forName(className);
-			Constructor<SenderType> cons = klass.getConstructor();
-			type = cons.newInstance();
+			Class<?> klass = Class.forName(className);
+			SenderType sender = (SenderType) klass.getConstructor().newInstance();
 			
-
-		} catch (ClassNotFoundException e) {
+			sender.enviaSMS(num, cod);
+			return cod;
+			
+		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -50,15 +73,24 @@ public class CodigoSender {
 		} catch (InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (FileNotFoundException e) {
+		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return type.enviaSMS(num);
+		return "error";
 
+	}
+
+	public String generateCod() {
+		return new SecureRandom().ints(6,33,127)
+				.map( x -> (char) x)
+				.collect(StringBuilder::new, 
+						StringBuilder::appendCodePoint,
+						StringBuilder::append)
+				.toString();
 	}
 }

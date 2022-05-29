@@ -1,6 +1,6 @@
 package pt.migrantmatcher.plugins;
 
-public class TelegramSMSSender implements SenderType{
+public class TelegramSMSSenderAdapter implements SenderType{
 
 	@Override
 	public String enviaSMS(int num) {
