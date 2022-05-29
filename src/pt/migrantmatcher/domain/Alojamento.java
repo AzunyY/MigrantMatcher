@@ -13,4 +13,8 @@ public class Alojamento extends Ajuda {
 	public void setRegiao(Regiao reg) {
 		this.reg = reg;
 	}
+	
+	public Regiao getRegiao() {
+		return this.reg;
+	}
 }

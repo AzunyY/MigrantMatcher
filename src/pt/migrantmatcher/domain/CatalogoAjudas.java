@@ -27,4 +27,30 @@ public class CatalogoAjudas {
 		listAj.add(ajCurr);
 	}
 	
+	public List<Ajuda> filterByReg(Regiao reg) {
+		
+		List <Ajuda> listAjudasReg = new ArrayList<>();
+		
+		listAj.stream()
+			  .forEach(x -> {
+				  if(x instanceof Alojamento) {
+					  if(((Alojamento) x).getRegiao().equals(reg))
+						  listAjudasReg.add(x);
+				  }	else
+					  listAjudasReg.add(x);
+				  });
+		
+		return listAjudasReg;
+	}
+
+	/*vou ter de implementar o equals depois*/
+	public Ajuda getAjuda(Ajuda aj) {
+		
+		for(Ajuda a: listAj)
+			if(a.equals(aj))
+				return a;
+		
+		return null;
+	}
+	
 }

@@ -20,4 +20,8 @@ public abstract class Ajuda {
 	public void setVol(Voluntario vol) {
 		vol.addAjuda(this);
 	}
+
+	public void setNotLivre() {
+		availability = false;
+	};
 }

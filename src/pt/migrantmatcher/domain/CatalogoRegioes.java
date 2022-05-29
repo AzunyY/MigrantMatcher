@@ -16,4 +16,9 @@ public class CatalogoRegioes {
 		return this.listRegs;
 	}
 
+	public void notificaMig(Migrantes migCurr, Regiao reg) {
+		reg.notifica(migCurr);
+		
+	}
+
 }
