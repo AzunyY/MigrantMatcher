@@ -50,7 +50,6 @@ public class CodigoSender {
 		try {
 			String className = p.getProperty("SENDERTYPE");
 
-			@SuppressWarnings("unchecked")
 			Class<?> klass = Class.forName(className);
 			SenderType sender = (SenderType) klass.getConstructor().newInstance();
 			

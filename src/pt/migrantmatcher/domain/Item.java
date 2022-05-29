@@ -1,6 +1,6 @@
 package pt.migrantmatcher.domain;
 
-public class Item {
+public class Item extends Ajuda {
 	
 	private String desc;
 	

@@ -24,9 +24,7 @@ public class CatalogoAjudas {
 	}
 
 	public void addAj(Ajuda ajCurr) {
-		// TODO Auto-generated method stub
-		
+		listAj.add(ajCurr);
 	}
-	
 	
 }

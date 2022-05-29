@@ -43,7 +43,11 @@ public class RegistaAjudaHandler {
 	}
 	
 	public void confirmaOferta(String cod) {
-		this.volCurr.checkValidCod(cod);
+		
+		if(this.volCurr.checkValidCod(cod)) {
+			catAj.addAj(ajCurr);
+			volCurr.addAjuda(ajCurr);
+		}	
 	}
 
 }

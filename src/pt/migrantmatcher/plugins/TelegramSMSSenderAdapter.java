@@ -1,11 +1,15 @@
 package pt.migrantmatcher.plugins;
 
+import telegramsms.TelegramSMSSender;
+
 public class TelegramSMSSenderAdapter implements SenderType{
 
 	@Override
-	public String enviaSMS(int num) {
-		// TODO Auto-generated method stub
-		return null;
+	public void enviaSMS(int num, String cod) {
+		TelegramSMSSender sender = new TelegramSMSSender();
+		sender.setNumber(Integer.toString(num));
+		sender.setText(cod);
+		sender.send();
 	}
 
 }

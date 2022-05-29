@@ -6,7 +6,6 @@ package pt.migrantmatcher.domain;
 public abstract class Ajuda {
 		
 	private boolean availability;
-
 	/**
 	 * Vai-se usar o pattern: Template method  
 	 **/
@@ -21,5 +20,4 @@ public abstract class Ajuda {
 	public void setVol(Voluntario vol) {
 		vol.addAjuda(this);
 	}
-	
 }
