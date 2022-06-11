@@ -9,13 +9,13 @@ public class Familia extends Migrantes {
 	private List <String> listFamiliares;
 	
 	protected Familia(int nPessoas) {
-		super(tel);
+		super();
 		this.nPessoas = nPessoas;
 	}
 	
 	public void addInfoCabeca(String nome, int tel) {
 		this.nome = nome;
-		this.tel = tel;
+		super.setTel(tel);
 	}
 	
 	public void addNomeFamilar(String nome) {
@@ -28,10 +28,6 @@ public class Familia extends Migrantes {
 
 	public int getnPessoas() {
 		return nPessoas;
-	}
-
-	public int getTel() {
-		return tel;
 	}
 }
 

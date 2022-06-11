@@ -66,7 +66,8 @@ public class ProcuraAjudaHandler {
 	
 	private void enviaSMS(String message) {
 		MigrantConfiguration smsSender = MigrantConfiguration.getInstance();
-		smsSender.getClass(smsSender.getProperty("SENDERTYPE"), new PidgeonSMSSenderAdapter()).enviaSMS(this.ajCurr.getVol(), message);
+		smsSender.getClass(smsSender.getProperty("SENDERTYPE"), new PidgeonSMSSenderAdapter())
+			     .enviaSMS(this.ajCurr.getVol(), message);
 	}
 
 	/*Possivel que seja com observavel e synchronized*/

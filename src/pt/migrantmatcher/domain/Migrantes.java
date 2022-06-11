@@ -8,13 +8,16 @@ public abstract class Migrantes {
 	private List <Ajuda> aj;
 	private int tel;
 	
-	protected Migrantes(int tel) {
+	protected Migrantes() {
 		aj = new ArrayList <>();
-		this.tel = tel;
 	}
 
 	public void addAjuda(Ajuda ajCurr) {
 		aj.add(ajCurr);
+	}
+	
+	public void setTel(int tel) {
+		this.tel = tel;
 	}
 
 	public int getTel() {

@@ -5,7 +5,8 @@ public class Individual extends Migrantes{
 	private String nome;
 	
 	protected Individual(String nome, int tel) {
-		super(tel);
+		super();
+		super.setTel(tel);
 		this.nome = nome;
 	}
 	
