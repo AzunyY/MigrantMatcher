@@ -6,9 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
-import java.util.Random;
-
-import pt.migrantmatcher.plugins.SenderType;
 
 /*USAR SINGLETON*/
 
@@ -37,76 +34,29 @@ public class MigrantConfiguration {
 
 	public static MigrantConfiguration getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new MigrantConfiguration("senders.properties");
+			INSTANCE = new MigrantConfiguration("defaults.properties");
 		}
 
 		return MigrantConfiguration.INSTANCE;
 	}
-
-	public String enviaCod(int num) {
-
-		String cod = generateCod();
-
-		try {
-			String className = p.getProperty("SENDERTYPE");
-
-			Class<?> klass = Class.forName(className);
-			SenderType sender = (SenderType) klass.getConstructor().newInstance();
-			
-			sender.enviaSMS(num, cod);
-			return cod;
-			
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return "error";
-
-	}
-
-	public String generateCod() {
-		return new Random().ints(6,33,127)
-						   .map( x -> (char) x)
-						   .collect(StringBuilder::new, 
-								    StringBuilder::appendCodePoint,
-								    StringBuilder::append)
-						   .toString();
+	
+	public String getProperty(String chave) {		
+		return p.getProperty(chave);
 	}
 	
-	/*ESTAMOS A REPETIR CODIGO VAI TER DE SER ALTERADO*/
-
-	public String enviaSMS(int tel, String string) {
-		
+	public <T> T getClass(String klassName, T def) {
 		try {
-			String className = p.getProperty("SENDERTYPE");
-
-			Class<?> klass = Class.forName(className);
-			SenderType sender = (SenderType) klass.getConstructor().newInstance();
+			// java -cp plugin_da_empresa_y.jar -jar polimorfismo.jar 
+			Class<?> klass = Class.forName(klassName);
 			
-			sender.enviaSMS(tel, string);
+			@SuppressWarnings("unchecked")
+			T s = (T) klass.getConstructor().newInstance();
+			return s;
 			
-		} catch (ClassNotFoundException e1) {
+		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
+			System.out.println("Nao existe a class correspondente");
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -126,7 +76,6 @@ public class MigrantConfiguration {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return "error";
+		return def;
 	}
 }

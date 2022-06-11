@@ -1,13 +1,16 @@
 package pt.migrantmatcher.facade.handlers;
 
 import java.util.List;
+import java.util.Random;
 
 import pt.migrantmatcher.domain.Ajuda;
 import pt.migrantmatcher.domain.CatalogoAjudas;
 import pt.migrantmatcher.domain.CatalogoRegioes;
 import pt.migrantmatcher.domain.CatalogoVoluntarios;
+import pt.migrantmatcher.domain.MigrantConfiguration;
 import pt.migrantmatcher.domain.Regiao;
 import pt.migrantmatcher.domain.Voluntario;
+import pt.migrantmatcher.plugins.PidgeonSMSSenderAdapter;
 
 public class RegistaAjudaHandler {
 	
@@ -34,12 +37,31 @@ public class RegistaAjudaHandler {
 	
 	public void indicaRegiao(Regiao reg) {
 		this.catAj.insereReg(ajCurr, reg);
-		this.volCurr.enviaCodigo();
+		enviaCodigo();
 	}
 	
 	public void ofereceItem(String desc){
 		this.catAj.novoItem(desc);
-		this.volCurr.enviaCodigo();
+		enviaCodigo();
+	}
+	
+	private void enviaCodigo() {
+		
+		String cod = generateCod();
+
+		MigrantConfiguration codSender = MigrantConfiguration.getInstance();
+		this.volCurr.setCod(cod);		
+		codSender.getClass(codSender.getProperty("SENDERTYPE"), new PidgeonSMSSenderAdapter()).enviaSMS(this.volCurr.getTel(), cod);
+		
+	}
+
+	public String generateCod() {
+		return new Random().ints(6,33,127)
+						   .map( x -> (char) x)
+						   .collect(StringBuilder::new, 
+								    StringBuilder::appendCodePoint,
+								    StringBuilder::append)
+						   .toString();
 	}
 	
 	public void confirmaOferta(String cod) {

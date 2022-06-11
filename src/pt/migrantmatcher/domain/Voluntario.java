@@ -20,23 +20,13 @@ public class Voluntario {
 	public void addAjuda(Ajuda ajuda) {
 		listAjudas.add(ajuda);
 	}
-
-	/**
-	 *  Polimorfismo
-	 **/
-	public void enviaCodigo() {
-		MigrantConfiguration codSender = MigrantConfiguration.getInstance();
-		this.cod = codSender.enviaCod(tel);	
-	}
-	
 	
 	public boolean checkValidCod(String cod) {
 		return this.cod.equals(cod);
 	}
 
-	public void enviaSMS(String string) {
-		MigrantConfiguration codSender = MigrantConfiguration.getInstance();
-		this.cod = codSender.enviaSMS(tel, string);	
+	public void setCod(String cod) {
+		this.cod = cod;
 	}
 
 }

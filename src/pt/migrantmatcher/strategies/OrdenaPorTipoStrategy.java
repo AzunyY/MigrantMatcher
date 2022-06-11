@@ -11,7 +11,7 @@ import pt.migrantmatcher.domain.CatalogoAjudas;
 public class OrdenaPorTipoStrategy implements OrdenaAjudas{
 	
 	private CatalogoAjudas ajudas;
-	protected OrdenaPorTipoStrategy(CatalogoAjudas catAjudas) {
+	public OrdenaPorTipoStrategy(CatalogoAjudas catAjudas) {
 		this.ajudas = catAjudas;
 	}
 	

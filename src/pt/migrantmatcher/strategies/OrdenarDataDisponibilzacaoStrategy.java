@@ -9,7 +9,7 @@ public class OrdenarDataDisponibilzacaoStrategy implements OrdenaAjudas {
 
 	private CatalogoAjudas ajudas;
 	
-	protected OrdenarDataDisponibilzacaoStrategy(CatalogoAjudas catAjudas) {
+	public OrdenarDataDisponibilzacaoStrategy(CatalogoAjudas catAjudas) {
 		this.ajudas = catAjudas;
 	}
 	

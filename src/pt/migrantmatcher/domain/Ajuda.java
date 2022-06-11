@@ -22,9 +22,11 @@ public abstract class Ajuda {
 		this.vol = vol;
 	}
 
-	public void setNotLivre(Migrantes mig) {
-		//vamos ter de usar genericos
-		vol.enviaSMS("O migrante, " + ((Individual) mig).getNome() + " quer a ajuda: " + this.toString());
+	public void setNotLivre(Migrantes mig) {				
 		availability = false;
-	};
+	}
+
+	public int getVol() {
+		return vol.getTel();
+	}
 }

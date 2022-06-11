@@ -6,8 +6,12 @@ import pt.migrantmatcher.domain.Ajuda;
 import pt.migrantmatcher.domain.CatalogoAjudas;
 import pt.migrantmatcher.domain.CatalogoMigrantes;
 import pt.migrantmatcher.domain.CatalogoRegioes;
+import pt.migrantmatcher.domain.Individual;
+import pt.migrantmatcher.domain.MigrantConfiguration;
 import pt.migrantmatcher.domain.Migrantes;
 import pt.migrantmatcher.domain.Regiao;
+import pt.migrantmatcher.plugins.PidgeonSMSSenderAdapter;
+import pt.migrantmatcher.strategies.OrdenaPorTipoStrategy;
 
 public class ProcuraAjudaHandler {
 	
@@ -18,7 +22,6 @@ public class ProcuraAjudaHandler {
 	private Ajuda ajCurr;
 	
 	public ProcuraAjudaHandler(CatalogoMigrantes catmig, CatalogoRegioes catReg, CatalogoAjudas catAj ) {
-		/*ISTO TEM DE MUDAR MAS FAÇO DEPOIS*/
 		this.catMigrantes = catmig;
 		this.catReg = catReg;
 		this.catAj = catAj;
@@ -45,7 +48,8 @@ public class ProcuraAjudaHandler {
 	}
 	
 	public List <Ajuda> indicaRegiao(Regiao reg) {
-		return this.catAj.filterByReg(reg);
+		MigrantConfiguration ordemAjudas = MigrantConfiguration.getInstance();
+		return ordemAjudas.getClass(ordemAjudas.getProperty("ORDERTYPE"), new OrdenaPorTipoStrategy(catAj)).ordena();
 	}
 	
 	public void escolheAjuda(Ajuda aj) {
@@ -55,10 +59,16 @@ public class ProcuraAjudaHandler {
 	public void confirmaRegisto() {
 		if (ajCurr.isLivre()) {
 			this.catMigrantes.addAjuda(migCurr, ajCurr);
+			enviaSMS("O migrante, " + ((Individual) migCurr).getNome() + " quer a ajuda: " + this.toString());
 			ajCurr.setNotLivre(migCurr);
 		}
 	}
 	
+	private void enviaSMS(String message) {
+		MigrantConfiguration smsSender = MigrantConfiguration.getInstance();
+		smsSender.getClass(smsSender.getProperty("SENDERTYPE"), new PidgeonSMSSenderAdapter()).enviaSMS(this.ajCurr.getVol(), message);
+	}
+
 	/*Possivel que seja com observavel e synchronized*/
 	public void pedeNotifAjuda(Regiao reg) {
 		
