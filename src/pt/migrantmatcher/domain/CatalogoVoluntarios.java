@@ -29,9 +29,5 @@ public class CatalogoVoluntarios {
 		
 		return volCurr;
 	}
-	
-	public void criaOferta(Ajuda ajuda) {
-		//to do
-	}
 
 }
