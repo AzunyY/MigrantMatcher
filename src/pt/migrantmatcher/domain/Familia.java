@@ -5,12 +5,11 @@ import java.util.List;
 public class Familia extends Migrantes {
 	
 	private String nome;
-	private int tel;
 	private int nPessoas;
 	private List <String> listFamiliares;
 	
 	protected Familia(int nPessoas) {
-		super();
+		super(tel);
 		this.nPessoas = nPessoas;
 	}
 	

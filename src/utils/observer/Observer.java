@@ -12,6 +12,6 @@ public interface Observer<E extends Event> {
 	 * Define o que fazer quando eh propagado um objeto do tipo Event
 	 * @param e objeto implements Event que foi propagado 
 	 */
-	void handleNewEvent(E e);
+	void processEvent(E e);
 
 }

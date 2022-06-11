@@ -10,31 +10,22 @@ import java.util.List;
  *
  * @param <E> objeto que extende a interface Event
  */
-public abstract class Observable<E extends Event> {
+public class Observable<E extends Event> {
 	
-	private List<Observer<E>> observers = new ArrayList<>();
+	protected List<Observer<E>> observers = new ArrayList<>();
 	
-	
-	/**
-	 * Permite adicionar um novo observer para ser "notificado" sempre que um
-	 * evento for propagado
-	 * @param o observer a er adicionado
-	 */
-	public void addObserver (Observer<E> o) {
-		observers.add(o);
-	}
-	
-	
-	/**
-	 * Propaga um Event por todos os objetos da lista observers que extendem Observable 
-	 * @param e evento a ser propagado
-	 */
-	protected void dispatchEvent(E e) {
+	public void emitEvent(E e) {
 		for (Observer<E> o : observers) {
-			o.handleNewEvent(e);
+			o.processEvent(e);
 		}
 	}
 	
+	public void registerObserver(Observer<E> obs) {
+		observers.add(obs);
+	}
 	
+	public void unregisterObserver(Observer<E> obs) {
+		observers.remove(obs);
+	}
 
 }

@@ -51,7 +51,8 @@ public class RegistaAjudaHandler {
 
 		MigrantConfiguration codSender = MigrantConfiguration.getInstance();
 		this.volCurr.setCod(cod);		
-		codSender.getClass(codSender.getProperty("SENDERTYPE"), new PidgeonSMSSenderAdapter()).enviaSMS(this.volCurr.getTel(), cod);
+		codSender.getClass(codSender.getProperty("SENDERTYPE"), new PidgeonSMSSenderAdapter())
+				 .enviaSMS(this.volCurr.getTel(), cod);
 		
 	}
 
