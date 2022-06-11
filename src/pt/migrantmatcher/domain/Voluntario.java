@@ -25,7 +25,7 @@ public class Voluntario {
 	 *  Polimorfismo
 	 **/
 	public void enviaCodigo() {
-		CodigoSender codSender = CodigoSender.getInstance();
+		MigrantConfiguration codSender = MigrantConfiguration.getInstance();
 		this.cod = codSender.enviaCod(tel);	
 	}
 	
@@ -35,7 +35,7 @@ public class Voluntario {
 	}
 
 	public void enviaSMS(String string) {
-		CodigoSender codSender = CodigoSender.getInstance();
+		MigrantConfiguration codSender = MigrantConfiguration.getInstance();
 		this.cod = codSender.enviaSMS(tel, string);	
 	}
 

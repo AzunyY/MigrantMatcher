@@ -12,11 +12,11 @@ import pt.migrantmatcher.plugins.SenderType;
 
 /*USAR SINGLETON*/
 
-public class CodigoSender {
+public class MigrantConfiguration {
 
 	private Properties p;
 
-	protected CodigoSender(String fileName) {
+	protected MigrantConfiguration(String fileName) {
 
 		p = new Properties();
 
@@ -33,14 +33,14 @@ public class CodigoSender {
 		}
 	}
 
-	private static CodigoSender INSTANCE = null; // Lazy loading colocar a null
+	private static MigrantConfiguration INSTANCE = null; // Lazy loading colocar a null
 
-	public static CodigoSender getInstance() {
+	public static MigrantConfiguration getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new CodigoSender("senders.properties");
+			INSTANCE = new MigrantConfiguration("senders.properties");
 		}
 
-		return CodigoSender.INSTANCE;
+		return MigrantConfiguration.INSTANCE;
 	}
 
 	public String enviaCod(int num) {
