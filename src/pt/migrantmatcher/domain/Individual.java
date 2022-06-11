@@ -15,4 +15,8 @@ public class Individual extends Migrantes{
 		return nome;
 	}
 
+	public int getTel() {
+		return tel;
+	}
+
 }

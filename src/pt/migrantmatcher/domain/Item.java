@@ -8,4 +8,8 @@ public class Item extends Ajuda {
 		super();
 		this.desc = desc;
 	}
+
+	public String getDesc() {
+		return desc;
+	}
 }

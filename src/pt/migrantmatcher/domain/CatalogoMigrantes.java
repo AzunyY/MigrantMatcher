@@ -30,4 +30,8 @@ public class CatalogoMigrantes {
 	public void addAjuda(Migrantes migCurr, Ajuda ajCurr) {
 		migCurr.addAjuda(ajCurr);
 	}
+
+	public List <Migrantes> getListMigrantes() {
+		return listMigrantes;
+	}
 }

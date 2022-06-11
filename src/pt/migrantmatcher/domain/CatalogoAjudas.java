@@ -52,5 +52,9 @@ public class CatalogoAjudas {
 		
 		return null;
 	}
+
+	public List<Ajuda> getListAjudas() {
+		return listAj;
+	}
 	
 }

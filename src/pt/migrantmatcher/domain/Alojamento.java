@@ -17,4 +17,8 @@ public class Alojamento extends Ajuda {
 	public Regiao getRegiao() {
 		return this.reg;
 	}
+
+	public int getnPessoas() {
+		return nPessoas;
+	}
 }

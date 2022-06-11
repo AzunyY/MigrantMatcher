@@ -6,14 +6,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import pt.migrantmatcher.domain.Ajuda;
+import pt.migrantmatcher.domain.CatalogoAjudas;
 
 public class OrdenaPorTipoStrategy implements OrdenaAjudas{
+	
+	private CatalogoAjudas ajudas;
+	protected OrdenaPorTipoStrategy(CatalogoAjudas catAjudas) {
+		this.ajudas = catAjudas;
+	}
+	
+	public List<Ajuda> ordena() {
+		List <Ajuda> list = ajudas.getListAjudas();
+		
+		Collections.shuffle(list);
 
-	@Override
-	public List<Ajuda> ordena(List<Ajuda> original) {
-		Collections.shuffle(original);
-
-		return original.stream()
+		return list.stream()
 					   .sorted(Comparator.comparing(Ajuda::toString))
 					   .collect(Collectors.toList());
 	}

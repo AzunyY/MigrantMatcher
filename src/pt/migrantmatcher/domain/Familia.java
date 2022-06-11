@@ -26,6 +26,14 @@ public class Familia extends Migrantes {
 	public String getNome() {
 		return nome;
 	}
+
+	public int getnPessoas() {
+		return nPessoas;
+	}
+
+	public int getTel() {
+		return tel;
+	}
 }
 
 
