@@ -75,7 +75,6 @@ public class RegistaAjudaHandler {
 		
 		List <Regiao> regList = this.catReg.getRegioes();
 		
-		
 		if(ajCurr instanceof Alojamento)
 			((Alojamento) this.ajCurr).getRegiao().ajudaAdd();
 		else 
