@@ -15,8 +15,8 @@ public class CatalogoAjudas  {
 		return new Alojamento(nPessoas);
 	}
 	
-	public void insereReg (Ajuda ajCurr, Regiao reg) {
-		((Alojamento) ajCurr).setRegiao(reg);
+	public void insereReg (Ajuda ajCurr, Regiao regiao) {
+		((Alojamento) ajCurr).setRegiao(regiao);
 	}
 	
 	public Item novoItem(String desc) {

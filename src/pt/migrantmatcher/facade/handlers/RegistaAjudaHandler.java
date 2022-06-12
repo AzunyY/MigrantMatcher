@@ -36,8 +36,8 @@ public class RegistaAjudaHandler {
 		return this.catReg.getRegioes();
 	}
 	
-	public void indicaRegiao(Regiao reg) {
-		this.catAj.insereReg(ajCurr, reg);
+	public void indicaRegiao(Regiao regiao) {
+		this.catAj.insereReg(ajCurr, regiao);
 		enviaCodigo();
 	}
 	

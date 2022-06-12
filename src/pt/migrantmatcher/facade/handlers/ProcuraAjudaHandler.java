@@ -62,10 +62,6 @@ public class ProcuraAjudaHandler {
 	public List <Ajuda> indicaRegiao(Regiao reg) {
 
 		MigrantConfiguration ordemAjudas = MigrantConfiguration.getInstance();
-		
-		if(this.catAj.getListAjudas().isEmpty())
-			reg.addObserver(migCurr);
-
 		return ordemAjudas.getClass(ordemAjudas.getProperty("ORDERTYPE"), new OrdenaPorTipoStrategy(this.catAj.filterByReg(reg)))
 						  .ordena();
 	
@@ -91,5 +87,9 @@ public class ProcuraAjudaHandler {
 		MigrantConfiguration smsSender = MigrantConfiguration.getInstance();
 		smsSender.getClass(smsSender.getProperty("SENDERTYPE"), new PidgeonSMSSenderAdapter())
 			     .enviaSMS(this.ajCurr.getVol(), message);
+	}
+
+	public void pedeNotif(Regiao regiao) {
+		regiao.addObserver(migCurr);
 	}
 }
