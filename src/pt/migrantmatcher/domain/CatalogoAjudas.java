@@ -3,7 +3,7 @@ package pt.migrantmatcher.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CatalogoAjudas  {
+public class CatalogoAjudas {
 
 	private List <Ajuda> listAj;
 	
@@ -24,9 +24,7 @@ public class CatalogoAjudas  {
 	}
 
 	public void addAj(Ajuda ajCurr) {
-		
 		listAj.add(ajCurr);
-		
 	}
 	
 	public List<Ajuda> filterByReg(Regiao reg) {

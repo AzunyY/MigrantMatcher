@@ -5,10 +5,11 @@ import java.util.List;
 
 import pt.migrantmatcher.plugins.PidgeonSMSSenderAdapter;
 import pt.migrantmatcher.plugins.SenderType;
-import utils.observer.Observer;
-import utils.observer.SucessoAddAjudaEvent;
 
-public abstract class Migrantes implements Observer<SucessoAddAjudaEvent>{
+import utils.observer.DetetarNotifEvent;
+import utils.observer.Observer;
+
+public abstract class Migrantes implements Observer<DetetarNotifEvent>{
 	
 	private List <Ajuda> aj;
 	private int tel;
@@ -29,9 +30,9 @@ public abstract class Migrantes implements Observer<SucessoAddAjudaEvent>{
 		return tel;
 	}
 	
-	public void receiveEvent(SucessoAddAjudaEvent e) {
+	public void receiveEvent(DetetarNotifEvent e) {
 		MigrantConfiguration smsSender = MigrantConfiguration.getInstance();
 		SenderType sender = smsSender.getClass(smsSender.getProperty("SENDERTYPE"), new PidgeonSMSSenderAdapter());
-		sender.enviaSMS(this.tel,e.getMessage());
+		sender.enviaSMS(this.tel, e.getMessage());
 	}
 }

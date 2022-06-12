@@ -11,10 +11,10 @@ import pt.migrantmatcher.domain.Individual;
 import pt.migrantmatcher.domain.MigrantConfiguration;
 import pt.migrantmatcher.domain.Migrantes;
 import pt.migrantmatcher.domain.Regiao;
-import pt.migrantmatcher.exceptions.AjudaNaoEstahDisponivel;
-import pt.migrantmatcher.exceptions.InfoFamilarEmFalta;
-import pt.migrantmatcher.exceptions.NaoExisteAjuda;
-import pt.migrantmatcher.exceptions.RegistoNaoEhValido;
+import pt.migrantmatcher.exceptions.AjudaNaoEstahDisponivelException;
+import pt.migrantmatcher.exceptions.InfoFamilarEmFaltaException;
+import pt.migrantmatcher.exceptions.NaoExisteAjudaException;
+import pt.migrantmatcher.exceptions.RegistoNaoEhValidoException;
 import pt.migrantmatcher.plugins.PidgeonSMSSenderAdapter;
 import pt.migrantmatcher.strategies.OrdenaPorTipoStrategy;
 
@@ -34,12 +34,12 @@ public class ProcuraAjudaHandler {
 
 	}
 
-	public void iniciaRegistoPessoal(String nome, int tel) throws RegistoNaoEhValido {
+	public void iniciaRegistoPessoal(String nome, int tel) throws RegistoNaoEhValidoException {
 
 		int size = String.valueOf(tel).length();
 
 		if(size != 9 || nome.isBlank())
-			throw new RegistoNaoEhValido();
+			throw new RegistoNaoEhValidoException();
 
 		this.migCurr = this.catMigrantes.criaMigranteIndividual(nome, tel);
 
@@ -51,13 +51,13 @@ public class ProcuraAjudaHandler {
 
 	}
 
-	public void infoCabeça(String nome, int tel) throws RegistoNaoEhValido {
+	public void infoCabeça(String nome, int tel) throws RegistoNaoEhValidoException {
 
 
 		int size = String.valueOf(tel).length();
 
 		if(size != 9 || nome.isBlank())
-			throw new RegistoNaoEhValido();
+			throw new RegistoNaoEhValidoException();
 
 		this.catMigrantes.addInfoCabeca(migCurr, nome, tel);
 
@@ -69,20 +69,20 @@ public class ProcuraAjudaHandler {
 
 	}
 
-	public List <Regiao> pedeListaRegioes() throws InfoFamilarEmFalta{
+	public List <Regiao> pedeListaRegioes() throws InfoFamilarEmFaltaException{
 
 		if(migCurr instanceof Familia && ((Familia) migCurr).isValid() )
-			throw new InfoFamilarEmFalta();
-		
+			throw new InfoFamilarEmFaltaException();
+
 		return this.catReg.getRegioes();
 	}
 
-	public List <Ajuda> indicaRegiao(Regiao reg) throws NaoExisteAjuda {
+	public List <Ajuda> indicaRegiao(Regiao reg) throws NaoExisteAjudaException {
 
 		List <Ajuda> ajList = this.catAj.filterByReg(reg);
 
 		if(ajList.isEmpty())
-			throw new NaoExisteAjuda();
+			throw new NaoExisteAjudaException();
 
 		MigrantConfiguration ordemAjudas = MigrantConfiguration.getInstance();
 		return ordemAjudas.getClass(ordemAjudas.getProperty("ORDERTYPE"), new OrdenaPorTipoStrategy(ajList))
@@ -96,14 +96,14 @@ public class ProcuraAjudaHandler {
 
 	}
 
-	public void confirmaRegisto() throws AjudaNaoEstahDisponivel {
+	public void confirmaRegisto() throws AjudaNaoEstahDisponivelException {
 
 		if (ajCurr.isLivre()) {
 			this.catMigrantes.addAjuda(migCurr, ajCurr);
 			enviaSMS("O migrante, " + ((Individual) migCurr).getNome() + " quer a ajuda: " + this.toString());
 			ajCurr.setNotLivre(migCurr);
 		} else 
-			throw new AjudaNaoEstahDisponivel();
+			throw new AjudaNaoEstahDisponivelException();
 
 	}
 
@@ -114,6 +114,7 @@ public class ProcuraAjudaHandler {
 	}
 
 	public void pedeNotif(Regiao regiao) {
-		regiao.addObserver(migCurr);
+		this.catReg.pedeNotif(regiao, migCurr);
 	}
+
 }

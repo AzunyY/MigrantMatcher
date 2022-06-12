@@ -5,12 +5,12 @@ import java.util.List;
 
 import pt.migrantmatcher.domain.Ajuda;
 import pt.migrantmatcher.domain.Regiao;
-import pt.migrantmatcher.exceptions.AjudaNaoEhValida;
-import pt.migrantmatcher.exceptions.AjudaNaoEstahDisponivel;
-import pt.migrantmatcher.exceptions.CodErrado;
-import pt.migrantmatcher.exceptions.InfoFamilarEmFalta;
-import pt.migrantmatcher.exceptions.NaoExisteAjuda;
-import pt.migrantmatcher.exceptions.RegistoNaoEhValido;
+import pt.migrantmatcher.exceptions.AjudaNaoEhValidaException;
+import pt.migrantmatcher.exceptions.AjudaNaoEstahDisponivelException;
+import pt.migrantmatcher.exceptions.CodErradoException;
+import pt.migrantmatcher.exceptions.InfoFamilarEmFaltaException;
+import pt.migrantmatcher.exceptions.NaoExisteAjudaException;
+import pt.migrantmatcher.exceptions.RegistoNaoEhValidoException;
 import pt.migrantmatcher.facade.MigrantMatcherSistema;
 import pt.migrantmatcher.facade.handlers.ProcuraAjudaHandler;
 import pt.migrantmatcher.facade.handlers.RegistaAjudaHandler;
@@ -37,11 +37,11 @@ public class MigrantMatcherExample {
 			/*ACHO NECESSARIO USAR DTO AQUI!!!*/
 			regAjHandler.confirmaOferta("ABBBA");
 
-		} catch (RegistoNaoEhValido e) {
+		} catch (RegistoNaoEhValidoException e) {
 			System.err.print("O numero de telemovel introduzido tem demasiado digitos!");
-		} catch (AjudaNaoEhValida e) {
+		} catch (AjudaNaoEhValidaException e) {
 			System.err.print("A ajuda nao eh valida. Introduza uma descricao valida!");
-		} catch (CodErrado e) {
+		} catch (CodErradoException e) {
 			System.err.print("O codigo introduzido nao eh valido!");
 		}
 
@@ -50,9 +50,9 @@ public class MigrantMatcherExample {
 			regAjHandler.ofereceApartamento(3);
 			regAjHandler.indicaRegiao(new Regiao(reg.get(0)));
 			regAjHandler.confirmaOferta("ABBBA");
-		} catch (RegistoNaoEhValido e) {
+		} catch (RegistoNaoEhValidoException e) {
 			System.err.print("O numero de telemovel introduzido tem demasiado digitos!");
-		} catch (CodErrado e) {
+		} catch (CodErradoException e) {
 			System.err.print("O codigo introduzido nao eh valido!");
 		}	
 
@@ -61,9 +61,9 @@ public class MigrantMatcherExample {
 			regAjHandler.ofereceApartamento(3);
 			regAjHandler.indicaRegiao(new Regiao("Porto"));
 			regAjHandler.confirmaOferta("OOE3");
-		} catch (RegistoNaoEhValido e) {
+		} catch (RegistoNaoEhValidoException e) {
 			System.err.print("O numero de telemovel introduzido tem demasiado digitos!");
-		} catch (CodErrado e) {
+		} catch (CodErradoException e) {
 			System.err.print("O codigo introduzido nao eh valido!");
 		} 
 
@@ -78,14 +78,14 @@ public class MigrantMatcherExample {
 			procAjHandler.escolheAjuda(aj.get(0));
 			procAjHandler.confirmaRegisto();
 
-		} catch(RegistoNaoEhValido e) {
+		} catch(RegistoNaoEhValidoException e) {
 			System.err.println("O registo nao eh valido - Insira um nome e numero valido!");
-		} catch (NaoExisteAjuda e) {
+		} catch (NaoExisteAjudaException e) {
 			procAjHandler.pedeNotif(new Regiao(reg.get(0)));
 			System.err.println("Nao existe ajudas nessa regiao, vai ser notificado quando houver!");
-		} catch (AjudaNaoEstahDisponivel e) {
+		} catch (AjudaNaoEstahDisponivelException e) {
 			System.err.println("A ajuda escolhida nao estah disponivel!");
-		} catch (InfoFamilarEmFalta e) {
+		} catch (InfoFamilarEmFaltaException e) {
 			//do nothing
 		}
 
@@ -102,14 +102,14 @@ public class MigrantMatcherExample {
 			procAjHandler.escolheAjuda(aj.get(0));
 			procAjHandler.confirmaRegisto();
 
-		} catch(RegistoNaoEhValido e) {
+		} catch(RegistoNaoEhValidoException e) {
 			System.err.println("O registo nao eh valido - Insira um nome e numero valido!");
-		} catch(InfoFamilarEmFalta e) { 
+		} catch(InfoFamilarEmFaltaException e) { 
 			System.err.println("Existe informaçao em falta sobre os seus familiares!");
-		} catch (NaoExisteAjuda e) {
+		} catch (NaoExisteAjudaException e) {
 			procAjHandler.pedeNotif(new Regiao(reg.get(0)));
 			System.err.println("Nao existe ajudas nessa regiao!");
-		} catch (AjudaNaoEstahDisponivel e) {
+		} catch (AjudaNaoEstahDisponivelException e) {
 			System.err.println("A ajuda escolhida nao estah disponivel!");
 		}
 
