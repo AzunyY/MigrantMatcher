@@ -1,16 +1,19 @@
 package utils.observer;
 
-
 public class SucessoAddAjudaEvent implements Event {
 
-	private String message;
+	private String reg;
 	
-	public SucessoAddAjudaEvent (String message) {
-		this.message = message;
+	public SucessoAddAjudaEvent (String reg) {
+		this.reg = reg;
 	}
 
 	public String getMessage () {	
-		return message;
+		
+		if(reg.equals("All"))
+			return "Uma nova ajuda foi adicionada a todas as regioes!";
+		
+		return "Uma nova ajuda foi adicionada a regiao " + reg;
 	}
 	
 }

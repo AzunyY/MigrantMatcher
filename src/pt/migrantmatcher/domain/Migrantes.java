@@ -3,7 +3,12 @@ package pt.migrantmatcher.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Migrantes {
+import pt.migrantmatcher.plugins.PidgeonSMSSenderAdapter;
+import pt.migrantmatcher.plugins.SenderType;
+import utils.observer.Observer;
+import utils.observer.SucessoAddAjudaEvent;
+
+public abstract class Migrantes implements Observer<SucessoAddAjudaEvent>{
 	
 	private List <Ajuda> aj;
 	private int tel;
@@ -22,5 +27,11 @@ public abstract class Migrantes {
 
 	public int getTel() {
 		return tel;
+	}
+	
+	public void receiveEvent(SucessoAddAjudaEvent e) {
+		MigrantConfiguration smsSender = MigrantConfiguration.getInstance();
+		SenderType sender = smsSender.getClass(smsSender.getProperty("SENDERTYPE"), new PidgeonSMSSenderAdapter());
+		sender.enviaSMS(this.tel,e.getMessage());
 	}
 }

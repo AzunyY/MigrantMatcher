@@ -6,12 +6,7 @@ package utils.observer;
  *
  * @param <E> objeto que extende Event
  */
-public interface Observer<E extends Event> {
 
-	/**
-	 * Define o que fazer quando eh propagado um objeto do tipo Event
-	 * @param e objeto implements Event que foi propagado 
-	 */
-	void processEvent(E e);
-
+public interface Observer<T extends Event> {
+	public void receiveEvent(T e);
 }

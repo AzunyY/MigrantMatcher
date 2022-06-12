@@ -3,10 +3,7 @@ package pt.migrantmatcher.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import utils.observer.Observable;
-import utils.observer.SucessoAddAjudaEvent;
-
-public class CatalogoAjudas extends Observable<SucessoAddAjudaEvent> {
+public class CatalogoAjudas  {
 
 	private List <Ajuda> listAj;
 	
@@ -27,8 +24,9 @@ public class CatalogoAjudas extends Observable<SucessoAddAjudaEvent> {
 	}
 
 	public void addAj(Ajuda ajCurr) {
+		
 		listAj.add(ajCurr);
-		this.emitEvent(new SucessoAddAjudaEvent("Foi addicionada uma nova ajuda!"));
+		
 	}
 	
 	public List<Ajuda> filterByReg(Regiao reg) {

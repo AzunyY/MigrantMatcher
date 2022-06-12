@@ -2,7 +2,6 @@ package pt.migrantmatcher.domain;
 
 import java.util.List;
 
-
 public class Voluntario {
 
 	private int tel;
@@ -28,5 +27,4 @@ public class Voluntario {
 	public void setCod(String cod) {
 		this.cod = cod;
 	}
-
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import pt.migrantmatcher.domain.Ajuda;
+import pt.migrantmatcher.domain.Alojamento;
 import pt.migrantmatcher.domain.CatalogoAjudas;
 import pt.migrantmatcher.domain.CatalogoRegioes;
 import pt.migrantmatcher.domain.CatalogoVoluntarios;
@@ -68,9 +69,19 @@ public class RegistaAjudaHandler {
 	public void confirmaOferta(String cod) {
 		
 		if(this.volCurr.checkValidCod(cod)) {
-			catAj.addAj(ajCurr);
-			volCurr.addAjuda(ajCurr);
+			catAj.addAj(this.ajCurr);
+			volCurr.addAjuda(this.ajCurr);
 		}	
+		
+		List <Regiao> regList = this.catReg.getRegioes();
+		
+		
+		if(ajCurr instanceof Alojamento)
+			((Alojamento) this.ajCurr).getRegiao().ajudaAdd();
+		else 
+			for(int i = 0; i < regList.size() ; i++)
+				regList.get(i).ajudaAdd();
+				
 	}
 
 }
