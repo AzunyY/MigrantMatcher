@@ -3,8 +3,6 @@ package pt.migrantmatcher.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.Optional;
-
 public class CatalogoRegioes {
 	
 	//A lista das regioes deve estar no configuration
@@ -21,15 +19,6 @@ public class CatalogoRegioes {
 
 	public void pedeNotif(Regiao regiao, Migrantes migCurr) {
 		regiao.addObserver(migCurr);
-	}
-
-	public Optional<String> exists(String name) {
-		
-		for(int i = 0; i < listRegs.size(); i++)
-			if(listRegs.get(i).getName().equals(name))
-				return Optional.of(listRegs.get(i).getName());
-	
-		return Optional.empty();
 	}
 
 	public List<String> getRegioesNomes() {
