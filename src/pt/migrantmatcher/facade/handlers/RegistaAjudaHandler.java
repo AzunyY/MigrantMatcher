@@ -11,6 +11,9 @@ import pt.migrantmatcher.domain.CatalogoVoluntarios;
 import pt.migrantmatcher.domain.MigrantConfiguration;
 import pt.migrantmatcher.domain.Regiao;
 import pt.migrantmatcher.domain.Voluntario;
+import pt.migrantmatcher.exceptions.AjudaNaoEhValida;
+import pt.migrantmatcher.exceptions.CodErrado;
+import pt.migrantmatcher.exceptions.RegistoNaoEhValido;
 import pt.migrantmatcher.plugins.PidgeonSMSSenderAdapter;
 
 public class RegistaAjudaHandler {
@@ -27,7 +30,13 @@ public class RegistaAjudaHandler {
 		this.catAj = catAj;
 	}
 	
-	public void iniciaRegistoAjuda(int tel) {
+	public void iniciaRegistoAjuda(int tel) throws RegistoNaoEhValido {
+		
+		int size = String.valueOf(tel).length();
+		
+		if(size != 9)
+			throw new RegistoNaoEhValido();
+		
 		this.volCurr = this.catVol.setVol(tel);
 	}
 	
@@ -41,7 +50,11 @@ public class RegistaAjudaHandler {
 		enviaCodigo();
 	}
 	
-	public void ofereceItem(String desc){
+	public void ofereceItem(String desc) throws AjudaNaoEhValida{
+		
+		if(desc.isBlank())
+			throw new AjudaNaoEhValida();
+		
 		this.catAj.novoItem(desc);
 		enviaCodigo();
 	}
@@ -66,12 +79,13 @@ public class RegistaAjudaHandler {
 						   .toString();
 	}
 	
-	public void confirmaOferta(String cod) {
+	public void confirmaOferta(String cod) throws CodErrado {
 		
 		if(this.volCurr.checkValidCod(cod)) {
 			catAj.addAj(this.ajCurr);
 			volCurr.addAjuda(this.ajCurr);
-		}	
+		} else
+			throw new CodErrado();
 		
 		List <Regiao> regList = this.catReg.getRegioes();
 		

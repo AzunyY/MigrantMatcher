@@ -2,10 +2,15 @@ package pt.migrantmatcher.main;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import pt.migrantmatcher.domain.Ajuda;
 import pt.migrantmatcher.domain.Regiao;
+import pt.migrantmatcher.exceptions.AjudaNaoEhValida;
+import pt.migrantmatcher.exceptions.AjudaNaoEstahDisponivel;
+import pt.migrantmatcher.exceptions.CodErrado;
+import pt.migrantmatcher.exceptions.InfoFamilarEmFalta;
+import pt.migrantmatcher.exceptions.NaoExisteAjuda;
+import pt.migrantmatcher.exceptions.RegistoNaoEhValido;
 import pt.migrantmatcher.facade.MigrantMatcherSistema;
 import pt.migrantmatcher.facade.handlers.ProcuraAjudaHandler;
 import pt.migrantmatcher.facade.handlers.RegistaAjudaHandler;
@@ -28,9 +33,16 @@ public class MigrantMatcherExample {
 		try {
 			regAjHandler.iniciaRegistoAjuda(937977373);
 			regAjHandler.ofereceItem("Roupa");
+
+			/*ACHO NECESSARIO USAR DTO AQUI!!!*/
 			regAjHandler.confirmaOferta("ABBBA");
-		} catch (ajudaNaoEhValida e) {
-			System.out.println("O tipo de ajuda inserido nao eh valido !");
+
+		} catch (RegistoNaoEhValido e) {
+			System.err.print("O numero de telemovel introduzido tem demasiado digitos!");
+		} catch (AjudaNaoEhValida e) {
+			System.err.print("A ajuda nao eh valida. Introduza uma descricao valida!");
+		} catch (CodErrado e) {
+			System.err.print("O codigo introduzido nao eh valido!");
 		}
 
 		try {
@@ -38,18 +50,22 @@ public class MigrantMatcherExample {
 			regAjHandler.ofereceApartamento(3);
 			regAjHandler.indicaRegiao(new Regiao(reg.get(0)));
 			regAjHandler.confirmaOferta("ABBBA");
-		} catch (ajudaNaoEhValida e) {
-			System.out.println("O tipo de ajuda inserido nao eh valido !");
+		} catch (RegistoNaoEhValido e) {
+			System.err.print("O numero de telemovel introduzido tem demasiado digitos!");
+		} catch (CodErrado e) {
+			System.err.print("O codigo introduzido nao eh valido!");
 		}	
 
 		try {
 			regAjHandler.iniciaRegistoAjuda(937977372);
-			regAjHandler.ofereceApartamento(3)
+			regAjHandler.ofereceApartamento(3);
 			regAjHandler.indicaRegiao(new Regiao("Porto"));
 			regAjHandler.confirmaOferta("OOE3");
-		} catch (ajudaNaoEhValida e) {
-			System.out.println("O tipo de ajuda inserido nao eh valido !");
-		}	
+		} catch (RegistoNaoEhValido e) {
+			System.err.print("O numero de telemovel introduzido tem demasiado digitos!");
+		} catch (CodErrado e) {
+			System.err.print("O codigo introduzido nao eh valido!");
+		} 
 
 		//UC2
 		ProcuraAjudaHandler procAjHandler = migMatch.procurarAjuda();
@@ -57,16 +73,20 @@ public class MigrantMatcherExample {
 		try {
 			procAjHandler.iniciaRegistoPessoal("Joao", 939243944);
 
-			procAjHandler.pedeListaRegioes();
-			List <Ajuda> aj = procAjHandler.indicaRegiao(new Regiao(reg.get(0)));
+			List <Regiao> regList = procAjHandler.pedeListaRegioes();
+			List <Ajuda> aj = procAjHandler.indicaRegiao(regList.get(0));
 			procAjHandler.escolheAjuda(aj.get(0));
 			procAjHandler.confirmaRegisto();
 
-		} catch(registonNaoEhValido e) {
-			System.out.println("O registo nao eh valido !");
-		} catch (naoExisteAjuda e) {
-			procAjHandler.pedeNotif(new Regiao(reg.get(0));
-			System.out.println("Nao existe ajudas nessa regiao!");
+		} catch(RegistoNaoEhValido e) {
+			System.err.println("O registo nao eh valido - Insira um nome e numero valido!");
+		} catch (NaoExisteAjuda e) {
+			procAjHandler.pedeNotif(new Regiao(reg.get(0)));
+			System.err.println("Nao existe ajudas nessa regiao, vai ser notificado quando houver!");
+		} catch (AjudaNaoEstahDisponivel e) {
+			System.err.println("A ajuda escolhida nao estah disponivel!");
+		} catch (InfoFamilarEmFalta e) {
+			//do nothing
 		}
 
 		try {
@@ -77,18 +97,21 @@ public class MigrantMatcherExample {
 			procAjHandler.indicaInfoFamiliar("Luis");
 			procAjHandler.indicaInfoFamiliar("Vanessa");
 
-			procAjHandler.pedeListaRegioes();
-			List <Ajuda> aj = procAjHandler.indicaRegiao(new Regiao(reg.get(0)));
+			List <Regiao> regList = procAjHandler.pedeListaRegioes();
+			List <Ajuda> aj = procAjHandler.indicaRegiao(regList.get(0));
 			procAjHandler.escolheAjuda(aj.get(0));
 			procAjHandler.confirmaRegisto();
 
-		} catch(registonNaoEhValido e) {
-			System.out.println("O registo nao eh valido !");
-		} catch(infoFamilarEmFalta e) { 
-			System.out.printl("Existe informaçao em falta!");
-		}catch (naoExisteAjuda e) {
-			procAjHandler.pedeNotif(new Regiao(reg.get(0));
-			System.out.println("Nao existe ajudas nessa regiao!");
+		} catch(RegistoNaoEhValido e) {
+			System.err.println("O registo nao eh valido - Insira um nome e numero valido!");
+		} catch(InfoFamilarEmFalta e) { 
+			System.err.println("Existe informaçao em falta sobre os seus familiares!");
+		} catch (NaoExisteAjuda e) {
+			procAjHandler.pedeNotif(new Regiao(reg.get(0)));
+			System.err.println("Nao existe ajudas nessa regiao!");
+		} catch (AjudaNaoEstahDisponivel e) {
+			System.err.println("A ajuda escolhida nao estah disponivel!");
 		}
+
 	}
 }

@@ -19,7 +19,7 @@ public class Familia extends Migrantes {
 	}
 	
 	public void addNomeFamilar(String nome) {
-		listFamiliares.add(nome);
+		this.listFamiliares.add(nome);
 	}
 	
 	public String getNome() {
@@ -28,6 +28,10 @@ public class Familia extends Migrantes {
 
 	public int getnPessoas() {
 		return nPessoas;
+	}
+	
+	public boolean isValid() {
+		return this.listFamiliares.size() + 1 == this.nPessoas;
 	}
 }
 
