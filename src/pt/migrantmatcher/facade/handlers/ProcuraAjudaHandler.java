@@ -11,8 +11,7 @@ import pt.migrantmatcher.domain.Individual;
 import pt.migrantmatcher.domain.MigrantConfiguration;
 import pt.migrantmatcher.domain.Migrantes;
 import pt.migrantmatcher.domain.Regiao;
-import pt.migrantmatcher.exceptions.AjudaNaoEstahDisponivelException;
-import pt.migrantmatcher.exceptions.InfoFamilarEmFaltaException;
+import pt.migrantmatcher.exceptions.InfoFamilarException;
 import pt.migrantmatcher.exceptions.NaoExisteAjudaException;
 import pt.migrantmatcher.exceptions.RegistoNaoEhValidoException;
 import pt.migrantmatcher.plugins.PidgeonSMSSenderAdapter;
@@ -69,10 +68,10 @@ public class ProcuraAjudaHandler {
 
 	}
 
-	public List <String> pedeListaRegioes() throws InfoFamilarEmFaltaException{
+	public List <String> pedeListaRegioes() throws InfoFamilarException{
 
-		if(migCurr instanceof Familia && ((Familia) migCurr).isValid() )
-			throw new InfoFamilarEmFaltaException();
+		if(migCurr instanceof Familia && !((Familia) migCurr).isValid() )
+			throw new InfoFamilarException();
 
 		return this.catReg.getRegioes(); //1
 	}
@@ -85,8 +84,8 @@ public class ProcuraAjudaHandler {
 			throw new NaoExisteAjudaException();
 
 		MigrantConfiguration ordemAjudas = MigrantConfiguration.getInstance();
-		return ordemAjudas.getClass(ordemAjudas.getProperty("orderHelpType"), new OrdenaPorTipoStrategy(ajList))
-				.ordena();
+		return ordemAjudas.getClass("orderHelpType", new OrdenaPorTipoStrategy(ajList))
+						  .ordena();
 
 	}
 
@@ -96,8 +95,7 @@ public class ProcuraAjudaHandler {
 
 	}
 
-	public void confirmaRegisto() throws AjudaNaoEstahDisponivelException {
-
+	public void confirmaRegisto() {
 		
 			this.catMigrantes.addAjuda(migCurr, ajCurr);
 			enviaSMS("O migrante, " + ((Individual) migCurr).getNome() + " quer a ajuda: " + this.toString());
@@ -106,8 +104,8 @@ public class ProcuraAjudaHandler {
 
 	private void enviaSMS(String message) {
 		MigrantConfiguration smsSender = MigrantConfiguration.getInstance();
-		smsSender.getClass(smsSender.getProperty("SENDERTYPE"), new PidgeonSMSSenderAdapter())
-		.enviaSMS(this.ajCurr.getVol(), message);
+		smsSender.getClass("senderType", new PidgeonSMSSenderAdapter())
+				 .enviaSMS(this.ajCurr.getVol(), message);
 	}
 
 	public void pedeNotif(Regiao regiao) {

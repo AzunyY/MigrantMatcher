@@ -1,6 +1,5 @@
 package pt.migrantmatcher.facade;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import pt.migrantmatcher.domain.CatalogoAjudas;
@@ -19,6 +18,7 @@ public class MigrantMatcherSistema {
 	private CatalogoVoluntarios catVol;
 	
 	public MigrantMatcherSistema(List <String> reg) {
+		
 		this.catMig = new CatalogoMigrantes();
 		this.catAj = new CatalogoAjudas();
 		this.catVol = new CatalogoVoluntarios();

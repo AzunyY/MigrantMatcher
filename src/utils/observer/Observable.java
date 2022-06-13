@@ -1,7 +1,6 @@
 package utils.observer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * Esta classe permite definir objetos do tipo Observable que sao capazes de 
@@ -12,15 +11,18 @@ import java.util.List;
  */
 public class Observable<T extends Event> {
 
-	private List<Observer<T>> observers = new ArrayList<>();
+	private HashMap<Observer<T>, String> observers = new HashMap<>();
 
 	protected void notifyAllObservers(T event) {
-		for (Observer<T> o : observers) {
-			o.receiveEvent(event);
-		}
+		for (observers.entrySet() e : observers.entrySet()) 
+	}
+	
+	protected void notifySingleObservers(T event) {
+	
 	}
 
-	public void addObserver(Observer<T> o) {
-		observers.add(o);
+
+	public void addObserver(Observer<T> o, String reg) {
+		observers.put(o, reg);
 	}
 }

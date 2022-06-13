@@ -5,7 +5,6 @@ import java.util.List;
 
 import pt.migrantmatcher.plugins.PidgeonSMSSenderAdapter;
 import pt.migrantmatcher.plugins.SenderType;
-
 import utils.observer.DetetarNotifEvent;
 import utils.observer.Observer;
 
@@ -32,7 +31,7 @@ public abstract class Migrantes implements Observer<DetetarNotifEvent>{
 	
 	public void receiveEvent(DetetarNotifEvent e) {
 		MigrantConfiguration smsSender = MigrantConfiguration.getInstance();
-		SenderType sender = smsSender.getClass(smsSender.getProperty("SENDERTYPE"), new PidgeonSMSSenderAdapter());
+		SenderType sender = smsSender.getClass("senderType", new PidgeonSMSSenderAdapter());
 		sender.enviaSMS(this.tel, e.getMessage());
 	}
 }

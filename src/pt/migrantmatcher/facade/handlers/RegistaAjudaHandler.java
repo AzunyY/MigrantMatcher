@@ -14,6 +14,7 @@ import pt.migrantmatcher.exceptions.AjudaNaoEhValidaException;
 import pt.migrantmatcher.exceptions.CodErradoException;
 import pt.migrantmatcher.exceptions.RegistoNaoEhValidoException;
 import pt.migrantmatcher.plugins.PidgeonSMSSenderAdapter;
+import pt.migrantmatcher.plugins.SenderType;
 
 public class RegistaAjudaHandler {
 
@@ -54,7 +55,7 @@ public class RegistaAjudaHandler {
 		if(desc.isBlank())
 			throw new AjudaNaoEhValidaException();
 
-		this.catAj.novoItem(desc); //1
+		this.ajCurr = this.catAj.novoItem(desc); //1
 		enviaCodigo();
 	}
 
@@ -63,8 +64,8 @@ public class RegistaAjudaHandler {
 
 		MigrantConfiguration codSender = MigrantConfiguration.getInstance();
 		this.volCurr.setCod(cod);		
-		codSender.getClass(codSender.getProperty("senderType"), new PidgeonSMSSenderAdapter())
-				 .enviaSMS(this.volCurr.getTel(), cod);
+		SenderType sender = codSender.getClass("senderType", new PidgeonSMSSenderAdapter());
+		sender.enviaSMS(this.volCurr.getTel(), cod);
 
 	}
 
@@ -78,7 +79,7 @@ public class RegistaAjudaHandler {
 	}
 
 	public void confirmaOferta(String cod) throws CodErradoException {
-
+		
 		if(this.volCurr.checkValidCod(cod)) {
 			this.catVol.addAj(this.volCurr, this.ajCurr);
 			this.catAj.addAj(this.ajCurr, this.volCurr, this.catReg.getRegioes()); //2

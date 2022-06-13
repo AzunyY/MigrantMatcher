@@ -18,11 +18,8 @@ public class MigrantConfiguration {
 
 	protected MigrantConfiguration(String fileName) {
 
-		p = new Properties();
-
 		try {
-			p.load(new FileInputStream(new File(fileName)));
-
+			props.load(new FileInputStream(new File(fileName)));
 		}
 		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -56,7 +53,7 @@ public class MigrantConfiguration {
 		return listS;
 	}
 
-	public <T> T getClass(String key, T klassName) {
+	public <T> T getClass(String key, T defaultValue) {
 		
 		String klassName = (String) props.get(key);
 		if (klassName == null) {

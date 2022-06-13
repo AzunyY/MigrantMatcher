@@ -1,5 +1,6 @@
 package pt.migrantmatcher.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Familia extends Migrantes {
@@ -11,6 +12,7 @@ public class Familia extends Migrantes {
 	protected Familia(int nPessoas) {
 		super();
 		this.nPessoas = nPessoas;
+		this.listFamiliares = new ArrayList<>(); 
 	}
 	
 	public void addInfoCabeca(String nome, int tel) {

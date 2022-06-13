@@ -1,6 +1,6 @@
 package pt.migrantmatcher.plugins;
 
-import pidgeonsmssender.sdk.PidgeonSMSSender;
+import com.pidgeonsmssender.sdk.PidgeonSMSSender;
 
 public class PidgeonSMSSenderAdapter implements SenderType {
 	

@@ -1,5 +1,6 @@
 package pt.migrantmatcher.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Voluntario {
@@ -10,6 +11,7 @@ public class Voluntario {
 	private String cod;
 
 	public Voluntario(int tel) {
+		this.listAjudas = new ArrayList<>();
 		this.tel = tel;
 		this.existsInCatalogo = false;
 	}
