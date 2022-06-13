@@ -4,14 +4,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /*USAR SINGLETON*/
 
 public class MigrantConfiguration {
 
-	private Properties p;
+	private Properties props = new Properties();
 
 	protected MigrantConfiguration(String fileName) {
 
@@ -39,43 +42,48 @@ public class MigrantConfiguration {
 
 		return MigrantConfiguration.INSTANCE;
 	}
-	
-	public String getProperty(String chave) {		
-		return p.getProperty(chave);
-	}
-	
-	public <T> T getClass(String klassName, T def) {
+
+	public List<String> getProperty(String chave, List<String> defaultValue) {
+		List<String> listS = new ArrayList <>();
+		
 		try {
-			// java -cp plugin_da_empresa_y.jar -jar polimorfismo.jar 
-			Class<?> klass = Class.forName(klassName);
-			
+			for(String s : props.getProperty(chave).split(","))
+				listS.add(s);
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
+		
+		return listS;
+	}
+
+	public <T> T getClass(String key, T klassName) {
+		
+		String klassName = (String) props.get(key);
+		if (klassName == null) {
+			return defaultValue;
+		}
+
+		try {
 			@SuppressWarnings("unchecked")
-			T s = (T) klass.getConstructor().newInstance();
-			return s;
-			
+			Class<T> klass = (Class<T>) Class.forName(klassName);
+			Constructor<T> c = klass.getConstructor();
+			return c.newInstance();
+
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println("Nao existe a class correspondente");
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
-		return def;
+		return defaultValue;
 	}
 }

@@ -9,6 +9,9 @@ public class CatalogoRegioes {
 	private List <Regiao> listRegs;
 	
 	public CatalogoRegioes(List <String> reg) {
+		
+		listRegs = new ArrayList <>();
+		
 		for(String s : reg) 
 			this.listRegs.add(new Regiao(s));
 	}

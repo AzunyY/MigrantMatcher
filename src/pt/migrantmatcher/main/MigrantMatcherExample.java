@@ -33,8 +33,6 @@ public class MigrantMatcherExample {
 		try {
 			regAjHandler.iniciaRegistoAjuda(937977373);
 			regAjHandler.ofereceItem("Roupa");
-
-			/*ACHO NECESSARIO USAR DTO AQUI!!!*/
 			regAjHandler.confirmaOferta("ABBBA");
 
 		} catch (RegistoNaoEhValidoException e) {
