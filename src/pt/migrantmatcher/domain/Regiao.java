@@ -21,6 +21,10 @@ public class Regiao extends Observable<DetetarNotifEvent> implements Observer<De
 	public void receiveEvent(DetetarAjudaEvent e) {
 		notifyAllObservers(new DetetarNotifEvent(e.getValue()));
 	}
+
+	public void notif(Migrantes migCurr) {
+		this.addObserver(migCurr); //1.1.1
+	}
 	
 }
  

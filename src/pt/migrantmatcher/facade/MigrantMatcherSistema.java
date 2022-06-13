@@ -1,5 +1,6 @@
 package pt.migrantmatcher.facade;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pt.migrantmatcher.domain.CatalogoAjudas;
@@ -16,7 +17,7 @@ public class MigrantMatcherSistema {
 	private CatalogoMigrantes catMig;
 	private CatalogoAjudas catAj;
 	private CatalogoVoluntarios catVol;
-
+	
 	public MigrantMatcherSistema(List <String> reg) {
 		this.catMig = new CatalogoMigrantes();
 		this.catAj = new CatalogoAjudas();
@@ -24,7 +25,7 @@ public class MigrantMatcherSistema {
 		
 		MigrantConfiguration catReg = MigrantConfiguration.getInstance();
 		List<String> listReg = catReg.getClass(catReg.getProperty("REGIOES"), reg);
-
+		
 		this.catReg = new CatalogoRegioes(listReg);
 		
 	}

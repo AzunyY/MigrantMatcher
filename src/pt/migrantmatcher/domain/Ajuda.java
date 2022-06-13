@@ -22,7 +22,7 @@ public abstract class Ajuda {
 		this.vol = vol;
 	}
 
-	public void setNotLivre(Migrantes mig) {				
+	public void setNotLivre() {				
 		availability = false;
 	}
 

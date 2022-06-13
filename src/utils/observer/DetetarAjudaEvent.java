@@ -4,8 +4,8 @@ public class DetetarAjudaEvent implements Event{
 	
 	private String value;
 	
-	public DetetarAjudaEvent (String value) {
-		this.value = value;
+	public DetetarAjudaEvent (String regiao) {
+		this.value = regiao;
 	}
 
 	public String getValue() {

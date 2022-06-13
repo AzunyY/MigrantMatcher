@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import pt.migrantmatcher.domain.Ajuda;
-import pt.migrantmatcher.domain.Alojamento;
 import pt.migrantmatcher.domain.CatalogoAjudas;
 import pt.migrantmatcher.domain.CatalogoRegioes;
 import pt.migrantmatcher.domain.CatalogoVoluntarios;
@@ -37,16 +36,16 @@ public class RegistaAjudaHandler {
 		if(size != 9)
 			throw new RegistoNaoEhValidoException();
 
-		this.volCurr = this.catVol.setVol(tel);
+		this.volCurr = this.catVol.getVol(tel); // 1
 	}
 
-	public List <Regiao> ofereceApartamento(int nPessoas){
-		this.ajCurr = this.catAj.criarAloj(nPessoas);
-		return this.catReg.getRegioes();
+	public List <String> ofereceApartamento(int nPessoas){
+		this.ajCurr = this.catAj.criarAloj(nPessoas); //1
+		return this.catReg.getRegioes(); //2
 	}
 
 	public void indicaRegiao(Regiao regiao) {
-		this.catAj.insereReg(ajCurr, regiao);
+		this.catAj.insereReg(ajCurr, regiao); //1
 		enviaCodigo();
 	}
 
@@ -55,12 +54,11 @@ public class RegistaAjudaHandler {
 		if(desc.isBlank())
 			throw new AjudaNaoEhValidaException();
 
-		this.catAj.novoItem(desc);
+		this.catAj.novoItem(desc); //1
 		enviaCodigo();
 	}
 
 	private void enviaCodigo() {
-
 		String cod = generateCod();
 
 		MigrantConfiguration codSender = MigrantConfiguration.getInstance();
@@ -82,18 +80,9 @@ public class RegistaAjudaHandler {
 	public void confirmaOferta(String cod) throws CodErradoException {
 
 		if(this.volCurr.checkValidCod(cod)) {
-			catAj.addAj(this.ajCurr);
-			volCurr.addAjuda(this.ajCurr, this.catReg);
+			this.catVol.addAj(this.volCurr, this.ajCurr, this.catReg);
+			this.catAj.addAj(this.ajCurr, this.volCurr); //2
 		} else
 			throw new CodErradoException();
-
-		if(ajCurr instanceof Alojamento)
-			volCurr.addObserver(((Alojamento) ajCurr).getRegiao());
-		else {
-			List <Regiao> regList = this.catReg.getRegioes();
-			for(int i = 0; i < regList.size(); i++)
-				volCurr.addObserver(regList.get(i));
-		}
-
 	}
 }

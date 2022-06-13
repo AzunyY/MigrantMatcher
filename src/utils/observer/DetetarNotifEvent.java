@@ -4,8 +4,7 @@ public class DetetarNotifEvent implements Event {
 
 	private String value;
 	
-	public DetetarNotifEvent (String value) {
-		this.value = value;
+	public DetetarNotifEvent () {
 	}
 
 	public String getMessage() {

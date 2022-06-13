@@ -9,23 +9,19 @@ public class CatalogoRegioes {
 	private List <Regiao> listRegs;
 	
 	public CatalogoRegioes(List <String> reg) {
-		for(String s : reg)
+		for(String s : reg) 
 			this.listRegs.add(new Regiao(s));
 	}
 
-	public List<Regiao> getRegioes() {
-		return this.listRegs;
-	}
-
 	public void pedeNotif(Regiao regiao, Migrantes migCurr) {
-		regiao.addObserver(migCurr);
+		regiao.addObserver(migCurr); //1.1
 	}
 
-	public List<String> getRegioesNomes() {
-			List <String> listReg = new ArrayList<>();
+	public List<String> getRegioes() {
+			List <String> listReg = new ArrayList<>(); //1.1
 			
 			for(int i  = 0; i < this.listRegs.size(); i++)
-				listReg.add(this.listRegs.get(i).getName());
+				listReg.add(this.listRegs.get(i).getName()); //1.2, 1.3
 			
 			return listReg;
 	}

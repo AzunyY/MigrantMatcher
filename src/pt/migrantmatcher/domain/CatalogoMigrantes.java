@@ -12,19 +12,19 @@ public class CatalogoMigrantes {
 	}
 	
 	public Individual criaMigranteIndividual(String nome, int tel) {
-		return new Individual(nome, tel);
+		return new Individual(nome, tel); //1.1
 	}
 	
 	public Familia criaFamiliaMigrante(int nPessoas) {
-		return new Familia(nPessoas);
+		return new Familia(nPessoas); //1,1
 	}
 	
 	public void addInfoCabeca(Migrantes curr, String nome, int tel) {
-		((Familia) curr).addInfoCabeca(nome, tel);
+		((Familia) curr).addInfoCabeca(nome, tel); //1.1
 	}
 	
 	public void addInfoNomes(Migrantes curr, String nome) {
-		((Familia) curr).addNomeFamilar(nome);
+		((Familia) curr).addNomeFamilar(nome); //1.1
 	}
 
 	public void addAjuda(Migrantes migCurr, Ajuda ajCurr) {
