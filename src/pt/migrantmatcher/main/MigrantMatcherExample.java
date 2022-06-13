@@ -73,7 +73,7 @@ public class MigrantMatcherExample {
 		try {
 			procAjHandler.iniciaRegistoPessoal("Joao", 939243944);
 
-			List <Regiao> regList = procAjHandler.pedeListaRegioes();
+			List<String> regList = procAjHandler.pedeListaRegioes();
 			List <Ajuda> aj = procAjHandler.indicaRegiao(regList.get(0));
 			procAjHandler.escolheAjuda(aj.get(0));
 			procAjHandler.confirmaRegisto();
@@ -97,7 +97,7 @@ public class MigrantMatcherExample {
 			procAjHandler.indicaInfoFamiliar("Luis");
 			procAjHandler.indicaInfoFamiliar("Vanessa");
 
-			List <Regiao> regList = procAjHandler.pedeListaRegioes();
+			List<String> regList = procAjHandler.pedeListaRegioes();
 			List <Ajuda> aj = procAjHandler.indicaRegiao(regList.get(0));
 			procAjHandler.escolheAjuda(aj.get(0));
 			procAjHandler.confirmaRegisto();

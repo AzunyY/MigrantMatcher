@@ -1,6 +1,5 @@
 package pt.migrantmatcher.facade.handlers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import pt.migrantmatcher.domain.Ajuda;
@@ -18,8 +17,6 @@ import pt.migrantmatcher.exceptions.NaoExisteAjudaException;
 import pt.migrantmatcher.exceptions.RegistoNaoEhValidoException;
 import pt.migrantmatcher.plugins.PidgeonSMSSenderAdapter;
 import pt.migrantmatcher.strategies.OrdenaPorTipoStrategy;
-import utils.observer.DetetarAjudaEvent;
-import utils.observer.DetetarEvent;
 
 public class ProcuraAjudaHandler {
 
@@ -28,8 +25,6 @@ public class ProcuraAjudaHandler {
 	private CatalogoRegioes catReg;
 	private CatalogoAjudas catAj;
 	private Ajuda ajCurr;
-
-	private List <DetetarEvent> detetarAjuda = new ArrayList <>();
 	
 	public ProcuraAjudaHandler(CatalogoMigrantes catmig, CatalogoRegioes catReg, CatalogoAjudas catAj ) {
 
@@ -82,7 +77,7 @@ public class ProcuraAjudaHandler {
 		return this.catReg.getRegioes(); //1
 	}
 
-	public List <Ajuda> indicaRegiao(Regiao reg) throws NaoExisteAjudaException {
+	public List <Ajuda> indicaRegiao(String reg) throws NaoExisteAjudaException {
 
 		List <Ajuda> ajList = this.catAj.filterByReg(reg); //1
 
@@ -90,14 +85,14 @@ public class ProcuraAjudaHandler {
 			throw new NaoExisteAjudaException();
 
 		MigrantConfiguration ordemAjudas = MigrantConfiguration.getInstance();
-		return ordemAjudas.getClass(ordemAjudas.getProperty("ORDERTYPE"), new OrdenaPorTipoStrategy(ajList))
+		return ordemAjudas.getClass(ordemAjudas.getProperty("orderHelpType"), new OrdenaPorTipoStrategy(ajList))
 				.ordena();
 
 	}
 
 	public void escolheAjuda(Ajuda aj) {
 
-		ajCurr = this.catAj.getAjuda(aj); //1
+		this.ajCurr = this.catAj.getAjuda(aj); //1
 
 	}
 
@@ -117,6 +112,7 @@ public class ProcuraAjudaHandler {
 
 	public void pedeNotif(Regiao regiao) {
 		this.catReg.pedeNotif(regiao, migCurr);
+		this.catAj.addObserver(regiao);
 	}
 
 }

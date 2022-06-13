@@ -21,4 +21,20 @@ public class Alojamento extends Ajuda {
 	public int getnPessoas() {
 		return nPessoas;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Alojamento other = (Alojamento) obj;
+		if (reg != other.reg)
+			return false;
+		if (nPessoas != other.nPessoas)
+			return false;
+		return true;
+	}
 }

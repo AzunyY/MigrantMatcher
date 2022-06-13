@@ -63,7 +63,7 @@ public class RegistaAjudaHandler {
 
 		MigrantConfiguration codSender = MigrantConfiguration.getInstance();
 		this.volCurr.setCod(cod);		
-		codSender.getClass(codSender.getProperty("SENDERTYPE"), new PidgeonSMSSenderAdapter())
+		codSender.getClass(codSender.getProperty("senderType"), new PidgeonSMSSenderAdapter())
 		.enviaSMS(this.volCurr.getTel(), cod);
 
 	}
@@ -80,8 +80,8 @@ public class RegistaAjudaHandler {
 	public void confirmaOferta(String cod) throws CodErradoException {
 
 		if(this.volCurr.checkValidCod(cod)) {
-			this.catVol.addAj(this.volCurr, this.ajCurr, this.catReg);
-			this.catAj.addAj(this.ajCurr, this.volCurr); //2
+			this.catVol.addAj(this.volCurr, this.ajCurr);
+			this.catAj.addAj(this.ajCurr, this.volCurr, this.catReg.getRegioes()); //2
 		} else
 			throw new CodErradoException();
 	}

@@ -2,11 +2,7 @@ package pt.migrantmatcher.domain;
 
 import java.util.List;
 
-import utils.observer.DetetarAjudaEvent;
-import utils.observer.DetetarEvent;
-import utils.observer.Observable;
-
-public class Voluntario extends DetetarEvent {
+public class Voluntario {
 
 	private int tel;
 	private boolean existsInCatalogo;
@@ -40,11 +36,5 @@ public class Voluntario extends DetetarEvent {
 
 	public void adicionadoAoCatalogo() {
 		this.existsInCatalogo = true;
-	}
-
-	@Override
-	public void scan() {
-		// TODO Auto-generated method stub
-		
 	}
 }

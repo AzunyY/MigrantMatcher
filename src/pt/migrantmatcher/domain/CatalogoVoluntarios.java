@@ -28,7 +28,7 @@ public class CatalogoVoluntarios {
 		return volCurr;
 	}
 
-	public void addAj(Voluntario volCurr, Ajuda ajCurr, CatalogoRegioes catReg) {
+	public void addAj(Voluntario volCurr, Ajuda ajCurr) {
 		
 		if(!volCurr.exists()) { //1.2
 			listVoluntarios.add(volCurr); //1.3

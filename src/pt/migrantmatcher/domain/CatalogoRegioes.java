@@ -14,7 +14,7 @@ public class CatalogoRegioes {
 	}
 
 	public void pedeNotif(Regiao regiao, Migrantes migCurr) {
-		regiao.addObserver(migCurr); //1.1
+		regiao.notif(migCurr); //1.1
 	}
 
 	public List<String> getRegioes() {

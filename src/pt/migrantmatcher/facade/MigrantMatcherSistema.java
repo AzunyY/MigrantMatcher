@@ -24,10 +24,11 @@ public class MigrantMatcherSistema {
 		this.catVol = new CatalogoVoluntarios();
 		
 		MigrantConfiguration catReg = MigrantConfiguration.getInstance();
-		List<String> listReg = catReg.getClass(catReg.getProperty("REGIOES"), reg);
-		
+		List<String> listReg = new ArrayList<>();
+		for(String s : catReg.getProperty("regioes").split(","))
+			listReg.add(s);
+			
 		this.catReg = new CatalogoRegioes(listReg);
-		
 	}
 	
 	// UC1

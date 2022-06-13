@@ -29,4 +29,7 @@ public abstract class Ajuda {
 	public int getVol() {
 		return vol.getTel();
 	}
+
+	@Override
+	public abstract boolean equals(Object obj);
 }
