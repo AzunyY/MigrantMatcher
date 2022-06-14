@@ -6,9 +6,11 @@ import java.util.List;
 public class CatalogoVoluntarios {
 
 	private List <Voluntario> listVoluntarios;
+	private boolean volAlreadyExistsInCatalogo;
 
 	public CatalogoVoluntarios() {
 		listVoluntarios = new ArrayList <>();
+		volAlreadyExistsInCatalogo = false;
 	}
 
 	public Voluntario getVol(int tel) {
@@ -19,6 +21,7 @@ public class CatalogoVoluntarios {
 		while(i < listVoluntarios.size() && volCurr == null) {
 			volCurr = listVoluntarios.get(i).getTel() == tel? 
 					listVoluntarios.get(i):null; //1.1
+			volAlreadyExistsInCatalogo = true;
 			i++;
 		}
 
@@ -30,10 +33,8 @@ public class CatalogoVoluntarios {
 
 	public void addAj(Voluntario volCurr, Ajuda ajCurr) {
 		
-		if(!volCurr.exists()) { //1.2
+		if(!volAlreadyExistsInCatalogo) //1.2
 			listVoluntarios.add(volCurr); //1.3
-			volCurr.adicionadoAoCatalogo();
-		}
 		
 		volCurr.addAjuda(ajCurr); //1.4
 	}

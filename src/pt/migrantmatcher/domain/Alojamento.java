@@ -22,19 +22,11 @@ public class Alojamento extends Ajuda {
 		return nPessoas;
 	}
 
-	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Alojamento other = (Alojamento) obj;
-		if (reg != other.reg)
-			return false;
-		if (nPessoas != other.nPessoas)
-			return false;
-		return true;
+		if(obj instanceof Alojamento) {
+			Alojamento other = (Alojamento) obj;
+			return other != null || this == other || (other.reg.equals(this.reg) && this.nPessoas == other.nPessoas);
+		}
+		return false;
 	}
 }

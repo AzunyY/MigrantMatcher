@@ -6,14 +6,12 @@ import java.util.List;
 public class Voluntario  {
 
 	private int tel;
-	private boolean existsInCatalogo;
 	private List <Ajuda> listAjudas;
 	private String cod;
 
 	public Voluntario(int tel) {
 		this.listAjudas = new ArrayList<>();
 		this.tel = tel;
-		this.existsInCatalogo = false;
 	}
 
 	public int getTel() {
@@ -30,13 +28,5 @@ public class Voluntario  {
 
 	public void setCod(String cod) {
 		this.cod = cod;
-	}
-
-	public boolean exists() {
-		return existsInCatalogo;
-	}
-
-	public void adicionadoAoCatalogo() {
-		this.existsInCatalogo = true;
 	}
 }
