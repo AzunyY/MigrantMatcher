@@ -34,10 +34,9 @@ public class CatalogoAjudas extends Observable<DetetarAjudaEvent>{
 
 		if(reg.equals("ALL")) {
 			for(String s : regList)
-				notifyAllObservers(new DetetarAjudaEvent(s));
+				notifyAllObservers(new DetetarAjudaEvent(s), s);
 		} else
-			notifyAllObservers(new DetetarAjudaEvent(reg));
-
+			notifySingleObservers(new DetetarAjudaEvent(reg), reg);
 	}
 
 	public List<Ajuda> filterByReg(String reg) {

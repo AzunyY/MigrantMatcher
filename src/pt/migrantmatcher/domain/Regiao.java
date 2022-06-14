@@ -1,11 +1,6 @@
 package pt.migrantmatcher.domain;
 
-import utils.observer.DetetarAjudaEvent;
-import utils.observer.DetetarNotifEvent;
-import utils.observer.Observable;
-import utils.observer.Observer;
-
-public class Regiao extends Observable<DetetarNotifEvent> implements Observer<DetetarAjudaEvent>{
+public class Regiao {
 	
 	private String name;
 	
@@ -16,15 +11,5 @@ public class Regiao extends Observable<DetetarNotifEvent> implements Observer<De
 	public String getName() {
 		return this.name;
 	}
-
-	@Override
-	public void receiveEvent(DetetarAjudaEvent e) {
-		notifyAllObservers(new DetetarNotifEvent(e.getValue()));
-	}
-
-	public void notif(Migrantes migCurr) {
-		this.addObserver(migCurr); //1.1.1
-	}
-	
 }
  

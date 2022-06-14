@@ -109,8 +109,7 @@ public class ProcuraAjudaHandler {
 	}
 
 	public void pedeNotif(Regiao regiao) {
-		this.catReg.pedeNotif(regiao, migCurr);
-		this.catAj.addObserver(regiao);
+		this.catAj.addObserver(this.migCurr, regiao.getName());
 	}
 
 }

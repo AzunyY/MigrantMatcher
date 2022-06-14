@@ -11,5 +11,9 @@ public class DetetarAjudaEvent implements Event{
 	public String getValue() {
 		return value;
 	}
+
+	public String getMessage() {
+		return "Foi adicionada um novo alojamento a regiao: " + value;
+	}
  
 }

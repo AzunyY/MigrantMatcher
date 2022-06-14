@@ -3,7 +3,7 @@ package pt.migrantmatcher.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Voluntario {
+public class Voluntario  {
 
 	private int tel;
 	private boolean existsInCatalogo;

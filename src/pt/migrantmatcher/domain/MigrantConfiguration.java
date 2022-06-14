@@ -44,7 +44,7 @@ public class MigrantConfiguration {
 		List<String> listS = new ArrayList <>();
 		
 		try {
-			for(String s : props.getProperty(chave).split(","))
+			for(String s : props.getProperty(chave).split("[ ,]+"))
 				listS.add(s);
 		} catch (NumberFormatException e) {
 			return defaultValue;

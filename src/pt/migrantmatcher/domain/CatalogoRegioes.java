@@ -16,10 +16,6 @@ public class CatalogoRegioes {
 			this.listRegs.add(new Regiao(s));
 	}
 
-	public void pedeNotif(Regiao regiao, Migrantes migCurr) {
-		regiao.notif(migCurr); //1.1
-	}
-
 	public List<String> getRegioes() {
 			List <String> listReg = new ArrayList<>(); //1.1
 			

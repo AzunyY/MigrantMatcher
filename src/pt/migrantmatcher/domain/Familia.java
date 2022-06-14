@@ -34,7 +34,7 @@ public class Familia extends Migrantes {
 	
 	public boolean isValid() {
 		return this.listFamiliares.size() + 1 == this.nPessoas;
-	}
+	}	
 }
 
 
