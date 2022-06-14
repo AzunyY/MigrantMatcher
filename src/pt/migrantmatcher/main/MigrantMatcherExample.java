@@ -33,7 +33,7 @@ public class MigrantMatcherExample {
 		listFamiliares.add("Maria");
 		listFamiliares.add("Vanessa");
 		listFamiliares.add("Paulo");
-		
+
 		try {
 			procAjHandler.iniciaRegistoPessoal("Joao", 939243944);
 
@@ -91,12 +91,12 @@ public class MigrantMatcherExample {
 			System.err.println("O codigo introduzido nao eh valido!");
 		} 
 
-	
+
 		try {
 
 			procAjHandler.iniciaRegistoFamilia(3);
 			procAjHandler.infoCabeça("Joao", 939439495);
-			
+
 			for(int i = 0; i < listFamiliares.size(); i++)
 				procAjHandler.indicaInfoFamiliar(listFamiliares.get(i));
 
@@ -113,13 +113,13 @@ public class MigrantMatcherExample {
 			procAjHandler.pedeNotif(new Regiao(reg.get(0)));
 			System.err.println("Nao existe ajudas nessa regiao, vai ser notificado quando houver!");
 		}
-		
+
 		//UC2
 		try {
 
 			procAjHandler.iniciaRegistoFamilia(2);
 			procAjHandler.infoCabeça("Joao", 939439495);
-			
+
 			for(int i = 0; i < listFamiliares.size(); i++)
 				procAjHandler.indicaInfoFamiliar(listFamiliares.get(i));
 
@@ -137,5 +137,6 @@ public class MigrantMatcherExample {
 			System.err.println("Nao existe ajudas nessa regiao, vai ser notificado quando houver!");
 		}
 
+		sc.close();
 	}
 }
