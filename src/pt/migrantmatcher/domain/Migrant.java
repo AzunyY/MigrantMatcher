@@ -37,8 +37,8 @@ public abstract class Migrant extends SendSMSHelper implements Observer<DetectAi
 		return this.name;
 	}
 	
-	public void receiveEvent (DetectAidEvent e) {
-		sendSMS(e.getMessage(), this.tel);
+	public void receiveEvent (String filename, DetectAidEvent e) {
+		sendSMS(filename, e.getMessage(), this.tel);
 	}
 	
 }

@@ -26,20 +26,22 @@ public class SearchForAidHandler extends SendSMSHelper {
 	private Migrant migCurr;
 	private RegionCatalog catReg;
 	private AidsCatalog catAids;
+	private String filename;
 	private Aid curAid;
 	private static SearchForAidHandler INSTANCE = null; // Lazy loading colocar a null
 
-	protected SearchForAidHandler(MigrantsCatalog catMig, RegionCatalog catReg, AidsCatalog catAid ) {
+	protected SearchForAidHandler(String filename, MigrantsCatalog catMig, RegionCatalog catReg, AidsCatalog catAid ) {
 
 		this.catMig = catMig;
 		this.catReg = catReg;
 		this.catAids = catAid;
+		this.filename = filename;
 
 	}
 	
-	public static SearchForAidHandler getInstance(MigrantsCatalog catMig, RegionCatalog catReg, AidsCatalog catAj) {
+	public static SearchForAidHandler getInstance(String filename, MigrantsCatalog catMig, RegionCatalog catReg, AidsCatalog catAj) {
 		if (INSTANCE == null) {
-			INSTANCE = new SearchForAidHandler(catMig, catReg, catAj);
+			INSTANCE = new SearchForAidHandler(filename, catMig, catReg, catAj);
 		}
 
 		return SearchForAidHandler.INSTANCE;
@@ -85,14 +87,14 @@ public class SearchForAidHandler extends SendSMSHelper {
 		return this.catReg.getRegions(); //1
 	}
 
-	public List <AidDTO> insertChoosenRegion(String reg) throws AidIsNonExistenceException {
+	public List <AidDTO> insertChoosenRegion(String filename, String reg) throws AidIsNonExistenceException {
 
 		List <Aid> aidsList = this.catAids.filterByReg(reg); //1
 
 		if(aidsList.isEmpty())
 			throw new AidIsNonExistenceException();
 	
-		MigrantConfiguration ordemAjudas = MigrantConfiguration.getInstance();
+		MigrantConfiguration ordemAjudas = MigrantConfiguration.getInstance(filename);
 		OrderAids order = ordemAjudas.getClass("orderHelpType", new OrderByStrategyType());
 		return order.order(aidsList)
 					.stream()
@@ -109,7 +111,7 @@ public class SearchForAidHandler extends SendSMSHelper {
 	public void registerConfirm() {
 		
 			this.catMig.addAid(this.migCurr, this.curAid);
-			sendSMS("The migrant, " + ((IndividualMigrant) migCurr).getName() + " wants your registered aid: " 
+			sendSMS(this.filename, "The migrant, " + ((IndividualMigrant) migCurr).getName() + " wants your registered aid: " 
 					+ this.curAid.toString(), this.curAid.getVol());
 			curAid.putAidToNotAvailable();
 			

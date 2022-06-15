@@ -26,21 +26,23 @@ public class RegisterAidHandler extends SendSMSHelper{
 	private AidsCatalog catAid;
 	private Voluntary volCurr;
 	private Aid currAid;
+	private String filename;
 
 	private static RegisterAidHandler INSTANCE = null; // Lazy loading colocar a null
 
-	protected RegisterAidHandler(AidsCatalog catAid, VolunteersCatalog catVol, RegionCatalog catReg) {
-
+	protected RegisterAidHandler(String filename, AidsCatalog catAid, VolunteersCatalog catVol, RegionCatalog catReg) {
+		
+		this.filename = filename;
 		this.catVol = catVol;
 		this.catReg = catReg;
 		this.catAid = catAid;
 
 	}
 
-	public static RegisterAidHandler getInstance(AidsCatalog catAid, VolunteersCatalog catVol, RegionCatalog catReg) {
+	public static RegisterAidHandler getInstance(String filename, AidsCatalog catAid, VolunteersCatalog catVol, RegionCatalog catReg) {
 
 		if (INSTANCE == null) {
-			INSTANCE = new RegisterAidHandler(catAid, catVol, catReg);
+			INSTANCE = new RegisterAidHandler(filename, catAid, catVol, catReg);
 		}
 
 		return RegisterAidHandler.INSTANCE;
@@ -77,7 +79,7 @@ public class RegisterAidHandler extends SendSMSHelper{
 			throw new RegionInsertedIsNotValid();
 
 		this.catAid.insertReg(currAid, new Region (region)); //1
-		sendSMS("Your confirmation code: " + generateCod(), volCurr.getTel());
+		sendSMS(this.filename, "Your confirmation code: " + generateCod(), volCurr.getTel());
 
 	}
 
@@ -87,7 +89,7 @@ public class RegisterAidHandler extends SendSMSHelper{
 			throw new AidIsNotValidException();
 
 		this.currAid = this.catAid.getNewItem(desc); //1
-		sendSMS("Your confirmation code: " + generateCod(), volCurr.getTel());
+		sendSMS(this.filename, "Your confirmation code: " + generateCod(), volCurr.getTel());
 
 	}
 
@@ -112,7 +114,7 @@ public class RegisterAidHandler extends SendSMSHelper{
 		if(this.volCurr.checkValidCod(cod)) {
 		
 			this.catVol.addVolToCatalog(this.volCurr);
-			this.catAid.addAid(this.currAid, this.volCurr, this.catReg.getRegions()); //2
+			this.catAid.addAid(this.filename, this.currAid, this.volCurr, this.catReg.getRegions()); //2
 			
 			Optional <Voluntary> volIsInCatalog = this.catVol.volWasAdded(this.volCurr.getTel());
 			if(volIsInCatalog.isEmpty())

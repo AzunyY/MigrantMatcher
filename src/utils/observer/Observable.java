@@ -15,18 +15,18 @@ public class Observable<T extends Event> {
 
 	private Map<Observer<T>, String> observers = new HashMap<>();
 
-	protected void notifyAllObservers(T event, String reg) {
+	protected void notifyAllObservers(T event, String filename, String reg) {
 		
 		for (Entry<Observer <T>, String> entry : observers.entrySet()) {
 		    if(entry.getValue().equals(reg))
-		    	entry.getKey().receiveEvent(event);
+		    	entry.getKey().receiveEvent(filename,event);
 		}
 	}
 
-	protected void notifySingleObservers(T event, String reg) {
+	protected void notifySingleObservers(T event, String filename, String reg) {
 		observers.forEach((key,value) -> {
 			if(value.equals(reg))
-				key.receiveEvent(event);
+				key.receiveEvent(filename, event);
 		} );
 	}
 

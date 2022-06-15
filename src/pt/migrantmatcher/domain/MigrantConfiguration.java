@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import pt.migrantmatcher.exceptios.ThereIsNoValueInPropertiesException;
+
 /*USAR SINGLETON*/
 
 public class MigrantConfiguration {
@@ -33,30 +35,35 @@ public class MigrantConfiguration {
 	}
 
 
-	public static MigrantConfiguration getInstance() {
+	public static MigrantConfiguration getInstance(String filename) {
 		if (INSTANCE == null) {
-			INSTANCE = new MigrantConfiguration("defaults.properties");
+			INSTANCE = new MigrantConfiguration(filename);
 		}
 
 		return MigrantConfiguration.INSTANCE;
 	}
 
-	public List<String> getProperty(String chave, List<String> defaultValue) {
-		
+	public List<String> getProperty(String chave) throws ThereIsNoValueInPropertiesException {
+
 		List<String> listString = new ArrayList <>();
-		
 		try {
-			for(String s : props.getProperty(chave).split("[ ,]+"))
-				listString.add(s);
-		} catch (NumberFormatException e) {
-			return defaultValue;
+			String[] listReg = props.getProperty(chave).split("[ ,]+");
+
+			if(listReg.length != 0)
+				for(String s : listReg)
+					listString.add(s);
+			else
+				throw new ThereIsNoValueInPropertiesException();
+			
+		} catch(NullPointerException e) {
+				throw new ThereIsNoValueInPropertiesException();
 		}
 		
 		return listString;
 	}
 
 	public <T> T getClass(String key, T defaultValue) {
-		
+
 		String klassName = (String) props.get(key);
 		if (klassName == null) {
 			return defaultValue;

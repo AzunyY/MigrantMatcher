@@ -28,7 +28,7 @@ public class AidsCatalog extends Observable<DetectAidEvent>{
 		return new Item(desc);
 	}
 
-	public void addAid(Aid currAid, Voluntary volCurr, List <String> regList) {
+	public void addAid(String filename, Aid currAid, Voluntary volCurr, List <String> regList) {
 		
 		currAid.setVol(volCurr); //2.1
 		listAids.add(currAid); //2.2
@@ -37,10 +37,10 @@ public class AidsCatalog extends Observable<DetectAidEvent>{
 
 		if(notifyAll) {
 			for(String s : regList)
-				notifyAllObservers(new DetectAidEvent(s), s);
+				notifyAllObservers(new DetectAidEvent(s), filename,s);
 		} else {
 			String reg = ((Housing) currAid).getRegion().getName();
-			notifySingleObservers(new DetectAidEvent(reg), reg);
+			notifySingleObservers(new DetectAidEvent(reg), filename, reg);
 		}
 	}
 

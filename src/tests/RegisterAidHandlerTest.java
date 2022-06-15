@@ -24,6 +24,7 @@ class RegisterAidHandlerTest {
 
 
 	@BeforeEach
+	@Test
 	protected void setUp() throws Exception {
 
 		reg = new ArrayList <>();
@@ -31,9 +32,12 @@ class RegisterAidHandlerTest {
 		reg.add("Porto");
 		reg.add("Faro");
 		reg.add("Cascais");
-
-		MigrantMatcherSystem migMatch = new MigrantMatcherSystem(reg);
-		testHandler = migMatch.registerNewAid();
+		
+		Assertions.assertDoesNotThrow(() -> {
+			MigrantMatcherSystem migMatch = new MigrantMatcherSystem("defaults.properties", reg);
+			testHandler = migMatch.registerNewAid();
+		});
+		
 		sc = new Scanner(System.in);
 	}
 

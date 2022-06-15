@@ -4,8 +4,8 @@ import pt.migrantmatcher.domain.MigrantConfiguration;
 
 public abstract class SendSMSHelper {
 
-	protected void sendSMS(String message, int tel){
-			MigrantConfiguration smsSender = MigrantConfiguration.getInstance();
+	protected void sendSMS(String filename, String message, int tel){
+			MigrantConfiguration smsSender = MigrantConfiguration.getInstance(filename);
 			SenderType sender = smsSender.getClass("senderType", new PidgeonSMSSenderAdapter());
 			sender.sendSMS(tel, message);
 	}

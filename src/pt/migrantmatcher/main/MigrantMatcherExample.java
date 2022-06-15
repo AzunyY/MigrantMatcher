@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import pt.migrantmatcher.domain.Region;
 import pt.migrantmatcher.exceptions.AidIsNotValidException;
+import pt.migrantmatcher.exceptions.ErrorCreatingRegionsException;
 import pt.migrantmatcher.exceptions.ErrorInsertingInCatalogException;
 import pt.migrantmatcher.exceptions.ErrorSettingCod;
 import pt.migrantmatcher.exceptions.IncorrectCodException;
@@ -28,12 +29,21 @@ public class MigrantMatcherExample {
 		reg.add("Porto");
 		reg.add("Faro");
 		reg.add("Cascais");
-
-		MigrantMatcherSystem migMatch = new MigrantMatcherSystem(reg);
-		RegisterAidHandler registerAidHandler = migMatch.registerNewAid();
+		
+		RegisterAidHandler registerAidHandler = null;
+		SearchForAidHandler searchAidHandler = null;
+		MigrantMatcherSystem migMatch = null;
+		
+		try {
+			migMatch = new MigrantMatcherSystem(reg);
+			registerAidHandler = migMatch.registerNewAid();
+			searchAidHandler = migMatch.searchForAid();
+		} catch (ErrorCreatingRegionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Scanner sc = new Scanner(System.in);
 
-		SearchForAidHandler searchAidHandler = migMatch.searchForAid();
 		List <String> familyMembersList = new ArrayList<>();
 		familyMembersList.add("Maria");
 		familyMembersList.add("Vanessa");
