@@ -22,13 +22,20 @@ public class VolunteersCatalog {
 			return vol.get();
 		}
 		
-		else 
+		else {
+			volAlreadyExistsInCatalogo = false;
 			return new Voluntary(tel);
+		}
 	}
 
 	public void addVolToCatalog(Voluntary currVol) {
 		
 		if(!volAlreadyExistsInCatalogo)  //1.2
 			volunteersList.put(currVol.getTel(), currVol); //1.3
+	}
+	
+	public Optional<Voluntary> volWasAdded(int tel) {
+		Optional<Voluntary> vol = Optional.ofNullable(volunteersList.get(tel));
+		return vol;
 	}
 }

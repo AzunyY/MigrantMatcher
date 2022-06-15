@@ -6,10 +6,14 @@ import java.util.Scanner;
 
 import pt.migrantmatcher.domain.Region;
 import pt.migrantmatcher.exceptions.AidIsNotValidException;
+import pt.migrantmatcher.exceptions.ErrorInsertingInCatalogException;
+import pt.migrantmatcher.exceptions.ErrorSettingCod;
 import pt.migrantmatcher.exceptions.IncorrectCodException;
 import pt.migrantmatcher.exceptions.InfoFamilyMemberException;
+import pt.migrantmatcher.exceptions.RegionInsertedIsNotValid;
 import pt.migrantmatcher.exceptions.AidIsNonExistenceException;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
+import pt.migrantmatcher.exceptions.ThereIsNoRegionCatalogoException;
 import pt.migrantmatcher.facade.MigrantMatcherSystem;
 import pt.migrantmatcher.facade.DTO.AidDTO;
 import pt.migrantmatcher.facade.handlers.SearchForAidHandler;
@@ -26,7 +30,6 @@ public class MigrantMatcherExample {
 		reg.add("Cascais");
 
 		MigrantMatcherSystem migMatch = new MigrantMatcherSystem(reg);
-
 		RegisterAidHandler registerAidHandler = migMatch.registerNewAid();
 		Scanner sc = new Scanner(System.in);
 
@@ -48,6 +51,14 @@ public class MigrantMatcherExample {
 			System.err.println("The aid offered is not valid!");
 		} catch (IncorrectCodException e) {
 			System.err.println("The code that was inserted is not valid!");
+		} catch (RegisterIsNotValidException e) {
+			System.err.println("There was an error while registering!");
+		} catch (ErrorSettingCod e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ErrorInsertingInCatalogException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 
@@ -79,20 +90,25 @@ public class MigrantMatcherExample {
 		try {
 			registerAidHandler.aidRegisterStart(937977373);
 			registerAidHandler.offerHousing(3);
-			registerAidHandler.insertHousingRegion(new Region(reg.get(0)));
+			registerAidHandler.insertHousingRegion(reg.get(0));
 			registerAidHandler.offerConfirm(sc.nextLine());
 		} catch (IncorrectCodException e) {
 			System.err.println("The code that was inserted is not valid!");
-		}	
-
-		//UC1
-		try {
-			registerAidHandler.aidRegisterStart(937977372);
-			registerAidHandler.offerHousing(3);
-			registerAidHandler.insertHousingRegion(new Region("Porto"));
-			registerAidHandler.offerConfirm(sc.nextLine());
-		} catch (IncorrectCodException e) {
-			System.err.println("The code that was inserted is not valid!");
+		} catch (RegisterIsNotValidException e) {
+			System.err.println("The number of family members is not valid!");
+		} catch (AidIsNotValidException e) {
+			System.err.println("There was an error creating the offer!");
+		} catch (ThereIsNoRegionCatalogoException e) {
+			System.err.println("There is no Regions!");
+		} catch (RegionInsertedIsNotValid e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ErrorSettingCod e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (ErrorInsertingInCatalogException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} 
 
 		//UC2

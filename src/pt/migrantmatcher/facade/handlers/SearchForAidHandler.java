@@ -3,7 +3,6 @@ package pt.migrantmatcher.facade.handlers;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import pt.migrantmatcher.domain.Ajuda;
 import pt.migrantmatcher.domain.Aid;
 import pt.migrantmatcher.domain.AidsCatalog;
 import pt.migrantmatcher.domain.MigrantsCatalog;
@@ -13,7 +12,6 @@ import pt.migrantmatcher.domain.IndividualMigrant;
 import pt.migrantmatcher.domain.MigrantConfiguration;
 import pt.migrantmatcher.domain.Migrant;
 import pt.migrantmatcher.domain.Region;
-import pt.migrantmatcher.exceptions.InfoFamilarException;
 import pt.migrantmatcher.exceptions.InfoFamilyMemberException;
 import pt.migrantmatcher.exceptions.AidIsNonExistenceException;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
@@ -66,10 +64,7 @@ public class SearchForAidHandler extends SendSMSHelper {
 
 	public void addHeadInfo(String name, int tel) throws RegisterIsNotValidException {
 
-
-		int size = String.valueOf(tel).length();
-
-		if(size != 9 || name.isBlank())
+		if(name.isBlank())
 			throw new RegisterIsNotValidException();
 
 		this.catMig.addInfoHead(migCurr, name, tel); //1
@@ -114,7 +109,8 @@ public class SearchForAidHandler extends SendSMSHelper {
 	public void registerConfirm() {
 		
 			this.catMig.addAid(this.migCurr, this.curAid);
-			sendSMS("The migrant, " + ((IndividualMigrant) migCurr).getName() + " wants your registered aid: " + this.curAid.toString(), this.curAid.getVol());
+			sendSMS("The migrant, " + ((IndividualMigrant) migCurr).getName() + " wants your registered aid: " 
+					+ this.curAid.toString(), this.curAid.getVol());
 			curAid.putAidToNotAvailable();
 			
 	}

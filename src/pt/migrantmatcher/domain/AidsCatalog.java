@@ -2,6 +2,7 @@ package pt.migrantmatcher.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import pt.migrantmatcher.facade.DTO.AidDTO;
 import utils.observer.DetectAidEvent;
@@ -71,5 +72,11 @@ public class AidsCatalog extends Observable<DetectAidEvent>{
 
 	public List<Aid> getAidList() {
 		return this.listAids;
+	}
+
+	public Optional<Boolean> aidWasAdded(Aid currAid) {
+		Optional<Boolean> aid = Optional.ofNullable(listAids.contains(currAid));
+		return aid;
+
 	}
 }

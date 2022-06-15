@@ -1,6 +1,7 @@
 package pt.migrantmatcher.facade.handlers;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import pt.migrantmatcher.domain.Aid;
@@ -10,8 +11,12 @@ import pt.migrantmatcher.domain.VolunteersCatalog;
 import pt.migrantmatcher.domain.Region;
 import pt.migrantmatcher.domain.Voluntary;
 import pt.migrantmatcher.exceptions.AidIsNotValidException;
+import pt.migrantmatcher.exceptions.ErrorInsertingInCatalogException;
+import pt.migrantmatcher.exceptions.ErrorSettingCod;
 import pt.migrantmatcher.exceptions.IncorrectCodException;
+import pt.migrantmatcher.exceptions.RegionInsertedIsNotValid;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
+import pt.migrantmatcher.exceptions.ThereIsNoRegionCatalogoException;
 import pt.migrantmatcher.plugins.SendSMSHelper;
 
 public class RegisterAidHandler extends SendSMSHelper{
@@ -42,27 +47,41 @@ public class RegisterAidHandler extends SendSMSHelper{
 
 	}
 
-	public void aidRegisterStart(int tel) {
+	public void aidRegisterStart(int tel) throws RegisterIsNotValidException {
 
 		volCurr = this.catVol.getVol(tel); // 1
 
+		if(volCurr.getTel() != tel)
+			throw new RegisterIsNotValidException();
+
 	}
 
-	public List <String> offerHousing(int nPersons){
+	public List <String> offerHousing(int nPersons) throws AidIsNotValidException, RegisterIsNotValidException, ThereIsNoRegionCatalogoException{
+
+		if(nPersons <= 0)
+			throw new RegisterIsNotValidException();
 
 		this.currAid = this.catAid.createHousing(nPersons); //1
+
+		if(this.currAid.toString().isBlank())
+			throw new AidIsNotValidException();
+		if(this.catReg.getRegions().isEmpty())
+			throw new ThereIsNoRegionCatalogoException();
+
 		return this.catReg.getRegions(); //2
+	}
+
+	public void insertHousingRegion(String region) throws RegionInsertedIsNotValid, ErrorSettingCod{
+
+		if(region.isBlank())
+			throw new RegionInsertedIsNotValid();
+
+		this.catAid.insertReg(currAid, new Region (region)); //1
+		sendSMS("Your confirmation code: " + generateCod(), volCurr.getTel());
 
 	}
 
-	public void insertHousingRegion(Region region) {
-
-		this.catAid.insertReg(currAid, region); //1
-		sendSMS("O seu codigo de confirmacao: " + generateCod(), volCurr.getTel());
-
-	}
-
-	public void offerItem(String desc) throws AidIsNotValidException{
+	public void offerItem(String desc) throws AidIsNotValidException, ErrorSettingCod{
 
 		if(desc.isBlank())
 			throw new AidIsNotValidException();
@@ -72,7 +91,7 @@ public class RegisterAidHandler extends SendSMSHelper{
 
 	}
 
-	private String generateCod() {
+	private String generateCod() throws ErrorSettingCod {
 		String cod = new Random().ints(6,48,123)
 				.filter( x -> ((x < 58 || x > 64) && (x < 91 || x > 96) ))
 				.map( x -> (char) x)
@@ -81,14 +100,28 @@ public class RegisterAidHandler extends SendSMSHelper{
 						StringBuilder::append)
 				.toString();
 		this.volCurr.setCod(cod);
+
+		if(!volCurr.checkValidCod(cod))
+			throw new ErrorSettingCod();
+
 		return cod;
 	}
 
-	public void offerConfirm(String cod) throws IncorrectCodException {
+	public void offerConfirm(String cod) throws IncorrectCodException, ErrorInsertingInCatalogException {
 
 		if(this.volCurr.checkValidCod(cod)) {
+		
 			this.catVol.addVolToCatalog(this.volCurr);
 			this.catAid.addAid(this.currAid, this.volCurr, this.catReg.getRegions()); //2
+			
+			Optional <Voluntary> volIsInCatalog = this.catVol.volWasAdded(this.volCurr.getTel());
+			if(volIsInCatalog.isEmpty())
+				throw new ErrorInsertingInCatalogException();
+			
+			Optional <Boolean> aidIsInCatalog = this.catAid.aidWasAdded(this.currAid);	
+			if(aidIsInCatalog.isEmpty())
+				throw new ErrorInsertingInCatalogException();
+
 		} else
 			throw new IncorrectCodException();
 

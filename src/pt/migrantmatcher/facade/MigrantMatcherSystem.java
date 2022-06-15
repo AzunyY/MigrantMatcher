@@ -21,7 +21,7 @@ public class MigrantMatcherSystem {
 		
 		this.catMig = new MigrantsCatalog();
 		this.catAids = new AidsCatalog();
-		this.catVol = new VolunteersCatalog();
+		this.catVol = new VolunteersCatalog();		
 		
 		MigrantConfiguration catReg = MigrantConfiguration.getInstance();
 		List<String> listReg = catReg.getProperty("regioes", reg);
