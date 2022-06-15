@@ -8,7 +8,7 @@ public class DetetarAjudaEvent implements Event{
 		this.value = regiao;
 	}
 
-	public String getValue() {
+	protected String getValue() {
 		return value;
 	}
 

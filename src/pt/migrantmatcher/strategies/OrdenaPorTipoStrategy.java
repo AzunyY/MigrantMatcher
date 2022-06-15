@@ -9,17 +9,11 @@ import pt.migrantmatcher.domain.Ajuda;
 
 public class OrdenaPorTipoStrategy implements OrdenaAjudas{
 	
-	private List <Ajuda> ajudas;
-	
-	public OrdenaPorTipoStrategy(List<Ajuda> list) {
-		this.ajudas = list;
-	}
-	
-	public List<Ajuda> ordena() {
+	public List<Ajuda> ordena(List <Ajuda> ajudasList) {
 		
-		Collections.shuffle(ajudas);
+		Collections.shuffle(ajudasList);
 
-		return ajudas.stream()
+		return ajudasList.stream()
 					   .sorted(Comparator.comparing(Ajuda::toString))
 					   .collect(Collectors.toList());
 	}

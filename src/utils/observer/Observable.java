@@ -21,7 +21,6 @@ public class Observable<T extends Event> {
 		    if(entry.getValue().equals(reg))
 		    	entry.getKey().receiveEvent(event);
 		}
-
 	}
 
 	protected void notifySingleObservers(T event, String reg) {

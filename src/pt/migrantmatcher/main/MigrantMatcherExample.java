@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import pt.migrantmatcher.domain.Ajuda;
 import pt.migrantmatcher.domain.Regiao;
 import pt.migrantmatcher.exceptions.AjudaNaoEhValidaException;
 import pt.migrantmatcher.exceptions.CodErradoException;
@@ -12,49 +11,33 @@ import pt.migrantmatcher.exceptions.InfoFamilarException;
 import pt.migrantmatcher.exceptions.NaoExisteAjudaException;
 import pt.migrantmatcher.exceptions.RegistoNaoEhValidoException;
 import pt.migrantmatcher.facade.MigrantMatcherSistema;
+import pt.migrantmatcher.facade.DTO.AjudaDTO;
 import pt.migrantmatcher.facade.handlers.ProcuraAjudaHandler;
 import pt.migrantmatcher.facade.handlers.RegistaAjudaHandler;
 
 public class MigrantMatcherExample {
 
 	public static void main(String[] args){
-
+		
 		List <String> reg = new ArrayList <>();
 		reg.add("Lisboa");
 		reg.add("Porto");
 		reg.add("Faro");
 		reg.add("Cascais");
-
+		
 		MigrantMatcherSistema migMatch = new MigrantMatcherSistema(reg);
-
-		//UC2
+		
+		RegistaAjudaHandler regAjHandler = migMatch.registarAjuda();
+		Scanner sc = new Scanner(System.in);
+		
 		ProcuraAjudaHandler procAjHandler = migMatch.procurarAjuda();
 		List <String> listFamiliares = new ArrayList<>();
 		listFamiliares.add("Maria");
 		listFamiliares.add("Vanessa");
 		listFamiliares.add("Paulo");
-
-		try {
-			procAjHandler.iniciaRegistoPessoal("Joao", 939243944);
-
-			List<String> regList = procAjHandler.pedeListaRegioes();
-			List <Ajuda> aj = procAjHandler.indicaRegiao(regList.get(0));
-			procAjHandler.escolheAjuda(aj.get(0));
-			procAjHandler.confirmaRegisto();
-
-		} catch(RegistoNaoEhValidoException e) {
-			System.err.println("O registo nao eh valido - Insira um nome e numero valido!");
-		} catch (NaoExisteAjudaException e) {
-			procAjHandler.pedeNotif(new Regiao(reg.get(0)));
-			System.err.println("Nao existe ajudas nessa regiao, vai ser notificado quando houver!");
-		} catch (InfoFamilarException e) {
-			//do nothing
-		}
+		
 
 		// UC1
-		RegistaAjudaHandler regAjHandler = migMatch.registarAjuda();
-		Scanner sc = new Scanner(System.in);
-
 		try {
 			regAjHandler.iniciaRegistoAjuda(937977373);
 			regAjHandler.ofereceItem("Roupa");
@@ -69,6 +52,27 @@ public class MigrantMatcherExample {
 			System.err.println("O codigo introduzido nao eh valido!");
 		}
 
+
+		//UC2
+		try {
+			procAjHandler.iniciaRegistoPessoal("Joao", 939243944);
+			List<String> regList = procAjHandler.pedeListaRegioes();
+			System.out.println(regList.toString());
+			List <AjudaDTO> aj = procAjHandler.indicaRegiao(regList.get(0));
+			System.out.println(aj.toString());
+			procAjHandler.escolheAjuda(aj.get(0));
+			procAjHandler.confirmaRegisto();
+
+		} catch(RegistoNaoEhValidoException e) {
+			System.err.println("O registo nao eh valido - Insira um nome e numero valido!");
+		} catch (NaoExisteAjudaException e) {
+			procAjHandler.pedeNotif(new Regiao(reg.get(0)));
+			System.err.println("Nao existe ajudas na regiao: " + reg.get(0).toString() + ", vai ser notificado quando houver!");
+		} catch (InfoFamilarException e) {
+			System.err.println("Existe informaçao em falta ou a mais sobre os seus familiares!");
+		}
+		
+		//UC1
 		try {
 			regAjHandler.iniciaRegistoAjuda(937977373);
 			regAjHandler.ofereceApartamento(3);
@@ -101,7 +105,9 @@ public class MigrantMatcherExample {
 				procAjHandler.indicaInfoFamiliar(listFamiliares.get(i));
 
 			List<String> regList = procAjHandler.pedeListaRegioes();
-			List <Ajuda> aj = procAjHandler.indicaRegiao(regList.get(0));
+			System.out.println(regList.toString());
+			List <AjudaDTO> aj = procAjHandler.indicaRegiao(regList.get(0));
+			System.out.println(aj.toString());
 			procAjHandler.escolheAjuda(aj.get(0));
 			procAjHandler.confirmaRegisto();
 
@@ -111,7 +117,7 @@ public class MigrantMatcherExample {
 			System.err.println("Existe informaçao em falta ou a mais sobre os seus familiares!");
 		} catch (NaoExisteAjudaException e) {
 			procAjHandler.pedeNotif(new Regiao(reg.get(0)));
-			System.err.println("Nao existe ajudas nessa regiao, vai ser notificado quando houver!");
+			System.err.println("Nao existe ajudas na regiao" + reg.get(0).toString() + " , vai ser notificado quando houver!");
 		}
 
 		//UC2
@@ -124,7 +130,10 @@ public class MigrantMatcherExample {
 				procAjHandler.indicaInfoFamiliar(listFamiliares.get(i));
 
 			List<String> regList = procAjHandler.pedeListaRegioes();
-			List <Ajuda> aj = procAjHandler.indicaRegiao(regList.get(0));
+			System.out.println(regList.toString());
+			List <AjudaDTO> aj = procAjHandler.indicaRegiao(regList.get(0));
+			System.out.println(aj.toString());
+
 			procAjHandler.escolheAjuda(aj.get(0));
 			procAjHandler.confirmaRegisto();
 
@@ -134,7 +143,7 @@ public class MigrantMatcherExample {
 			System.err.println("Existe informaçao em falta ou a mais sobre os seus familiares!");
 		} catch (NaoExisteAjudaException e) {
 			procAjHandler.pedeNotif(new Regiao(reg.get(0)));
-			System.err.println("Nao existe ajudas nessa regiao, vai ser notificado quando houver!");
+			System.err.println("Nao existe ajudas na regiao" + reg.get(0).toString() + " , vai ser notificado quando houver!");
 		}
 
 		sc.close();

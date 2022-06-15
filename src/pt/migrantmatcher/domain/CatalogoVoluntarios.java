@@ -1,41 +1,34 @@
 package pt.migrantmatcher.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Optional;
 
 public class CatalogoVoluntarios {
 
-	private List <Voluntario> listVoluntarios;
+	private HashMap <Integer, Voluntario> listVoluntarios;
 	private boolean volAlreadyExistsInCatalogo;
 
 	public CatalogoVoluntarios() {
-		listVoluntarios = new ArrayList <>();
+		listVoluntarios = new HashMap <>();
 		volAlreadyExistsInCatalogo = false;
 	}
 
 	public Voluntario getVol(int tel) {
-
-		Voluntario volCurr = null;
-		int i = 0;
-
-		while(i < listVoluntarios.size() && volCurr == null) {
-			volCurr = listVoluntarios.get(i).getTel() == tel? 
-					listVoluntarios.get(i):null; //1.1
+		
+		Optional<Voluntario> vol = Optional.ofNullable(listVoluntarios.get(tel));
+		
+		if(vol.isPresent()) {
 			volAlreadyExistsInCatalogo = true;
-			i++;
+			return vol.get();
 		}
-
-		if(volCurr == null) 
-			volCurr = new Voluntario(tel); //1.2
-
-		return volCurr;
+		
+		else 
+			return new Voluntario(tel);
 	}
 
 	public void addAj(Voluntario volCurr, Ajuda ajCurr) {
 		
-		if(!volAlreadyExistsInCatalogo) //1.2
-			listVoluntarios.add(volCurr); //1.3
-		
-		volCurr.addAjuda(ajCurr); //1.4
+		if(!volAlreadyExistsInCatalogo)  //1.2
+			listVoluntarios.put(volCurr.getTel(), volCurr); //1.3
 	}
 }

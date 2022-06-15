@@ -31,11 +31,11 @@ public class MigrantMatcherSistema {
 	
 	// UC1
 	public RegistaAjudaHandler registarAjuda() {
-		return new RegistaAjudaHandler(catAj, catVol, catReg);
+		return RegistaAjudaHandler.getInstance(catAj, catVol, catReg);
 	}
 
 	// UC2
 	public ProcuraAjudaHandler procurarAjuda() {
-		return new ProcuraAjudaHandler(catMig, catReg, catAj);
+		return ProcuraAjudaHandler.getInstance(catMig, catReg, catAj);
 	}	
 }

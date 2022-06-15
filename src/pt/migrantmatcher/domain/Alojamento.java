@@ -8,6 +8,8 @@ public class Alojamento extends Ajuda {
 	protected Alojamento(int nPessoas) {
 		super();
 		this.nPessoas = nPessoas;
+		setTipo(Tipo.ALOJAMENTO);
+		setInfo(Integer.toString(nPessoas));
 	}
 	
 	public void setRegiao(Regiao reg) {

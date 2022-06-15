@@ -3,6 +3,7 @@ package pt.migrantmatcher.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.migrantmatcher.facade.DTO.AjudaDTO;
 import utils.observer.DetetarAjudaEvent;
 import utils.observer.Observable;
 
@@ -27,16 +28,19 @@ public class CatalogoAjudas extends Observable<DetetarAjudaEvent>{
 	}
 
 	public void addAj(Ajuda ajCurr, Voluntario volCurr, List <String> regList) {
+		
 		ajCurr.setVol(volCurr); //2.1
 		listAj.add(ajCurr); //2.2
-		
-		String reg = ajCurr instanceof Alojamento ? ((Alojamento) ajCurr).getRegiao().getName() : "ALL";
 
-		if(reg.equals("ALL")) {
+		boolean notifyAll = ajCurr instanceof Alojamento ? false : true;
+
+		if(notifyAll) {
 			for(String s : regList)
 				notifyAllObservers(new DetetarAjudaEvent(s), s);
-		} else
+		} else {
+			String reg = ((Alojamento) ajCurr).getRegiao().getName();
 			notifySingleObservers(new DetetarAjudaEvent(reg), reg);
+		}
 	}
 
 	public List<Ajuda> filterByReg(String reg) {
@@ -55,11 +59,11 @@ public class CatalogoAjudas extends Observable<DetetarAjudaEvent>{
 		return listAjudasReg;
 	}
 
-	/*vou ter de implementar o equals depois*/
-	public Ajuda getAjuda(Ajuda aj) {
+	public Ajuda getAjuda(AjudaDTO ajudaDTO) {
 
 		for(Ajuda a: this.listAj)
-			if(a.equals(aj))
+			if(a.getTipo().toString().equals(ajudaDTO.getTipo().toString()) 
+					&& a.getInfo().equals(ajudaDTO.getinfo()))
 				return a;
 
 		return null;

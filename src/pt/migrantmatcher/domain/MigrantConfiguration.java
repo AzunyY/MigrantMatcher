@@ -15,6 +15,8 @@ import java.util.Properties;
 public class MigrantConfiguration {
 
 	private Properties props = new Properties();
+	private static MigrantConfiguration INSTANCE = null; // Lazy loading colocar a null
+
 
 	protected MigrantConfiguration(String fileName) {
 
@@ -30,7 +32,6 @@ public class MigrantConfiguration {
 		}
 	}
 
-	private static MigrantConfiguration INSTANCE = null; // Lazy loading colocar a null
 
 	public static MigrantConfiguration getInstance() {
 		if (INSTANCE == null) {

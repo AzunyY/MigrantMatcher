@@ -12,6 +12,7 @@ public abstract class Migrantes implements Observer<DetetarAjudaEvent>{
 	
 	private List <Ajuda> aj;
 	private int tel;
+	private String nome;
 	
 	protected Migrantes() {
 		aj = new ArrayList <>();
@@ -21,12 +22,20 @@ public abstract class Migrantes implements Observer<DetetarAjudaEvent>{
 		aj.add(ajCurr);
 	}
 	
-	public void setTel(int tel) {
+	protected void setTel(int tel) {
 		this.tel = tel;
+	}
+	
+	protected void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public int getTel() {
 		return tel;
+	}
+	
+	public String getNome() {
+		return this.nome;
 	}
 	
 	public void receiveEvent(DetetarAjudaEvent e) {

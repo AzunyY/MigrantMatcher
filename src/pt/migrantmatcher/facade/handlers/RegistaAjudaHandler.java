@@ -24,10 +24,20 @@ public class RegistaAjudaHandler {
 	private Voluntario volCurr;
 	private Ajuda ajCurr;
 
-	public RegistaAjudaHandler(CatalogoAjudas catAj, CatalogoVoluntarios catVol, CatalogoRegioes catReg) {
+	private static RegistaAjudaHandler INSTANCE = null; // Lazy loading colocar a null
+
+	protected RegistaAjudaHandler(CatalogoAjudas catAj, CatalogoVoluntarios catVol, CatalogoRegioes catReg) {
 		this.catVol = catVol;
 		this.catReg = catReg;
 		this.catAj = catAj;
+	}
+	
+	public static RegistaAjudaHandler getInstance(CatalogoAjudas catAj, CatalogoVoluntarios catVol, CatalogoRegioes catReg) {
+		if (INSTANCE == null) {
+			INSTANCE = new RegistaAjudaHandler(catAj, catVol, catReg);
+		}
+
+		return RegistaAjudaHandler.INSTANCE;
 	}
 
 	public void iniciaRegistoAjuda(int tel) throws RegistoNaoEhValidoException {
@@ -36,8 +46,8 @@ public class RegistaAjudaHandler {
 
 		if(size != 9)
 			throw new RegistoNaoEhValidoException();
-
-		this.volCurr = this.catVol.getVol(tel); // 1
+		
+		volCurr = this.catVol.getVol(tel); // 1
 	}
 
 	public List <String> ofereceApartamento(int nPessoas){
@@ -69,7 +79,7 @@ public class RegistaAjudaHandler {
 
 	}
 
-	public String generateCod() {
+	private String generateCod() {
 		return new Random().ints(6,33,127)
 				.map( x -> (char) x)
 				.collect(StringBuilder::new, 

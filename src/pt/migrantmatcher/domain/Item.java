@@ -7,6 +7,8 @@ public class Item extends Ajuda {
 	protected Item(String desc) {
 		super();
 		this.desc = desc;
+		setTipo(Tipo.ITEM);
+		setInfo(this.desc);
 	}
 
 	public String getDesc() {
