@@ -59,7 +59,12 @@ public class MigrantMatcherExample {
 			List<String> regList = procAjHandler.pedeListaRegioes();
 			System.out.println(regList.toString());
 			List <AjudaDTO> aj = procAjHandler.indicaRegiao(regList.get(0));
-			System.out.println(aj.toString());
+			
+			System.out.print("\n > Lista de Ajudas < \n");
+			aj.forEach( a -> {
+				System.out.println(a.getInfo());
+			});
+			
 			procAjHandler.escolheAjuda(aj.get(0));
 			procAjHandler.confirmaRegisto();
 
@@ -84,6 +89,7 @@ public class MigrantMatcherExample {
 			System.err.println("O codigo introduzido nao eh valido!");
 		}	
 
+		//UC1
 		try {
 			regAjHandler.iniciaRegistoAjuda(937977372);
 			regAjHandler.ofereceApartamento(3);
@@ -95,7 +101,7 @@ public class MigrantMatcherExample {
 			System.err.println("O codigo introduzido nao eh valido!");
 		} 
 
-
+		//UC2
 		try {
 
 			procAjHandler.iniciaRegistoFamilia(3);
@@ -107,6 +113,12 @@ public class MigrantMatcherExample {
 			List<String> regList = procAjHandler.pedeListaRegioes();
 			System.out.println(regList.toString());
 			List <AjudaDTO> aj = procAjHandler.indicaRegiao(regList.get(0));
+			
+			System.out.print("\n > Lista de Ajudas < \n");
+			aj.forEach( a -> {
+				System.out.println(a.getInfo());
+			});
+			
 			System.out.println(aj.toString());
 			procAjHandler.escolheAjuda(aj.get(0));
 			procAjHandler.confirmaRegisto();
@@ -132,8 +144,13 @@ public class MigrantMatcherExample {
 			List<String> regList = procAjHandler.pedeListaRegioes();
 			System.out.println(regList.toString());
 			List <AjudaDTO> aj = procAjHandler.indicaRegiao(regList.get(0));
-			System.out.println(aj.toString());
-
+			
+			System.out.print("\n > Lista de Ajudas < \n");
+			
+			aj.forEach( a -> {
+				System.out.println(a.getInfo());
+			});
+			
 			procAjHandler.escolheAjuda(aj.get(0));
 			procAjHandler.confirmaRegisto();
 

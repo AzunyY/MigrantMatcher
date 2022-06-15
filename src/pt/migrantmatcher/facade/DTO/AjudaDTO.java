@@ -1,5 +1,7 @@
 package pt.migrantmatcher.facade.DTO;
 
+import java.util.List;
+
 import pt.migrantmatcher.domain.Tipo;
 
 public class AjudaDTO {
@@ -13,7 +15,9 @@ public class AjudaDTO {
 	}
 	
 	public String getInfo() {
+		
 		return "Ajuda - " + this.tipo + " | Info - " + this.info;
+		
 	}
 
 	public Tipo getTipo() {

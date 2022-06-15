@@ -41,9 +41,11 @@ public abstract class Ajuda {
 		return vol.getTel();
 	}
 
-	@Override
-	public abstract boolean equals(Object obj);
-	public abstract String toString(Object obj);
+	public abstract boolean equals(Ajuda aj);
+	
+	public String toString() {
+		return "Tipo - " + this.tipo + "| Desc - " + this.info;
+	}
 
 	public String getInfo() {
 		return info;

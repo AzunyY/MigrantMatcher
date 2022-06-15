@@ -15,7 +15,7 @@ public class Item extends Ajuda {
 		return desc;
 	}
 	
-	public boolean equals(Object obj) {
+	public boolean equals(Ajuda obj) {
 		if(obj instanceof Alojamento) {
 			Item other = (Item) obj;
 			return other != null || this == other || this.desc.equals(other.desc);

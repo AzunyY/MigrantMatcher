@@ -24,7 +24,7 @@ public class Alojamento extends Ajuda {
 		return nPessoas;
 	}
 
-	public boolean equals(Object obj) {
+	public boolean equals(Ajuda obj) {
 		if(obj instanceof Alojamento) {
 			Alojamento other = (Alojamento) obj;
 			return other != null || this == other || (other.reg.equals(this.reg) && this.nPessoas == other.nPessoas);

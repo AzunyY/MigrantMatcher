@@ -19,8 +19,9 @@ public class CatalogoRegioes {
 	public List<String> getRegioes() {
 			List <String> listReg = new ArrayList<>(); //1.1
 			
-			for(int i  = 0; i < this.listRegs.size(); i++)
-				listReg.add(this.listRegs.get(i).getName()); //1.2, 1.3
+			listRegs.forEach(x -> {
+				listReg.add(x.getName()); //1.2, 1.3
+			});
 			
 			return listReg;
 	}

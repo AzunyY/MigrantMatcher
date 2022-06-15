@@ -115,16 +115,21 @@ public class ProcuraAjudaHandler {
 			this.catMigrantes.addAjuda(migCurr, ajCurr);
 			enviaSMS("O migrante, " + ((Individual) migCurr).getNome() + " quer a ajuda: " + this.ajCurr.toString());
 			ajCurr.setNotLivre();
+			
 	}
 
 	private void enviaSMS(String message) {
+		
 		MigrantConfiguration smsSender = MigrantConfiguration.getInstance();
 		SenderType sender = smsSender.getClass("senderType", new PidgeonSMSSenderAdapter());
 		sender.enviaSMS(this.ajCurr.getVol(), message);
+		
 	}
 
 	public void pedeNotif(Regiao regiao) {
+		
 		this.catAj.addObserver(this.migCurr, regiao.getName());
+		
 	}
 
 }
