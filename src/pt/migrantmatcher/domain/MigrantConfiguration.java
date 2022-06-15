@@ -42,16 +42,17 @@ public class MigrantConfiguration {
 	}
 
 	public List<String> getProperty(String chave, List<String> defaultValue) {
-		List<String> listS = new ArrayList <>();
+		
+		List<String> listString = new ArrayList <>();
 		
 		try {
 			for(String s : props.getProperty(chave).split("[ ,]+"))
-				listS.add(s);
+				listString.add(s);
 		} catch (NumberFormatException e) {
 			return defaultValue;
 		}
 		
-		return listS;
+		return listString;
 	}
 
 	public <T> T getClass(String key, T defaultValue) {
