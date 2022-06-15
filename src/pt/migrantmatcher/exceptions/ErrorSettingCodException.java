@@ -1,6 +1,6 @@
 package pt.migrantmatcher.exceptions;
 
 @SuppressWarnings("serial")
-public class ErrorSettingCod extends Exception {
+public class ErrorSettingCodException extends Exception {
 
 }

@@ -13,8 +13,11 @@ import pt.migrantmatcher.domain.MigrantConfiguration;
 import pt.migrantmatcher.domain.Migrant;
 import pt.migrantmatcher.domain.Region;
 import pt.migrantmatcher.exceptions.InfoFamilyMemberException;
+import pt.migrantmatcher.exceptions.NoFileNameException;
+import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 import pt.migrantmatcher.exceptions.AidIsNonExistenceException;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
+import pt.migrantmatcher.exceptios.ThereIsNoValueInPropertiesException;
 import pt.migrantmatcher.facade.DTO.AidDTO;
 import pt.migrantmatcher.plugins.SendSMSHelper;
 import pt.migrantmatcher.strategies.OrderAids;
@@ -38,7 +41,7 @@ public class SearchForAidHandler extends SendSMSHelper {
 		this.filename = filename;
 
 	}
-	
+
 	public static SearchForAidHandler getInstance(String filename, MigrantsCatalog catMig, RegionCatalog catReg, AidsCatalog catAj) {
 		if (INSTANCE == null) {
 			INSTANCE = new SearchForAidHandler(filename, catMig, catReg, catAj);
@@ -87,19 +90,30 @@ public class SearchForAidHandler extends SendSMSHelper {
 		return this.catReg.getRegions(); //1
 	}
 
-	public List <AidDTO> insertChoosenRegion(String filename, String reg) throws AidIsNonExistenceException {
+	public List <AidDTO> insertChoosenRegion(String filename, String reg) throws AidIsNonExistenceException, ThereIsNoValueInPropertiesException {
 
 		List <Aid> aidsList = this.catAids.filterByReg(reg); //1
 
 		if(aidsList.isEmpty())
 			throw new AidIsNonExistenceException();
-	
+
 		MigrantConfiguration ordemAjudas = MigrantConfiguration.getInstance(filename);
-		OrderAids order = ordemAjudas.getClass("orderHelpType", new OrderByStrategyType());
-		return order.order(aidsList)
+		OrderAids order;
+		try {
+			order = ordemAjudas.getClass("orderHelpType");
+			return order.order(aidsList)
 					.stream()
 					.map(a -> new AidDTO(a.getInfo(), a.getType()))
 					.collect(Collectors.toList());
+		} catch (ThereIsNoValueInPropertiesException | PropertiesLoadingException e) {
+			System.err.println("There is no value in the properties file but it will be used a default value!");
+			order = new OrderByStrategyType();
+			return order.order(aidsList)
+					.stream()
+					.map(a -> new AidDTO(a.getInfo(), a.getType()))
+					.collect(Collectors.toList());
+		}	
+
 	}
 
 	public void choosenAid(AidDTO ajudaDTO) {
@@ -108,19 +122,19 @@ public class SearchForAidHandler extends SendSMSHelper {
 
 	}
 
-	public void registerConfirm() {
-		
-			this.catMig.addAid(this.migCurr, this.curAid);
-			sendSMS(this.filename, "The migrant, " + ((IndividualMigrant) migCurr).getName() + " wants your registered aid: " 
-					+ this.curAid.toString(), this.curAid.getVol());
-			curAid.putAidToNotAvailable();
-			
+	public void registerConfirm() throws NoFileNameException, PropertiesLoadingException {
+
+		this.catMig.addAid(this.migCurr, this.curAid);
+		sendSMS(this.filename, "The migrant, " + ((IndividualMigrant) migCurr).getName() + " wants your registered aid: " 
+				+ this.curAid.toString(), this.curAid.getVol());
+		curAid.putAidToNotAvailable();
+
 	}
 
 	public void requestsToBeNotified(Region region) {
-		
+
 		this.catAids.addObserver(this.migCurr, region.getName());
-		
+
 	}
 
 }

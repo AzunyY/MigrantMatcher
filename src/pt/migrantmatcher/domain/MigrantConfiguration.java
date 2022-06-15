@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 import pt.migrantmatcher.exceptios.ThereIsNoValueInPropertiesException;
 
 /*USAR SINGLETON*/
@@ -54,19 +55,19 @@ public class MigrantConfiguration {
 					listString.add(s);
 			else
 				throw new ThereIsNoValueInPropertiesException();
-			
+
 		} catch(NullPointerException e) {
-				throw new ThereIsNoValueInPropertiesException();
+			throw new ThereIsNoValueInPropertiesException();
 		}
-		
+
 		return listString;
 	}
 
-	public <T> T getClass(String key, T defaultValue) {
+	public <T> T getClass(String key) throws ThereIsNoValueInPropertiesException, PropertiesLoadingException {
 
 		String klassName = (String) props.get(key);
 		if (klassName == null) {
-			return defaultValue;
+			throw new ThereIsNoValueInPropertiesException();
 		}
 
 		try {
@@ -76,20 +77,19 @@ public class MigrantConfiguration {
 			return c.newInstance();
 
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			throw new PropertiesLoadingException();
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
+			throw new PropertiesLoadingException();
 		} catch (SecurityException e) {
-			e.printStackTrace();
+			throw new PropertiesLoadingException();
 		} catch (InstantiationException e) {
-			e.printStackTrace();
+			throw new PropertiesLoadingException();
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			throw new PropertiesLoadingException();
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			throw new PropertiesLoadingException();
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
+			throw new PropertiesLoadingException();
 		}
-		return defaultValue;
 	}
 }

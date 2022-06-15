@@ -12,8 +12,10 @@ import pt.migrantmatcher.domain.Region;
 import pt.migrantmatcher.domain.Voluntary;
 import pt.migrantmatcher.exceptions.AidIsNotValidException;
 import pt.migrantmatcher.exceptions.ErrorInsertingInCatalogException;
-import pt.migrantmatcher.exceptions.ErrorSettingCod;
+import pt.migrantmatcher.exceptions.ErrorSettingCodException;
 import pt.migrantmatcher.exceptions.IncorrectCodException;
+import pt.migrantmatcher.exceptions.NoFileNameException;
+import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 import pt.migrantmatcher.exceptions.RegionInsertedIsNotValid;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
 import pt.migrantmatcher.exceptions.ThereIsNoRegionCatalogoException;
@@ -73,27 +75,36 @@ public class RegisterAidHandler extends SendSMSHelper{
 		return this.catReg.getRegions(); //2
 	}
 
-	public void insertHousingRegion(String region) throws RegionInsertedIsNotValid, ErrorSettingCod{
+	public void insertHousingRegion(String region) throws RegionInsertedIsNotValid, PropertiesLoadingException {
 
 		if(region.isBlank())
 			throw new RegionInsertedIsNotValid();
 
 		this.catAid.insertReg(currAid, new Region (region)); //1
-		sendSMS(this.filename, "Your confirmation code: " + generateCod(), volCurr.getTel());
-
+		try {
+			sendSMS(this.filename, "Your confirmation code: " + generateCod(), volCurr.getTel());
+		} catch (NoFileNameException | PropertiesLoadingException | ErrorSettingCodException e) {
+			System.err.println("There is no value in the properties file but it will be used a default value!");
+			throw new PropertiesLoadingException(); 
+		}
 	}
 
-	public void offerItem(String desc) throws AidIsNotValidException, ErrorSettingCod{
+	public void offerItem(String desc) throws AidIsNotValidException, PropertiesLoadingException {
 
 		if(desc.isBlank())
 			throw new AidIsNotValidException();
 
 		this.currAid = this.catAid.getNewItem(desc); //1
-		sendSMS(this.filename, "Your confirmation code: " + generateCod(), volCurr.getTel());
+		try {
+			sendSMS(this.filename, "Your confirmation code: " + generateCod(), volCurr.getTel());
+		} catch (NoFileNameException | PropertiesLoadingException | ErrorSettingCodException e) {
+			System.err.println("There is no value in the properties file but it will be used a default value!");
+			throw new PropertiesLoadingException(); 
+		}
 
 	}
 
-	private String generateCod() throws ErrorSettingCod {
+	private String generateCod() throws ErrorSettingCodException {
 		String cod = new Random().ints(6,48,123)
 				.filter( x -> ((x < 58 || x > 64) && (x < 91 || x > 96) ))
 				.map( x -> (char) x)
@@ -104,7 +115,7 @@ public class RegisterAidHandler extends SendSMSHelper{
 		this.volCurr.setCod(cod);
 
 		if(!volCurr.checkValidCod(cod))
-			throw new ErrorSettingCod();
+			throw new ErrorSettingCodException();
 
 		return cod;
 	}

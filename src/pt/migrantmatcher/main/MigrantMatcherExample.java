@@ -8,13 +8,16 @@ import pt.migrantmatcher.domain.Region;
 import pt.migrantmatcher.exceptions.AidIsNotValidException;
 import pt.migrantmatcher.exceptions.ErrorCreatingRegionsException;
 import pt.migrantmatcher.exceptions.ErrorInsertingInCatalogException;
-import pt.migrantmatcher.exceptions.ErrorSettingCod;
+import pt.migrantmatcher.exceptions.ErrorSettingCodException;
 import pt.migrantmatcher.exceptions.IncorrectCodException;
 import pt.migrantmatcher.exceptions.InfoFamilyMemberException;
+import pt.migrantmatcher.exceptions.NoFileNameException;
+import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 import pt.migrantmatcher.exceptions.RegionInsertedIsNotValid;
 import pt.migrantmatcher.exceptions.AidIsNonExistenceException;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
 import pt.migrantmatcher.exceptions.ThereIsNoRegionCatalogoException;
+import pt.migrantmatcher.exceptios.ThereIsNoValueInPropertiesException;
 import pt.migrantmatcher.facade.MigrantMatcherSystem;
 import pt.migrantmatcher.facade.DTO.AidDTO;
 import pt.migrantmatcher.facade.handlers.SearchForAidHandler;
@@ -22,7 +25,7 @@ import pt.migrantmatcher.facade.handlers.RegisterAidHandler;
 
 public class MigrantMatcherExample {
 
-	public static void main(String[] args){
+	public static void main(String[] args) throws ErrorSettingCodException{
 
 		List <String> reg = new ArrayList <>();
 		reg.add("Lisboa");
@@ -35,12 +38,15 @@ public class MigrantMatcherExample {
 		MigrantMatcherSystem migMatch = null;
 		
 		try {
-			migMatch = new MigrantMatcherSystem(reg);
+			migMatch = new MigrantMatcherSystem("defaults3.properties", reg);
 			registerAidHandler = migMatch.registerNewAid();
 			searchAidHandler = migMatch.searchForAid();
 		} catch (ErrorCreatingRegionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (NoFileNameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		Scanner sc = new Scanner(System.in);
 
@@ -53,7 +59,9 @@ public class MigrantMatcherExample {
 		// UC1
 		try {
 			registerAidHandler.aidRegisterStart(937977373);
-			registerAidHandler.offerItem("Roupa");
+			registerAidHandler.offerHousing(3);
+			registerAidHandler.insertHousingRegion(reg.get(0));
+			
 			System.out.println("Insert the code that was sent: ");
 			registerAidHandler.offerConfirm(sc.nextLine().toString());
 
@@ -63,63 +71,20 @@ public class MigrantMatcherExample {
 			System.err.println("The code that was inserted is not valid!");
 		} catch (RegisterIsNotValidException e) {
 			System.err.println("There was an error while registering!");
-		} catch (ErrorSettingCod e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (ErrorInsertingInCatalogException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-
-		//UC2
-		try {
-			searchAidHandler.startPersonalRegister("Joao", 939243944);
-			List<String> regList = searchAidHandler.requestListOfRegions();
-			System.out.println(regList.toString());
-			List <AidDTO> aj = searchAidHandler.insertChoosenRegion(regList.get(0));
-
-			System.out.print("\n > List of Aids < \n");
-			aj.forEach( a -> {
-				System.out.println(a.getInfo());
-			});
-
-			searchAidHandler.choosenAid(aj.get(0));
-			searchAidHandler.registerConfirm();
-
-		} catch(RegisterIsNotValidException e) {
-			System.err.println("The register is not valid - Insert valid name!");
-		} catch (AidIsNonExistenceException e) {
-			searchAidHandler.requestsToBeNotified(new Region(reg.get(0)));
-			System.err.println("There's no available aid at: " + reg.get(0).toString() + ", you will be notified when it does!");
-		} catch (InfoFamilyMemberException e) {
-			System.err.println("The number of family members which information you have inserted is not valid!");
-		}
-
-		//UC1
-		try {
-			registerAidHandler.aidRegisterStart(937977373);
-			registerAidHandler.offerHousing(3);
-			registerAidHandler.insertHousingRegion(reg.get(0));
-			registerAidHandler.offerConfirm(sc.nextLine());
-		} catch (IncorrectCodException e) {
-			System.err.println("The code that was inserted is not valid!");
-		} catch (RegisterIsNotValidException e) {
-			System.err.println("The number of family members is not valid!");
-		} catch (AidIsNotValidException e) {
-			System.err.println("There was an error creating the offer!");
+		} catch (PropertiesLoadingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (ThereIsNoRegionCatalogoException e) {
-			System.err.println("There is no Regions!");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (RegionInsertedIsNotValid e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ErrorSettingCod e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}catch (ErrorInsertingInCatalogException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+		}
+
 
 		//UC2
 		try {
@@ -132,7 +97,7 @@ public class MigrantMatcherExample {
 
 			List<String> regList = searchAidHandler.requestListOfRegions();
 			System.out.println(regList.toString());
-			List <AidDTO> aid = searchAidHandler.insertChoosenRegion(regList.get(0));
+			List <AidDTO> aid = searchAidHandler.insertChoosenRegion(regList.get(0), null);
 
 			System.out.print("\n > List of Aids < \n");
 			aid.forEach( a -> {
@@ -150,37 +115,15 @@ public class MigrantMatcherExample {
 		} catch (AidIsNonExistenceException e) {
 			searchAidHandler.requestsToBeNotified(new Region(reg.get(0)));
 			System.err.println("There's no available aid at: " + reg.get(0).toString() + ", you will be notified when it does!");
-		}
-
-		//UC2
-		try {
-
-			searchAidHandler.startFamiltRegister(2);
-			searchAidHandler.addHeadInfo("Joao", 939439495);
-
-			for(int i = 0; i < familyMembersList.size(); i++)
-				searchAidHandler.insertFamilyMemberRegister(familyMembersList.get(i));
-
-			List<String> regList = searchAidHandler.requestListOfRegions();
-			System.out.println(regList.toString());
-			List <AidDTO> aj = searchAidHandler.insertChoosenRegion(regList.get(0));
-
-			System.out.print("\n > Lista de Ajudas < \n");
-
-			aj.forEach( a -> {
-				System.out.println(a.getInfo());
-			});
-
-			searchAidHandler.choosenAid(aj.get(0));
-			searchAidHandler.registerConfirm();
-
-		} catch(RegisterIsNotValidException e) {
-			System.err.println("The register is not valid - Insert valid name!");
-		} catch(InfoFamilyMemberException e) { 
-			System.err.println("The number of family members which information you have inserted is not valid!");
-		} catch (AidIsNonExistenceException e) {
-			searchAidHandler.requestsToBeNotified(new Region(reg.get(0)));
-			System.err.println("There's no available aid at: " + reg.get(0).toString() + ", you will be notified when it does!");
+		} catch (ThereIsNoValueInPropertiesException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoFileNameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PropertiesLoadingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		sc.close();
