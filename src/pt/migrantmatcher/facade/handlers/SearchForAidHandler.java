@@ -5,13 +5,13 @@ import java.util.stream.Collectors;
 
 import pt.migrantmatcher.domain.Aid;
 import pt.migrantmatcher.domain.MigrantFamily;
-import pt.migrantmatcher.domain.TYPE;
 import pt.migrantmatcher.domain.IndividualMigrant;
 import pt.migrantmatcher.domain.MigrantConfiguration;
 import pt.migrantmatcher.domain.Migrant;
 import pt.migrantmatcher.exceptions.InfoFamilyMemberException;
 import pt.migrantmatcher.exceptions.NoFileNameException;
 import pt.migrantmatcher.exceptions.PropertiesLoadingException;
+import pt.migrantmatcher.exceptions.RegionInsertedIsNotValid;
 import pt.migrantmatcher.exceptions.AidIsNonExistenceException;
 import pt.migrantmatcher.exceptions.AidIsNotValidException;
 import pt.migrantmatcher.exceptions.ErrorCreatingCurAidException;
@@ -45,29 +45,35 @@ public class SearchForAidHandler extends SendSMSHelper {
 
 	public void startPersonalRegister(String name, int tel) throws RegisterIsNotValidException {
 
-		if(name.isEmpty())
+		if(name == null || name.isEmpty())
 			throw new RegisterIsNotValidException();
 
 		this.migCurr = this.catMig.createIndividualMigrant(name, tel); //1
 
 	}
 
-	public void startFamiltRegister(int nPessoas) {
+	public void startFamiltRegister(int nPersons) throws RegisterIsNotValidException {
+		
+		if(nPersons <= 0)
+			throw new RegisterIsNotValidException();
 
-		this.migCurr = this.catMig.createMigrantFamily(nPessoas); //1
+		this.migCurr = this.catMig.createMigrantFamily(nPersons); //1
 
 	}
 
 	public void addHeadInfo(String name, int tel) throws RegisterIsNotValidException {
 
-		if(name.isEmpty())
+		if(name == null || name.isEmpty())
 			throw new RegisterIsNotValidException();
 
 		this.catMig.addInfoHead(migCurr, name, tel); //1
 
 	}
 
-	public void insertFamilyMemberRegister (String name) {
+	public void insertFamilyMemberRegister (String name) throws RegisterIsNotValidException {
+		
+		if(name == null || name.isEmpty())
+			throw new RegisterIsNotValidException();
 
 		this.catMig.addInfoNames(migCurr, name);//1
 
@@ -75,7 +81,7 @@ public class SearchForAidHandler extends SendSMSHelper {
 
 	public List <String> requestListOfRegions () throws InfoFamilyMemberException{
 
-		if(migCurr instanceof MigrantFamily && !((MigrantFamily) migCurr).numberOfFamilyMembersIsValid() )
+		if(this.migCurr instanceof MigrantFamily && !((MigrantFamily) this.migCurr).numberOfFamilyMembersIsValid() )
 			throw new InfoFamilyMemberException();
 
 		return this.catReg.getRegions(); //1
@@ -107,8 +113,11 @@ public class SearchForAidHandler extends SendSMSHelper {
 
 	}
 
-	public void choosenAid(AidDTO ajudaDTO) throws ErrorCreatingCurAidException {
+	public void choosenAid(AidDTO ajudaDTO) throws ErrorCreatingCurAidException, AidIsNotValidException {
 
+		if(ajudaDTO == null)
+			throw new AidIsNotValidException();
+		
 		this.curAid = this.catAids.getAid(ajudaDTO); //1
 		
 		if(this.curAid.equals(null))
@@ -120,12 +129,15 @@ public class SearchForAidHandler extends SendSMSHelper {
 		this.catMig.addAid(this.migCurr, this.curAid);
 		sendSMS(this.filename, "The migrant, " + ((IndividualMigrant) migCurr).getName() + " wants your registered aid: " 
 				+ this.curAid.toString(), this.curAid.getVol());
-		curAid.putAidToNotAvailable();
+		this.curAid.putAidToNotAvailable();
 
 	}
 
-	public void requestsToBeNotified(String reg) {
-
+	public void requestsToBeNotified(String reg) throws RegionInsertedIsNotValid {
+		
+		if(reg == null)
+			throw new RegionInsertedIsNotValid();
+		
 		this.catAids.addObserver(this.migCurr, reg);
 		
 	}

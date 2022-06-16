@@ -41,11 +41,9 @@ public class MigrantMatcherExample {
 			registerAidHandler = migMatch.registerNewAid();
 			searchAidHandler = migMatch.searchForAid();
 		} catch (ErrorCreatingRegionsException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (NoFileNameException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//Do nothing
+		} catch (PropertiesLoadingException e) {
+			//Do nothing
 		}
 		Scanner sc = new Scanner(System.in);
 
@@ -59,11 +57,18 @@ public class MigrantMatcherExample {
 		try {
 			registerAidHandler.aidRegisterStart(937977373);
 			registerAidHandler.offerHousing(3);
-			registerAidHandler.insertHousingRegion(reg.get(0));
 			
-			System.out.println("Insert the code that was sent: ");
-			registerAidHandler.offerConfirm(sc.nextLine().toString());
+			try {
+				registerAidHandler.insertHousingRegion("", reg.get(0));
+				System.out.println("Insert the code that was sent: ");
+				registerAidHandler.offerConfirm(sc.nextLine().toString());
 
+			}
+			catch (PropertiesLoadingException e) {
+				System.out.println("Insert the code that was sent: ");
+				registerAidHandler.offerConfirm(sc.nextLine().toString());
+			}
+			
 		}  catch (AidIsNotValidException e) {
 			System.err.println("The aid offered is not valid!");
 		} catch (IncorrectCodException e) {
@@ -71,19 +76,12 @@ public class MigrantMatcherExample {
 		} catch (RegisterIsNotValidException e) {
 			System.err.println("There was an error while registering!");
 		} catch (ErrorInsertingInCatalogException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (PropertiesLoadingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("There was an error adding the  registering!");
 		} catch (ThereIsNoRegionCatalogoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("There is no Regions available!");
 		} catch (RegionInsertedIsNotValid e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("The region picked is not available!");
 		}
-
 
 		//UC2
 		try {
@@ -108,23 +106,27 @@ public class MigrantMatcherExample {
 			searchAidHandler.registerConfirm();
 
 		} catch(RegisterIsNotValidException e) {
-			System.err.println("The register is not valid - Insert valid name!");
+			System.err.println("The register is not valid!");
 		} catch(InfoFamilyMemberException e) { 
 			System.err.println("The number of family members which information you have inserted is not valid!");
 		} catch (AidIsNonExistenceException e) {
-			searchAidHandler.requestsToBeNotified(reg.get(0));
+			
+			try {
+				searchAidHandler.requestsToBeNotified(reg.get(0));
+			} catch (RegionInsertedIsNotValid e1) {
+				System.err.println("The Region is not valid!");
+			}
+		
 			System.err.println("There's no available aid at: " + reg.get(0).toString() + ", you will be notified when it does!");
-		} catch (ThereIsNoValueInPropertiesException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
 		} catch (NoFileNameException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// do nothing
 		} catch (PropertiesLoadingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// do nothing
+		} catch (AidIsNotValidException e) {
+			System.err.println("The choosen Aid is not valid!");
 		}
-
+		
 		sc.close();
 	}
 }

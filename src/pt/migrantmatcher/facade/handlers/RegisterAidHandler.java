@@ -16,7 +16,6 @@ import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 import pt.migrantmatcher.exceptions.RegionInsertedIsNotValid;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
 import pt.migrantmatcher.exceptions.ThereIsNoRegionCatalogoException;
-import pt.migrantmatcher.facade.DTO.AidDTO;
 import pt.migrantmatcher.plugins.SendSMSHelper;
 import tests.mocks.MockAidsCatalog;
 import tests.mocks.MockRegCatalog;
@@ -44,10 +43,10 @@ public class RegisterAidHandler extends SendSMSHelper{
 	public void aidRegisterStart(int tel) throws RegisterIsNotValidException {
 		
 		volCurr = this.catVol.getVol(tel); // 1
-
-		if(volCurr.getTel() != tel)
+		String length = Integer.toString(tel);
+		
+		if(volCurr.getTel() != tel && length.length() > 9)
 			throw new RegisterIsNotValidException();
-
 	}
 
 	public List <String> offerHousing(int nPersons) throws AidIsNotValidException, RegisterIsNotValidException, ThereIsNoRegionCatalogoException{
@@ -57,7 +56,7 @@ public class RegisterAidHandler extends SendSMSHelper{
 
 		this.currAid = this.catAid.createHousing(nPersons); //1
 
-		if(this.currAid.toString().isBlank())
+		if(this.currAid == null)
 			throw new AidIsNotValidException();
 		if(this.catReg.getRegions().isEmpty())
 			throw new ThereIsNoRegionCatalogoException();
