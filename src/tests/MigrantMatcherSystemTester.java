@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import pt.migrantmatcher.exceptions.AidIsNonExistenceException;
 import pt.migrantmatcher.exceptions.ErrorCreatingCurAidException;
 import pt.migrantmatcher.exceptions.ErrorCreatingRegionsException;
 import pt.migrantmatcher.exceptions.PropertiesLoadingException;
@@ -47,27 +48,7 @@ class MigrantMatcherSystemTester {
 		familyMembersList.add("Vanessa");
 		familyMembersList.add("Paulo");
 	}
-
-	@Test
-	void testSystemCreationWithDef() {
-
-		assertThrows(PropertiesLoadingException.class , () -> mgMatch = new MigrantMatcherSystem("", reg));
-	}
 	
-	@Test 
-	void testSystemCreationFailTest() {
-		assertThrows(ErrorCreatingRegionsException.class, () -> {
-			mgMatch = new MigrantMatcherSystem("", new ArrayList <>());
-		});
-
-	}
-	
-	@Test
-	void testeSystemCreationWithDefAndNoValue(){
-		assertThrows(PropertiesLoadingException.class, () -> {
-			mgMatch = new MigrantMatcherSystem("defaults2.properties", reg);
-		});
-	}
 	
 	@Test
 	void testeSystemSession(){
@@ -76,10 +57,9 @@ class MigrantMatcherSystemTester {
 		try {
 			mockRegCatalog = new MockRegCatalog("defaults.properties", reg);
 
-			assertThrows(PropertiesLoadingException.class, () -> {
-				mgMatch = new MigrantMatcherSystem(mockRegCatalog);
-			});
-			
+			assertDoesNotThrow(() ->
+				mgMatch = new MigrantMatcherSystem(mockRegCatalog));
+		
 			searchAidHandler = mgMatch.searchForAid();
 			aidHandler = mgMatch.registerNewAid();
 			
@@ -98,11 +78,22 @@ class MigrantMatcherSystemTester {
 			assertDoesNotThrow(() -> regList = searchAidHandler.requestListOfRegions());
 			assertEquals(false, regList.isEmpty());
 			
-			assertDoesNotThrow( () ->
+			assertThrows(AidIsNonExistenceException.class, () ->
 				 aidDtoList = searchAidHandler.insertChoosenRegion("defaults.properties", regList.get(2))
 			);
 			
-			assertThrows(ErrorCreatingCurAidException.class, () -> searchAidHandler.requestsToBeNotified(regList.get(2)));
+			assertDoesNotThrow(() -> searchAidHandler.requestsToBeNotified(regList.get(2)));
+			
+			assertDoesNotThrow(() -> aidHandler.aidRegisterStart(932143121));
+			
+			assertDoesNotThrow(() -> regList = aidHandler.offerHousing(3));
+			
+			assertEquals(false, regList.isEmpty());
+			assertDoesNotThrow(() -> aidHandler.insertHousingRegion(regList.get(2))); 
+			
+			ScannerMock sc = new ScannerMock(System.in);
+			
+			assertDoesNotThrow(() -> aidHandler.offerConfirm(sc.ask()));
 			
 		} catch (ErrorCreatingRegionsException | PropertiesLoadingException e) {
 			//Do nothing

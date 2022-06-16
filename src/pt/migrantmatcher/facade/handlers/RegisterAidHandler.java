@@ -41,7 +41,7 @@ public class RegisterAidHandler extends SendSMSHelper{
 	}
 	
 	public void aidRegisterStart(int tel) throws RegisterIsNotValidException {
-
+		
 		volCurr = this.catVol.getVol(tel); // 1
 
 		if(volCurr.getTel() != tel)
