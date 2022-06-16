@@ -1,6 +1,5 @@
 package pt.migrantmatcher.domain;
 
-import pt.migrantmatcher.facade.DTO.AidDTO;
 
 public class Housing extends Aid {
 	

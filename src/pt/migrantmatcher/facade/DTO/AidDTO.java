@@ -8,24 +8,24 @@ public class AidDTO {
 	private TYPE type;
 	private boolean availability;
 	private int tel;
-	
+
 	public AidDTO(String info, TYPE type, boolean availability, int tel) {
 		this.info = info;
 		this.availability = availability;
 		this.type = type;
 		this.tel = tel;
 	}
-	
+
 	public String getAidInfo() {
-		
+
 		return "Aid - " + this.type + " | Info - " + this.info;
-		
+
 	}
 
 	public TYPE getType() {
 		return this.type;
 	}
-	
+
 	public String getInfo() {
 		return this.info;
 	}
@@ -38,3 +38,4 @@ public class AidDTO {
 		return this.tel;
 	}
 }
+

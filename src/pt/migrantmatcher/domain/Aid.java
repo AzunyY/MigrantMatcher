@@ -43,14 +43,15 @@ public abstract class Aid {
 	}
 
 	public String getInfo() {
-		return info;
+		return this.info;
 	}
 	
 	public TYPE getType() {
-		return type;
+		return this.type;
 	}
 
 	public boolean getAvailability() {
-		return availability;
+		return this.availability;
 	}
 }
+

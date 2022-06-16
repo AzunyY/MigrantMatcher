@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import pt.migrantmatcher.domain.Aid;
 import pt.migrantmatcher.domain.MigrantFamily;
+import pt.migrantmatcher.domain.TYPE;
 import pt.migrantmatcher.domain.IndividualMigrant;
 import pt.migrantmatcher.domain.MigrantConfiguration;
 import pt.migrantmatcher.domain.Migrant;
@@ -12,6 +13,7 @@ import pt.migrantmatcher.exceptions.InfoFamilyMemberException;
 import pt.migrantmatcher.exceptions.NoFileNameException;
 import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 import pt.migrantmatcher.exceptions.AidIsNonExistenceException;
+import pt.migrantmatcher.exceptions.AidIsNotValidException;
 import pt.migrantmatcher.exceptions.ErrorCreatingCurAidException;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
 import pt.migrantmatcher.facade.DTO.AidDTO;
@@ -111,7 +113,6 @@ public class SearchForAidHandler extends SendSMSHelper {
 		
 		if(this.curAid.equals(null))
 			throw new ErrorCreatingCurAidException();
-
 	}
 
 	public void registerConfirm() throws NoFileNameException, PropertiesLoadingException {
@@ -127,7 +128,6 @@ public class SearchForAidHandler extends SendSMSHelper {
 
 		this.catAids.addObserver(this.migCurr, reg);
 		
-
 	}
 
 }
