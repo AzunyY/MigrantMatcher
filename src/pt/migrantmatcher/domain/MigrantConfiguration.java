@@ -11,13 +11,18 @@ import java.util.List;
 import java.util.Properties;
 
 import pt.migrantmatcher.exceptions.PropertiesLoadingException;
-
-/*USAR SINGLETON*/
-
+ 
+/**
+ * Le dos ficheiros e devolve configuraçoes 
+ * Padrao polimorfismo - pois estamos a fazer pois estamos a usar esta classe
+ * para devolver varias implementacoes 
+ **/
 public class MigrantConfiguration {
 
 	private Properties props = new Properties();
-	private static MigrantConfiguration INSTANCE = null; // Lazy loading colocar a null
+	//Usa-se Singleton porque so se quer uma instancia do MigrandConfiguration em vez de se estar sempre a criar um novo
+	// Lazy loading 
+	private static MigrantConfiguration INSTANCE = null; 
 
 
 	protected MigrantConfiguration(String fileName) throws PropertiesLoadingException {
@@ -40,7 +45,12 @@ public class MigrantConfiguration {
 
 		return MigrantConfiguration.INSTANCE;
 	}
-
+	
+	/**
+	 * Devolve uma lista de Strings que esteja no ficheiro 
+	 * @key - a chave que vai ler
+	 * @return lista de strings
+	**/
 	public List<String> getProperty(String key) throws PropertiesLoadingException {
 
 		List<String> listString = new ArrayList <>();
@@ -58,7 +68,12 @@ public class MigrantConfiguration {
 
 		return listString;
 	}
-
+	
+	/**
+	 * Devolve uma instancia de uma classe que esteja no ficheiro 
+	 * @key - chave onde se vai buscar o valor
+	 * @return instancia de uma classe
+	 **/
 	public <T> T getClass(String key) throws PropertiesLoadingException {
 
 		String klassName = (String) props.get(key);
