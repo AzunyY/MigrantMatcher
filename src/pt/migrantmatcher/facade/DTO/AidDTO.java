@@ -1,19 +1,19 @@
 package pt.migrantmatcher.facade.DTO;
 
-import pt.migrantmatcher.domain.TYPE;
-
 public class AidDTO {
 
+	private int ref;
 	private String info;
-	private TYPE type;
+	private String type;
 	private boolean availability;
 	private int tel;
 
-	public AidDTO(String info, TYPE type, boolean availability, int tel) {
+	public AidDTO(int ref, String info, boolean availability, int tel, String type) {
+		this.ref = ref;
 		this.info = info;
 		this.availability = availability;
-		this.type = type;
 		this.tel = tel;
+		this.type = type;
 	}
 
 	public String getAidInfo() {
@@ -22,7 +22,7 @@ public class AidDTO {
 
 	}
 
-	public TYPE getType() {
+	public String getType() {
 		return this.type;
 	}
 
@@ -36,6 +36,14 @@ public class AidDTO {
 
 	public int getTel() {
 		return this.tel;
+	}
+
+	public int getRef() {
+		return ref;
+	}
+
+	public void set(boolean availability) {
+		this.availability = availability;		
 	}
 }
 

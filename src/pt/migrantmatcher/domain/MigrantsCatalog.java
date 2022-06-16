@@ -26,11 +26,7 @@ public class MigrantsCatalog {
 	protected void addInfoNames(Migrant currMig, String name) {
 		((MigrantFamily) currMig).addFamilyMembersName(name); //1.1
 	}
-
-	protected void addAid(Migrant migCurr, Aid currAid) {
-		migCurr.addAid(currAid);
-	}
-
+	
 	protected List <Migrant> getListMigrant() {
 		return migrantsList;
 	}

@@ -1,6 +1,6 @@
 package tests.mocks;
-
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import pt.migrantmatcher.domain.Aid;
@@ -29,16 +29,12 @@ public class MockAidsCatalog extends AidsCatalog {
 		 super.addAid(filename, currAid, volCurr, regList);
 	}
 
-	public List<Aid> filterByReg(String reg) {
+	public Map<Integer,Aid> filterByReg(String reg) {
 		return super.filterByReg(reg);
 	}
 
 	public Aid getAid(AidDTO aidDTO) {
 		return super.getAid(aidDTO);
-	}
-
-	public List<Aid> getAidList() {
-		return super.getAidList();
 	}
 
 	public Optional<Boolean> aidWasAdded(Aid currAid) {

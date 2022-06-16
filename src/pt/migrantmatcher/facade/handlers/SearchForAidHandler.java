@@ -1,11 +1,11 @@
 package pt.migrantmatcher.facade.handlers;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import pt.migrantmatcher.domain.Aid;
 import pt.migrantmatcher.domain.MigrantFamily;
-import pt.migrantmatcher.domain.IndividualMigrant;
 import pt.migrantmatcher.domain.MigrantConfiguration;
 import pt.migrantmatcher.domain.Migrant;
 import pt.migrantmatcher.exceptions.InfoFamilyMemberException;
@@ -53,7 +53,7 @@ public class SearchForAidHandler extends SendSMSHelper {
 	}
 
 	public void startFamiltRegister(int nPersons) throws RegisterIsNotValidException {
-		
+
 		if(nPersons <= 0)
 			throw new RegisterIsNotValidException();
 
@@ -71,7 +71,7 @@ public class SearchForAidHandler extends SendSMSHelper {
 	}
 
 	public void insertFamilyMemberRegister (String name) throws RegisterIsNotValidException {
-		
+
 		if(name == null || name.isEmpty())
 			throw new RegisterIsNotValidException();
 
@@ -89,7 +89,7 @@ public class SearchForAidHandler extends SendSMSHelper {
 
 	public List <AidDTO> insertChoosenRegion(String filename, String reg) throws AidIsNonExistenceException, PropertiesLoadingException {
 
-		List <Aid> aidsList = this.catAids.filterByReg(reg); //1
+		Map <Integer, Aid> aidsList = this.catAids.filterByReg(reg); //1
 
 		if(aidsList.isEmpty())
 			throw new AidIsNonExistenceException();
@@ -98,48 +98,51 @@ public class SearchForAidHandler extends SendSMSHelper {
 		OrderAids order;
 		try {
 			order = ordemAjudas.getClass("orderHelpType");
-			return order.order(aidsList)
-					.stream()
-					.map(a -> new AidDTO(a.getInfo(), a.getType(), a.getAvailability(), a.getVol()))
-					.collect(Collectors.toList());
+			return orderList(order, aidsList);
 		} catch (PropertiesLoadingException e) {
 			System.err.println("There is no value in the properties file but it will be used a default value!");
 			order = new OrderByStrategyType();
-			return order.order(aidsList)
-					.stream()
-					.map(a -> new AidDTO(a.getInfo(), a.getType(), a.getAvailability(), a.getVol()))
-					.collect(Collectors.toList());
+			return orderList(order, aidsList);
 		}	
 
 	}
 
-	public void choosenAid(AidDTO ajudaDTO) throws ErrorCreatingCurAidException, AidIsNotValidException {
+	private List<AidDTO> orderList(OrderAids order, Map<Integer, Aid> aidsList) {
+		List <AidDTO> aidDtoList = new ArrayList<>();
 
-		if(ajudaDTO == null)
+		order.order(aidsList).stream().forEach( a -> {
+			aidDtoList.add(new AidDTO(a.getRef(), a.getInfo(), a.getAvailability(), a.getVol(), a.getType()));
+		});
+		
+		return aidDtoList;
+	}
+
+	public void choosenAid(AidDTO aidDTO) throws ErrorCreatingCurAidException, AidIsNotValidException {
+
+		if(aidDTO == null)
 			throw new AidIsNotValidException();
-		
-		this.curAid = this.catAids.getAid(ajudaDTO); //1
-		
+
+		this.curAid = this.catAids.getAid(aidDTO); //1
+
 		if(this.curAid.equals(null))
 			throw new ErrorCreatingCurAidException();
 	}
 
-	public void registerConfirm() throws NoFileNameException, PropertiesLoadingException {
-
-		this.catMig.addAid(this.migCurr, this.curAid);
-		sendSMS(this.filename, "The migrant, " + ((IndividualMigrant) migCurr).getName() + " wants your registered aid: " 
+	public void registerConfirm(AidDTO aidDTO) throws NoFileNameException, PropertiesLoadingException {
+		sendSMS(this.filename, "The migrant, " + this.migCurr.getName() + " wants your registered aid: " 
 				+ this.curAid.toString(), this.curAid.getVol());
+		
 		this.curAid.putAidToNotAvailable();
-
+		aidDTO.set(this.curAid.getAvailability());
 	}
 
 	public void requestsToBeNotified(String reg) throws RegionInsertedIsNotValid {
-		
+
 		if(reg == null)
 			throw new RegionInsertedIsNotValid();
-		
+
 		this.catAids.addObserver(this.migCurr, reg);
-		
+
 	}
 
 }

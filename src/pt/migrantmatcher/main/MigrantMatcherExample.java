@@ -103,7 +103,7 @@ public class MigrantMatcherExample {
 
 			System.out.println(aid.toString());
 			searchAidHandler.choosenAid(aid.get(0));
-			searchAidHandler.registerConfirm();
+			searchAidHandler.registerConfirm(aid.get(0));
 
 		} catch(RegisterIsNotValidException e) {
 			System.err.println("The register is not valid!");
@@ -118,7 +118,7 @@ public class MigrantMatcherExample {
 			}
 		
 			System.err.println("There's no available aid at: " + reg.get(0).toString() + ", you will be notified when it does!");
-		
+			
 		} catch (NoFileNameException e) {
 			// do nothing
 		} catch (PropertiesLoadingException e) {

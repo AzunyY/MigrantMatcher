@@ -1,27 +1,22 @@
 package pt.migrantmatcher.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import pt.migrantmatcher.exceptions.NoFileNameException;
 import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 import pt.migrantmatcher.plugins.SendSMSHelper;
 import utils.observer.DetectAidEvent;
 import utils.observer.Observer;
 
+
+/**
+ * Esta classe vao ser as representacoes dos Migrantes 
+ * E absrtacta pois estou a utilizar o padrao Template method uma vez que 
+ * ha pormenores para os tipos de migrantes que sao diferentes.
+ * Oserver porque os migrantes querem ser notificados de quando houver uma ajuda disponivel
+ **/
 public abstract class Migrant extends SendSMSHelper implements Observer<DetectAidEvent>{
 
-	private List <Aid> aj;
 	private int tel;
 	private String name;
-
-	protected Migrant() {
-		aj = new ArrayList <>();
-	}
-
-	public void addAid(Aid currAid) {
-		aj.add(currAid);
-	}
 
 	protected void setTel(int tel) {
 		this.tel = tel;
@@ -38,7 +33,11 @@ public abstract class Migrant extends SendSMSHelper implements Observer<DetectAi
 	public String getName() {
 		return this.name;
 	}
-
+	
+	/**
+	 * Recebe a notificacao de se ter adicionada uma nova ajuda
+	 * Ver @SendSMSHelper 
+	 **/
 	public void receiveEvent (String filename, DetectAidEvent e) {
 		try {
 			sendSMS(filename, e.getMessage(), this.tel);

@@ -169,38 +169,4 @@ class RegisterAidHandlerTest {
 		Assertions.assertEquals(true, mockAidCatalog.isNotifyingCorrectly());
 
 	}
-
-	@Test
-	void tryingDifferentFilePropertyTest() throws Exception {
-
-		MockVolunteersCatalog mockVolCat = new MockVolunteersCatalog();
-		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
-		MockRegCatalog mockRegCatalog = new MockRegCatalog("defaults3.properties", reg);
-		aidHandler = new RegisterAidHandler("defaults3.properties", mockAidCatalog, mockVolCat, mockRegCatalog);
-		ScannerMock sc = new ScannerMock(System.in);
-
-		Assertions.assertDoesNotThrow(() ->
-		aidHandler.aidRegisterStart(937977373));
-
-		if(!telList.contains(937977373))
-			telList.add(937977373);
-		else 
-			Assertions.assertEquals(true, mockVolCat.volWasAdded(937977373));
-
-		Assertions.assertDoesNotThrow(() ->
-		aidHandler.offerHousing(4));
-
-		Assertions.assertDoesNotThrow(() ->
-		aidHandler.insertHousingRegion("defaults3.properties",reg.get(0)));
-
-		String code = sc.ask();
-
-		try {
-			aidHandler.offerConfirm(code);
-		} catch(IncorrectCodException e){
-			System.err.println("The confirmation failed! The code was incorrect!");
-		}
-
-		Assertions.assertEquals(true, mockAidCatalog.isNotifyingCorrectly());
-	}
 }

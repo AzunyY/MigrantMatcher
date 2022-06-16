@@ -1,5 +1,8 @@
 package pt.migrantmatcher.domain;
 
+/**
+* Esta classe e subclasse de Aid
+**/
 public class Item extends Aid {
 	private final TYPE type = TYPE.ITEM;
 	private String desc;
@@ -8,19 +11,28 @@ public class Item extends Aid {
 		super();
 		this.desc = desc;
 	}
-
+	
+	/**
+	 * Ver {@Aid}
+	 **/
 	@Override
 	public String toString() {
 		return "Tipo - " + this.type + "| Item: - " + this.desc;
 	}
 
+	/**
+	 * Ver {@Aid}
+	 **/
 	@Override
 	public String getInfo() {
 		return this.desc;
 	}
 
+	/**
+	 * Ver {@Aid}
+	 **/
 	@Override
-	public TYPE getType() {
-		return this.type;
+	public String getType() {
+		return this.type.name();
 	}
 }

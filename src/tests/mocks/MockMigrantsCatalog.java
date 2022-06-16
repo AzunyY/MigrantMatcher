@@ -2,7 +2,6 @@ package tests.mocks;
 
 import java.util.List;
 
-import pt.migrantmatcher.domain.Aid;
 import pt.migrantmatcher.domain.IndividualMigrant;
 import pt.migrantmatcher.domain.Migrant;
 import pt.migrantmatcher.domain.MigrantFamily;
@@ -29,10 +28,6 @@ public class MockMigrantsCatalog extends MigrantsCatalog{
 
 	public void addInfoNames(Migrant currMig, String name) {
 		super.addInfoNames(currMig, name);
-	}
-
-	public void addAid(Migrant migCurr, Aid currAid) {
-		super.addAid(migCurr, currAid);
 	}
 
 	public List <Migrant> getListMigrant() {

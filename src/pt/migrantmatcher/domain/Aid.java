@@ -1,5 +1,6 @@
 package pt.migrantmatcher.domain;
 
+
 /**
  * Esta classe vao ser as representacoes das ajudas 
  * E absrtacta pois estou a utilizar o padrao Template method uma vez que 
@@ -10,6 +11,7 @@ public abstract class Aid {
 		
 	private boolean availability;
 	private Voluntary vol;
+	private int ref;
 	/**
 	 * Construtor de uma Ajuda 
 	 * @ensures a ajuda estah disponivel
@@ -70,6 +72,20 @@ public abstract class Aid {
 	 * Devolve o tipo de ajudas 
 	 * @return uma String com o tipo da ajuda
 	 */
-	public abstract TYPE getType();
+	public abstract String getType();
+
+	/**
+	 * Regista a referencia para a ajuda
+	 **/
+	public void setRef(int count) {
+		this.ref = count;
+	}
+
+	/**
+	 * Devolve a referencia da ajuda
+	 **/
+	public int getRef() {
+		return ref;
+	}
 }
 
