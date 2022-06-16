@@ -17,7 +17,6 @@ import pt.migrantmatcher.exceptions.RegionInsertedIsNotValid;
 import pt.migrantmatcher.exceptions.AidIsNonExistenceException;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
 import pt.migrantmatcher.exceptions.ThereIsNoRegionCatalogoException;
-import pt.migrantmatcher.exceptions.ThereIsNoValueInPropertiesException;
 import pt.migrantmatcher.facade.MigrantMatcherSystem;
 import pt.migrantmatcher.facade.DTO.AidDTO;
 import pt.migrantmatcher.facade.handlers.SearchForAidHandler;

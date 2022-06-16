@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pt.migrantmatcher.exceptions.ErrorCreatingRegionsException;
-import pt.migrantmatcher.exceptions.ThereIsNoValueInPropertiesException;
+import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 
 public class RegionCatalog {
 
 	//A lista das regioes deve estar no configuration
 	protected List <Region> regsList;
 
-	protected RegionCatalog(String filename, List <String> regions) throws ErrorCreatingRegionsException {
+	protected RegionCatalog(String filename, List <String> regions) throws ErrorCreatingRegionsException, PropertiesLoadingException {
 
 		MigrantConfiguration catReg = MigrantConfiguration.getInstance(filename);
 		List<String> listReg;
@@ -19,13 +19,14 @@ public class RegionCatalog {
 		try {
 			listReg = catReg.getProperty("regioes");
 			addToList(listReg);
-		} catch (ThereIsNoValueInPropertiesException e) {
+		} catch (PropertiesLoadingException e) {
 			
-			if(regsList.isEmpty())
+			if(regions.isEmpty() || regions.equals(null))
 				throw new ErrorCreatingRegionsException();
 			
 			addToList(regions);
 			System.err.println("There is a value missing in the properties file but it will be used a default value!");
+			throw new PropertiesLoadingException();
 		}		
 	}
 

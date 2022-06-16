@@ -14,7 +14,6 @@ import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 import pt.migrantmatcher.exceptions.AidIsNonExistenceException;
 import pt.migrantmatcher.exceptions.ErrorCreatingCurAidException;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
-import pt.migrantmatcher.exceptions.ThereIsNoValueInPropertiesException;
 import pt.migrantmatcher.facade.DTO.AidDTO;
 import pt.migrantmatcher.plugins.SendSMSHelper;
 import pt.migrantmatcher.strategies.OrderAids;
@@ -80,7 +79,7 @@ public class SearchForAidHandler extends SendSMSHelper {
 		return this.catReg.getRegions(); //1
 	}
 
-	public List <AidDTO> insertChoosenRegion(String filename, String reg) throws AidIsNonExistenceException, ThereIsNoValueInPropertiesException {
+	public List <AidDTO> insertChoosenRegion(String filename, String reg) throws AidIsNonExistenceException, PropertiesLoadingException {
 
 		List <Aid> aidsList = this.catAids.filterByReg(reg); //1
 
@@ -95,7 +94,7 @@ public class SearchForAidHandler extends SendSMSHelper {
 					.stream()
 					.map(a -> new AidDTO(a.getInfo(), a.getType(), a.getAvailability(), a.getVol()))
 					.collect(Collectors.toList());
-		} catch (ThereIsNoValueInPropertiesException | PropertiesLoadingException e) {
+		} catch (PropertiesLoadingException e) {
 			System.err.println("There is no value in the properties file but it will be used a default value!");
 			order = new OrderByStrategyType();
 			return order.order(aidsList)

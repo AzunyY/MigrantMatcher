@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Properties;
 
 import pt.migrantmatcher.exceptions.PropertiesLoadingException;
-import pt.migrantmatcher.exceptions.ThereIsNoValueInPropertiesException;
 
 /*USAR SINGLETON*/
 
@@ -21,22 +20,20 @@ public class MigrantConfiguration {
 	private static MigrantConfiguration INSTANCE = null; // Lazy loading colocar a null
 
 
-	protected MigrantConfiguration(String fileName) {
+	protected MigrantConfiguration(String fileName) throws PropertiesLoadingException {
 
 		try {
 			props.load(new FileInputStream(new File(fileName)));
 		}
 		catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new PropertiesLoadingException();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new PropertiesLoadingException();
 		}
 	}
 
 
-	public static MigrantConfiguration getInstance(String filename) {
+	public static MigrantConfiguration getInstance(String filename) throws PropertiesLoadingException {
 		if (INSTANCE == null) {
 			INSTANCE = new MigrantConfiguration(filename);
 		}
@@ -44,31 +41,29 @@ public class MigrantConfiguration {
 		return MigrantConfiguration.INSTANCE;
 	}
 
-	public List<String> getProperty(String key) throws ThereIsNoValueInPropertiesException {
+	public List<String> getProperty(String key) throws PropertiesLoadingException {
 
 		List<String> listString = new ArrayList <>();
-		
+
 		try {
-			String[] listReg = props.getProperty(key).split("\\s+|,\\s*|\\.\\s*");
+			String s = props.getProperty(key);
 
-			if(listReg.length != 0)
-				for(String regS : listReg)
-					listString.add(regS);
-			else
-				throw new ThereIsNoValueInPropertiesException();
-
+			String [] listReg = s.split("\\s+|,\\s*|\\.\\s*");
+			for(String regS : listReg)
+				listString.add(regS);
+			
 		} catch(NullPointerException e) {
-			throw new ThereIsNoValueInPropertiesException();
+			throw new PropertiesLoadingException();
 		}
 
 		return listString;
 	}
 
-	public <T> T getClass(String key) throws ThereIsNoValueInPropertiesException, PropertiesLoadingException {
+	public <T> T getClass(String key) throws PropertiesLoadingException {
 
 		String klassName = (String) props.get(key);
 		if (klassName == null) {
-			throw new ThereIsNoValueInPropertiesException();
+			throw new PropertiesLoadingException();
 		}
 
 		try {

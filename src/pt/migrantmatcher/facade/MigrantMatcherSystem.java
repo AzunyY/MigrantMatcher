@@ -3,7 +3,7 @@ package pt.migrantmatcher.facade;
 import java.util.List;
 
 import pt.migrantmatcher.exceptions.ErrorCreatingRegionsException;
-import pt.migrantmatcher.exceptions.NoFileNameException;
+import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 import pt.migrantmatcher.facade.handlers.SearchForAidHandler;
 import tests.mocks.MockAidsCatalog;
 import tests.mocks.MockMigrantsCatalog;
@@ -14,18 +14,18 @@ import pt.migrantmatcher.facade.handlers.RegisterAidHandler;
 public class MigrantMatcherSystem {
 
 	private MockRegCatalog catReg;
-	private MockMigrantsCatalog catMig;
-	private MockAidsCatalog catAids;
-	private MockVolunteersCatalog catVol;
+	private MockMigrantsCatalog catMig = new MockMigrantsCatalog();
+	private MockAidsCatalog catAids = new MockAidsCatalog();
+	private MockVolunteersCatalog catVol = new MockVolunteersCatalog();
 	private String filename;
 
-	public MigrantMatcherSystem(String filename, List <String> reg) throws ErrorCreatingRegionsException, NoFileNameException {
-		
-		this.catMig = new MockMigrantsCatalog();
-		this.catAids = new MockAidsCatalog();
-		this.catVol = new MockVolunteersCatalog();
-		this.catReg = new MockRegCatalog(filename, reg);
+	public MigrantMatcherSystem(String filename, List <String> catReg) throws PropertiesLoadingException, ErrorCreatingRegionsException {	
+		this(new MockRegCatalog (filename, catReg));
 		this.filename = filename;
+	}
+
+	public MigrantMatcherSystem(MockRegCatalog catReg) {
+		this.catReg = catReg;
 	}
 
 	// UC1
