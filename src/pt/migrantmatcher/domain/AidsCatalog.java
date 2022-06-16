@@ -11,40 +11,45 @@ import utils.observer.Observable;
 public class AidsCatalog extends Observable<DetectAidEvent>{
 
 	private List <Aid> listAids;
+	private boolean notifyingCorrectly;
 
-	public AidsCatalog() {
-		listAids = new ArrayList<>();
+	protected AidsCatalog() {
+		this.listAids = new ArrayList<>();
+		this.notifyingCorrectly = false;
 	}
 
-	public Housing createHousing(int nPessoas) {
+	protected Housing createHousing(int nPessoas) {
 		return new Housing(nPessoas); //1.1
 	}
 
-	public void insertReg (Aid currAid, Region region) {
+	protected void insertReg (Aid currAid, Region region) {
 		((Housing) currAid).setRegion(region); //1.1
 	}
 
-	public Item getNewItem(String desc) {
+	protected Item getNewItem(String desc) {
 		return new Item(desc);
 	}
 
-	public void addAid(String filename, Aid currAid, Voluntary volCurr, List <String> regList) {
+	protected void addAid(String filename, Aid currAid, Voluntary volCurr, List <String> regList) {
 		
 		currAid.setVol(volCurr); //2.1
 		listAids.add(currAid); //2.2
 
 		boolean notifyAll = currAid instanceof Housing ? false : true;
-
+		
 		if(notifyAll) {
+			notifyingCorrectly = currAid instanceof Item ? true : false;;
 			for(String s : regList)
 				notifyAllObservers(new DetectAidEvent(s), filename,s);
+		
 		} else {
+			notifyingCorrectly = currAid instanceof Housing ? true : false;;
 			String reg = ((Housing) currAid).getRegion().getName();
 			notifySingleObservers(new DetectAidEvent(reg), filename, reg);
 		}
 	}
 
-	public List<Aid> filterByReg(String reg) {
+	protected List<Aid> filterByReg(String reg) {
 
 		List <Aid> listAjudasReg = new ArrayList<>();//1.1
 
@@ -60,9 +65,9 @@ public class AidsCatalog extends Observable<DetectAidEvent>{
 		return listAjudasReg;
 	}
 
-	public Aid getAid(AidDTO aidDTO) {
+	protected Aid getAid(AidDTO aidDTO) {
 
-		for(Aid a: this.listAids)
+		for(Aid a: this.listAids) 
 			if(a.getType().toString().equals(aidDTO.getType().toString()) 
 					&& a.getInfo().equals(aidDTO.getInfo()))
 				return a;
@@ -70,13 +75,16 @@ public class AidsCatalog extends Observable<DetectAidEvent>{
 		return null;
 	}
 
-	public List<Aid> getAidList() {
+	protected List<Aid> getAidList() {
 		return this.listAids;
 	}
 
-	public Optional<Boolean> aidWasAdded(Aid currAid) {
+	protected Optional<Boolean> aidWasAdded(Aid currAid) {
 		Optional<Boolean> aid = Optional.ofNullable(listAids.contains(currAid));
 		return aid;
-
+	}
+	
+	protected boolean isNotifyingCorrectly() {
+		return notifyingCorrectly;
 	}
 }

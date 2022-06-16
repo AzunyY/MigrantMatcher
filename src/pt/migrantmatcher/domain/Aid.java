@@ -49,4 +49,8 @@ public abstract class Aid {
 	public Type getType() {
 		return type;
 	}
+
+	public boolean getAvailability() {
+		return availability;
+	}
 }

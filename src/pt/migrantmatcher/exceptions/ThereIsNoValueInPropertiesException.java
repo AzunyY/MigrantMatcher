@@ -1,4 +1,4 @@
-package pt.migrantmatcher.exceptios;
+package pt.migrantmatcher.exceptions;
 
 @SuppressWarnings("serial")
 public class ThereIsNoValueInPropertiesException extends Exception {

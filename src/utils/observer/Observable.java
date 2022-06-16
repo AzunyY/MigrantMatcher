@@ -17,6 +17,8 @@ public class Observable<T extends Event> {
 
 	protected void notifyAllObservers(T event, String filename, String reg) {
 		
+		System.out.println("Sending notification to the migrants...");
+		
 		for (Entry<Observer <T>, String> entry : observers.entrySet()) {
 		    if(entry.getValue().equals(reg))
 		    	entry.getKey().receiveEvent(filename,event);
@@ -24,10 +26,13 @@ public class Observable<T extends Event> {
 	}
 
 	protected void notifySingleObservers(T event, String filename, String reg) {
-		observers.forEach((key,value) -> {
+
+		System.out.println("Sending notification to the migrants...");
+
+		observers.forEach((key,value) -> {			
 			if(value.equals(reg))
 				key.receiveEvent(filename, event);
-		} );
+		});
 	}
 
 	public void addObserver(Observer<T> o, String reg) {

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import pt.migrantmatcher.domain.Region;
 import pt.migrantmatcher.exceptions.AidIsNotValidException;
+import pt.migrantmatcher.exceptions.ErrorCreatingCurAidException;
 import pt.migrantmatcher.exceptions.ErrorCreatingRegionsException;
 import pt.migrantmatcher.exceptions.ErrorInsertingInCatalogException;
 import pt.migrantmatcher.exceptions.ErrorSettingCodException;
@@ -17,7 +17,7 @@ import pt.migrantmatcher.exceptions.RegionInsertedIsNotValid;
 import pt.migrantmatcher.exceptions.AidIsNonExistenceException;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
 import pt.migrantmatcher.exceptions.ThereIsNoRegionCatalogoException;
-import pt.migrantmatcher.exceptios.ThereIsNoValueInPropertiesException;
+import pt.migrantmatcher.exceptions.ThereIsNoValueInPropertiesException;
 import pt.migrantmatcher.facade.MigrantMatcherSystem;
 import pt.migrantmatcher.facade.DTO.AidDTO;
 import pt.migrantmatcher.facade.handlers.SearchForAidHandler;
@@ -25,7 +25,7 @@ import pt.migrantmatcher.facade.handlers.RegisterAidHandler;
 
 public class MigrantMatcherExample {
 
-	public static void main(String[] args) throws ErrorSettingCodException{
+	public static void main(String[] args) throws ErrorSettingCodException, NoFileNameException, ErrorCreatingCurAidException{
 
 		List <String> reg = new ArrayList <>();
 		reg.add("Lisboa");
@@ -113,7 +113,7 @@ public class MigrantMatcherExample {
 		} catch(InfoFamilyMemberException e) { 
 			System.err.println("The number of family members which information you have inserted is not valid!");
 		} catch (AidIsNonExistenceException e) {
-			searchAidHandler.requestsToBeNotified(new Region(reg.get(0)));
+			searchAidHandler.requestsToBeNotified(reg.get(0));
 			System.err.println("There's no available aid at: " + reg.get(0).toString() + ", you will be notified when it does!");
 		} catch (ThereIsNoValueInPropertiesException e) {
 			// TODO Auto-generated catch block

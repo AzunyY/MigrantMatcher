@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Properties;
 
 import pt.migrantmatcher.exceptions.PropertiesLoadingException;
-import pt.migrantmatcher.exceptios.ThereIsNoValueInPropertiesException;
+import pt.migrantmatcher.exceptions.ThereIsNoValueInPropertiesException;
 
 /*USAR SINGLETON*/
 
@@ -44,15 +44,16 @@ public class MigrantConfiguration {
 		return MigrantConfiguration.INSTANCE;
 	}
 
-	public List<String> getProperty(String chave) throws ThereIsNoValueInPropertiesException {
+	public List<String> getProperty(String key) throws ThereIsNoValueInPropertiesException {
 
 		List<String> listString = new ArrayList <>();
+		
 		try {
-			String[] listReg = props.getProperty(chave).split("[ ,]+");
+			String[] listReg = props.getProperty(key).split("\\s+|,\\s*|\\.\\s*");
 
 			if(listReg.length != 0)
-				for(String s : listReg)
-					listString.add(s);
+				for(String regS : listReg)
+					listString.add(regS);
 			else
 				throw new ThereIsNoValueInPropertiesException();
 

@@ -6,9 +6,11 @@ public class AidDTO {
 
 	private String info;
 	private Type type;
+	private boolean availability;
 	
-	public AidDTO(String info, Type type) {
+	public AidDTO(String info, Type type, boolean availability) {
 		this.info = info;
+		this.availability = availability;
 		this.type = type;
 	}
 	
@@ -24,5 +26,9 @@ public class AidDTO {
 	
 	public String getInfo() {
 		return this.info;
+	}
+
+	public boolean getAvailability() {
+		return this.availability;
 	}
 }

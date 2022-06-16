@@ -5,9 +5,6 @@ import java.util.Optional;
 import java.util.Random;
 
 import pt.migrantmatcher.domain.Aid;
-import pt.migrantmatcher.domain.AidsCatalog;
-import pt.migrantmatcher.domain.RegionCatalog;
-import pt.migrantmatcher.domain.VolunteersCatalog;
 import pt.migrantmatcher.domain.Region;
 import pt.migrantmatcher.domain.Voluntary;
 import pt.migrantmatcher.exceptions.AidIsNotValidException;
@@ -20,37 +17,29 @@ import pt.migrantmatcher.exceptions.RegionInsertedIsNotValid;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
 import pt.migrantmatcher.exceptions.ThereIsNoRegionCatalogoException;
 import pt.migrantmatcher.plugins.SendSMSHelper;
+import tests.mocks.MockAidsCatalog;
+import tests.mocks.MockRegCatalog;
+import tests.mocks.MockVolunteersCatalog;
 
 public class RegisterAidHandler extends SendSMSHelper{
 
-	private VolunteersCatalog catVol;
-	private RegionCatalog catReg;
-	private AidsCatalog catAid;
+	private MockVolunteersCatalog catVol;
+	private MockRegCatalog catReg;
+	private MockAidsCatalog catAid;
 	private Voluntary volCurr;
 	private Aid currAid;
 	private String filename;
 
-	private static RegisterAidHandler INSTANCE = null; // Lazy loading colocar a null
 
-	protected RegisterAidHandler(String filename, AidsCatalog catAid, VolunteersCatalog catVol, RegionCatalog catReg) {
+	public RegisterAidHandler(String filename, MockAidsCatalog mockAidCatalog, MockVolunteersCatalog catVol, MockRegCatalog catReg) {
 		
-		this.filename = filename;
 		this.catVol = catVol;
+		this.filename = filename;
 		this.catReg = catReg;
-		this.catAid = catAid;
+		this.catAid = mockAidCatalog;
 
 	}
-
-	public static RegisterAidHandler getInstance(String filename, AidsCatalog catAid, VolunteersCatalog catVol, RegionCatalog catReg) {
-
-		if (INSTANCE == null) {
-			INSTANCE = new RegisterAidHandler(filename, catAid, catVol, catReg);
-		}
-
-		return RegisterAidHandler.INSTANCE;
-
-	}
-
+	
 	public void aidRegisterStart(int tel) throws RegisterIsNotValidException {
 
 		volCurr = this.catVol.getVol(tel); // 1
@@ -75,18 +64,15 @@ public class RegisterAidHandler extends SendSMSHelper{
 		return this.catReg.getRegions(); //2
 	}
 
-	public void insertHousingRegion(String region) throws RegionInsertedIsNotValid, PropertiesLoadingException {
+	public void insertHousingRegion(String region) throws RegionInsertedIsNotValid, PropertiesLoadingException, NoFileNameException, ErrorSettingCodException {
 
-		if(region.isBlank())
+		if(!this.catReg.isValid(region))
 			throw new RegionInsertedIsNotValid();
+		
 
 		this.catAid.insertReg(currAid, new Region (region)); //1
-		try {
-			sendSMS(this.filename, "Your confirmation code: " + generateCod(), volCurr.getTel());
-		} catch (NoFileNameException | PropertiesLoadingException | ErrorSettingCodException e) {
-			System.err.println("There is no value in the properties file but it will be used a default value!");
-			throw new PropertiesLoadingException(); 
-		}
+		sendSMS(this.filename, "Your confirmation code: " + generateCod(), volCurr.getTel());
+		
 	}
 
 	public void offerItem(String desc) throws AidIsNotValidException, PropertiesLoadingException {
@@ -98,7 +84,7 @@ public class RegisterAidHandler extends SendSMSHelper{
 		try {
 			sendSMS(this.filename, "Your confirmation code: " + generateCod(), volCurr.getTel());
 		} catch (NoFileNameException | PropertiesLoadingException | ErrorSettingCodException e) {
-			System.err.println("There is no value in the properties file but it will be used a default value!");
+			System.err.println("There file is missing a value, it will be used a default value!");
 			throw new PropertiesLoadingException(); 
 		}
 
@@ -127,16 +113,12 @@ public class RegisterAidHandler extends SendSMSHelper{
 			this.catVol.addVolToCatalog(this.volCurr);
 			this.catAid.addAid(this.filename, this.currAid, this.volCurr, this.catReg.getRegions()); //2
 			
-			Optional <Voluntary> volIsInCatalog = this.catVol.volWasAdded(this.volCurr.getTel());
-			if(volIsInCatalog.isEmpty())
-				throw new ErrorInsertingInCatalogException();
-			
 			Optional <Boolean> aidIsInCatalog = this.catAid.aidWasAdded(this.currAid);	
+			
 			if(aidIsInCatalog.isEmpty())
 				throw new ErrorInsertingInCatalogException();
 
 		} else
 			throw new IncorrectCodException();
-
 	}
 }
