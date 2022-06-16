@@ -2,15 +2,14 @@ package pt.migrantmatcher.domain;
 
 
 public class Housing extends Aid {
-	
+	private final TYPE type = TYPE.HOUSING;
+
 	private int nPersons;
 	private Region reg;
 	
 	protected Housing(int nPersons) {
 		super();
 		this.nPersons = nPersons;
-		setType(TYPE.HOUSING);
-		setInfo(Integer.toString(nPersons));
 	}
 	
 	public void setRegion(Region reg) {
@@ -23,5 +22,20 @@ public class Housing extends Aid {
 
 	public int getnPersons() {
 		return nPersons;
+	}
+
+	@Override
+	public String toString() {
+		return "Tipo - " + this.type + "| Alojamento na regiao: - " + this.reg;
+	}
+
+	@Override
+	public String getInfo() {
+		return this.reg.getName();
+	}
+
+	@Override
+	public TYPE getType() {
+		return this.type;
 	}
 }

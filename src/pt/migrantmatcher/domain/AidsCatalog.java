@@ -56,9 +56,9 @@ public class AidsCatalog extends Observable<DetectAidEvent>{
 		listAids.stream()
 		.forEach(x -> {
 			if(x instanceof Housing) {
-				if(((Housing) x).getRegion().getName().equals(reg) && x.isAidAvailable()) //1.2 
+				if(((Housing) x).getRegion().getName().equals(reg) && x.getAvailability()) //1.2 
 					listAjudasReg.add(x); //1.3
-			}else if (x.isAidAvailable()) //1.4
+			}else if (x.getAvailability()) //1.4
 				listAjudasReg.add(x); //1.5
 		});
 
