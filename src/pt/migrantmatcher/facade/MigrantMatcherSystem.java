@@ -20,12 +20,14 @@ public class MigrantMatcherSystem {
 	private String filename;
 
 	public MigrantMatcherSystem(String filename, List <String> catReg) throws PropertiesLoadingException, ErrorCreatingRegionsException {	
-		this(new MockRegCatalog (filename, catReg));
+		this(filename, new MockRegCatalog (filename, catReg));
 		this.filename = filename;
 	}
 
-	public MigrantMatcherSystem(MockRegCatalog catReg) {
+	public MigrantMatcherSystem(String filename, MockRegCatalog catReg) {
 		this.catReg = catReg;
+		this.filename = filename;
+
 	}
 
 	// UC1

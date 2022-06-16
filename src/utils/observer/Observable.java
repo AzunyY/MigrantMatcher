@@ -19,20 +19,17 @@ public class Observable<T extends Event> {
 		
 		System.out.println("Sending notification to the migrants...");
 		
+		boolean isSent = false;
+		
 		for (Entry<Observer <T>, String> entry : observers.entrySet()) {
-		    if(entry.getValue().equals(reg))
+		    if(entry.getValue().equals(reg)) {
+		    	isSent = true;
 		    	entry.getKey().receiveEvent(filename,event);
+		    }
 		}
-	}
-
-	protected void notifySingleObservers(T event, String filename, String reg) {
-
-		System.out.println("Sending notification to the migrants...");
-
-		observers.forEach((key,value) -> {			
-			if(value.equals(reg))
-				key.receiveEvent(filename, event);
-		});
+		
+		if(!isSent)
+		System.out.println("No migrants registerd for the notification!");
 	}
 
 	public void addObserver(Observer<T> o, String reg) {

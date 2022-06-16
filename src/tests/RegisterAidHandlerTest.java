@@ -56,7 +56,7 @@ class RegisterAidHandlerTest {
 		aidHandler.offerHousing(3));
 
 		Assertions.assertDoesNotThrow(() ->
-		aidHandler.insertHousingRegion(reg.get(0)));
+		aidHandler.insertHousingRegion("defaults.properties", reg.get(0)));
 
 		String code = sc.ask();
 
@@ -108,8 +108,7 @@ class RegisterAidHandlerTest {
 		aidHandler.offerHousing(4));
 
 		Assertions.assertThrows(RegionInsertedIsNotValid.class, () ->
-		aidHandler.insertHousingRegion(""));
-
+		aidHandler.insertHousingRegion("defaults2.properties", ""));
 	}
 
 	@Test
@@ -132,7 +131,7 @@ class RegisterAidHandlerTest {
 		aidHandler.offerHousing(4));
 
 		Assertions.assertThrows(RegionInsertedIsNotValid.class, () ->
-		aidHandler.insertHousingRegion("Bigorne"));
+		aidHandler.insertHousingRegion("defaults.properties", "Bigorne"));
 
 	}
 
@@ -157,7 +156,7 @@ class RegisterAidHandlerTest {
 		aidHandler.offerHousing(4));
 
 		Assertions.assertThrows(NoFileNameException.class, () ->
-		aidHandler.insertHousingRegion(reg.get(0)));
+		aidHandler.insertHousingRegion("", reg.get(0)));
 
 		String code = sc.ask();
 
@@ -192,7 +191,7 @@ class RegisterAidHandlerTest {
 		aidHandler.offerHousing(4));
 
 		Assertions.assertDoesNotThrow(() ->
-		aidHandler.insertHousingRegion(reg.get(0)));
+		aidHandler.insertHousingRegion("defaults3.properties",reg.get(0)));
 
 		String code = sc.ask();
 

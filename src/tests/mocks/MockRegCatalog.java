@@ -11,7 +11,6 @@ public class MockRegCatalog extends RegionCatalog {
 	public MockRegCatalog(String string, List<String> reg) throws ErrorCreatingRegionsException, PropertiesLoadingException {
 		super(string, reg);
 	}
-	
 
 	public void addToList(List<String> listReg) {
 		super.addToList(listReg);	

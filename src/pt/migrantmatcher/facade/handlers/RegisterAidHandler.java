@@ -16,6 +16,7 @@ import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 import pt.migrantmatcher.exceptions.RegionInsertedIsNotValid;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
 import pt.migrantmatcher.exceptions.ThereIsNoRegionCatalogoException;
+import pt.migrantmatcher.facade.DTO.AidDTO;
 import pt.migrantmatcher.plugins.SendSMSHelper;
 import tests.mocks.MockAidsCatalog;
 import tests.mocks.MockRegCatalog;
@@ -64,15 +65,13 @@ public class RegisterAidHandler extends SendSMSHelper{
 		return this.catReg.getRegions(); //2
 	}
 
-	public void insertHousingRegion(String region) throws RegionInsertedIsNotValid, PropertiesLoadingException, NoFileNameException, ErrorSettingCodException {
+	public void insertHousingRegion(String filename, String region) throws RegionInsertedIsNotValid, PropertiesLoadingException, NoFileNameException, ErrorSettingCodException {
 
 		if(!this.catReg.isValid(region))
 			throw new RegionInsertedIsNotValid();
-		
 
-		this.catAid.insertReg(currAid, new Region (region)); //1
+		this.catAid.insertReg(this.currAid, new Region (region)); //1
 		sendSMS(this.filename, "Your confirmation code: " + generateCod(), volCurr.getTel());
-		
 	}
 
 	public void offerItem(String desc) throws AidIsNotValidException, PropertiesLoadingException {
@@ -81,6 +80,7 @@ public class RegisterAidHandler extends SendSMSHelper{
 			throw new AidIsNotValidException();
 
 		this.currAid = this.catAid.getNewItem(desc); //1
+		
 		try {
 			sendSMS(this.filename, "Your confirmation code: " + generateCod(), volCurr.getTel());
 		} catch (NoFileNameException | PropertiesLoadingException | ErrorSettingCodException e) {

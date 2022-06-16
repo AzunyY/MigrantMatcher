@@ -1,7 +1,5 @@
 package pt.migrantmatcher.domain;
 
-import pt.migrantmatcher.facade.DTO.AidDTO;
-
 public abstract class Aid {
 		
 	private boolean availability;
@@ -14,13 +12,6 @@ public abstract class Aid {
 	 **/
 	protected Aid() {
 		availability = true;
-	}
-	
-	public Aid(AidDTO aid) {
-		availability = true;
-		this.info = aid.getInfo();
-		this.type = aid.getType();
-		this.vol = new Voluntary(aid.getTel());
 	}
 	
 	public boolean isAidAvailable() {

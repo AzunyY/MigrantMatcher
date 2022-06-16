@@ -45,7 +45,7 @@ public class AidsCatalog extends Observable<DetectAidEvent>{
 		} else {
 			notifyingCorrectly = currAid instanceof Housing ? true : false;;
 			String reg = ((Housing) currAid).getRegion().getName();
-			notifySingleObservers(new DetectAidEvent(reg), filename, reg);
+			notifyAllObservers(new DetectAidEvent(reg), filename, reg);
 		}
 	}
 

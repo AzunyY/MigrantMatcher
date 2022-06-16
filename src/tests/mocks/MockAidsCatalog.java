@@ -20,11 +20,7 @@ public class MockAidsCatalog extends AidsCatalog {
 	public Housing createHousing(int nPessoas) {
 		return super.createHousing(nPessoas);
 	}
-
-	public void insertReg (Aid currAid, Region region) {
-		super.insertReg(currAid, region);
-	}
-
+	
 	public Item getNewItem(String desc) {
 		return super.getNewItem(desc);
 	}
@@ -51,6 +47,11 @@ public class MockAidsCatalog extends AidsCatalog {
 	
 	public boolean isNotifyingCorrectly() {
 		return super.isNotifyingCorrectly();
+	}
+
+	public void insertReg(Aid currAid, Region region) {
+		super.insertReg(currAid, region);
+		
 	}
 	
 }
