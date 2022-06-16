@@ -1,17 +1,26 @@
 package pt.migrantmatcher.domain;
 
+import pt.migrantmatcher.facade.DTO.AidDTO;
+
 public abstract class Aid {
 		
 	private boolean availability;
 	private Voluntary vol;
 	private String info;
-	private Type type;
+	private TYPE type;
 	
 	/**
 	 * Vai-se usar o pattern: Template method  
 	 **/
 	protected Aid() {
 		availability = true;
+	}
+	
+	public Aid(AidDTO aid) {
+		availability = true;
+		this.info = aid.getInfo();
+		this.type = aid.getType();
+		this.vol = new Voluntary(aid.getTel());
 	}
 	
 	public boolean isAidAvailable() {
@@ -22,7 +31,7 @@ public abstract class Aid {
 		this.info = info;
 	}
 	
-	protected void setType (Type type) {
+	protected void setType (TYPE type) {
 		this.type = type;
 	}
 	
@@ -46,7 +55,7 @@ public abstract class Aid {
 		return info;
 	}
 	
-	public Type getType() {
+	public TYPE getType() {
 		return type;
 	}
 

@@ -36,6 +36,7 @@ public class Observable<T extends Event> {
 	}
 
 	public void addObserver(Observer<T> o, String reg) {
+		System.out.println("Migrant added to the observerers list of region: " + reg);
 		observers.put(o, reg);
 	}
 }

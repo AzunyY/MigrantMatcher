@@ -25,7 +25,7 @@ class RegisterAidHandlerTest {
 	private RegisterAidHandler aidHandler;
 
 	@BeforeEach
-	protected void setUp() {
+	void setUp() {
 
 		reg = new ArrayList <>();
 		reg.add("Lisboa");
@@ -35,18 +35,18 @@ class RegisterAidHandlerTest {
 	}
 
 	@Test 
-	protected void simpleTest() throws Exception {
+	void simpleTest() throws Exception {
 
 		MockVolunteersCatalog mockVolCat = new MockVolunteersCatalog();
 		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
 		MockRegCatalog mockRegCatalog = new MockRegCatalog("defaults.properties", reg);
 		ScannerMock sc = new ScannerMock(System.in);
-		
+
 		aidHandler = new RegisterAidHandler("defaults.properties", mockAidCatalog, mockVolCat, mockRegCatalog);
 
 		Assertions.assertDoesNotThrow(() ->
 		aidHandler.aidRegisterStart(937977373));
-		
+
 		if(!telList.contains(937977373))
 			telList.add(937977373);
 		else 
@@ -65,11 +65,11 @@ class RegisterAidHandlerTest {
 		} catch(IncorrectCodException e){
 			System.err.println("The confirmation failed! The code was incorrect!");
 		}
-		
+
 	}
 
 	@Test
-	protected void numberFamilyMemNotValidTest() throws Exception {
+	void numberFamilyMemNotValidTest() throws Exception {
 
 		MockVolunteersCatalog mockVolCat = new MockVolunteersCatalog();
 		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
@@ -78,7 +78,7 @@ class RegisterAidHandlerTest {
 
 		Assertions.assertDoesNotThrow(() ->
 		aidHandler.aidRegisterStart(937977373));
-		
+
 		if(!telList.contains(937977373))
 			telList.add(937977373);
 		else 
@@ -89,7 +89,7 @@ class RegisterAidHandlerTest {
 	}
 
 	@Test
-	protected void regionIsNotValidTest() throws Exception {
+	void regionIsNotValidTest() throws Exception {
 
 		MockVolunteersCatalog mockVolCat = new MockVolunteersCatalog();
 		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
@@ -98,7 +98,7 @@ class RegisterAidHandlerTest {
 
 		Assertions.assertDoesNotThrow(() ->
 		aidHandler.aidRegisterStart(937977373));
-		
+
 		if(!telList.contains(937977373))
 			telList.add(937977373);
 		else 
@@ -113,7 +113,7 @@ class RegisterAidHandlerTest {
 	}
 
 	@Test
-	protected void regionIsNotInTheListTest() throws Exception {
+	void regionIsNotInTheListTest() throws Exception {
 
 		MockVolunteersCatalog mockVolCat = new MockVolunteersCatalog();
 		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
@@ -122,7 +122,7 @@ class RegisterAidHandlerTest {
 
 		Assertions.assertDoesNotThrow(() ->
 		aidHandler.aidRegisterStart(937977373));
-		
+
 		if(!telList.contains(937977373))
 			telList.add(937977373);
 		else 
@@ -137,7 +137,7 @@ class RegisterAidHandlerTest {
 	}
 
 	@Test
-	protected void propertiesWithoutNameTest() throws Exception {
+	void propertiesWithoutNameTest() throws Exception {
 
 		MockVolunteersCatalog mockVolCat = new MockVolunteersCatalog();
 		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
@@ -147,7 +147,7 @@ class RegisterAidHandlerTest {
 
 		Assertions.assertDoesNotThrow(() ->
 		aidHandler.aidRegisterStart(937977373));
-		
+
 		if(!telList.contains(937977373))
 			telList.add(937977373);
 		else 
@@ -166,13 +166,13 @@ class RegisterAidHandlerTest {
 		} catch(IncorrectCodException e){
 			System.err.println("The confirmation failed! The code was incorrect!");
 		}
-		
+
 		Assertions.assertEquals(true, mockAidCatalog.isNotifyingCorrectly());
 
 	}
-	
+
 	@Test
-	protected void tryingDifferentFilePropertyTest() throws Exception {
+	void tryingDifferentFilePropertyTest() throws Exception {
 
 		MockVolunteersCatalog mockVolCat = new MockVolunteersCatalog();
 		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
@@ -182,7 +182,7 @@ class RegisterAidHandlerTest {
 
 		Assertions.assertDoesNotThrow(() ->
 		aidHandler.aidRegisterStart(937977373));
-		
+
 		if(!telList.contains(937977373))
 			telList.add(937977373);
 		else 
@@ -201,7 +201,7 @@ class RegisterAidHandlerTest {
 		} catch(IncorrectCodException e){
 			System.err.println("The confirmation failed! The code was incorrect!");
 		}
-		
+
 		Assertions.assertEquals(true, mockAidCatalog.isNotifyingCorrectly());
 	}
 }

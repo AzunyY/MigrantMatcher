@@ -59,7 +59,7 @@ public class SearchForAidHandler extends SendSMSHelper {
 
 	public void addHeadInfo(String name, int tel) throws RegisterIsNotValidException {
 
-		if(name.isBlank())
+		if(name.isEmpty())
 			throw new RegisterIsNotValidException();
 
 		this.catMig.addInfoHead(migCurr, name, tel); //1
@@ -93,14 +93,14 @@ public class SearchForAidHandler extends SendSMSHelper {
 			order = ordemAjudas.getClass("orderHelpType");
 			return order.order(aidsList)
 					.stream()
-					.map(a -> new AidDTO(a.getInfo(), a.getType(), a.getAvailability()))
+					.map(a -> new AidDTO(a.getInfo(), a.getType(), a.getAvailability(), a.getVol()))
 					.collect(Collectors.toList());
 		} catch (ThereIsNoValueInPropertiesException | PropertiesLoadingException e) {
 			System.err.println("There is no value in the properties file but it will be used a default value!");
 			order = new OrderByStrategyType();
 			return order.order(aidsList)
 					.stream()
-					.map(a -> new AidDTO(a.getInfo(), a.getType(), a.getAvailability()))
+					.map(a -> new AidDTO(a.getInfo(), a.getType(), a.getAvailability(), a.getVol()))
 					.collect(Collectors.toList());
 		}	
 
@@ -127,6 +127,7 @@ public class SearchForAidHandler extends SendSMSHelper {
 	public void requestsToBeNotified(String reg) {
 
 		this.catAids.addObserver(this.migCurr, reg);
+		
 
 	}
 

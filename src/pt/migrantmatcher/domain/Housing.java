@@ -8,7 +8,7 @@ public class Housing extends Aid {
 	protected Housing(int nPersons) {
 		super();
 		this.nPersons = nPersons;
-		setType(Type.HOUSING);
+		setType(TYPE.HOUSING);
 		setInfo(Integer.toString(nPersons));
 	}
 	

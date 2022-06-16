@@ -7,7 +7,7 @@ public class Item extends Aid {
 	protected Item(String desc) {
 		super();
 		this.desc = desc;
-		setType(Type.ITEM);
+		setType(TYPE.ITEM);
 		setInfo(this.desc);
 	}
 

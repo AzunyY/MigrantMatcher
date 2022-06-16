@@ -1,6 +1,6 @@
 package pt.migrantmatcher.domain;
 
-public enum Type {
+public enum TYPE {
 	ITEM,
 	HOUSING
 }
