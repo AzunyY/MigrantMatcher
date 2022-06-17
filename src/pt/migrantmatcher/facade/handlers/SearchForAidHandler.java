@@ -25,6 +25,8 @@ import tests.mocks.MockMigrantsCatalog;
 
 /**
  * Handler do caso de uso procurar ajuda - Controller
+ * 
+ * @author Ana Luis FC53563
  */
 public class SearchForAidHandler extends SendSMSHelper {
 

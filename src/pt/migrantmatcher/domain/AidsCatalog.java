@@ -15,6 +15,8 @@ import utils.observer.Observable;
  * Vai implementar o padrao Observer porque eh ela que ve quando 
  * se verifica um novo evento de DeteterAjuda pois, eh aqui que 
  * as ajudas sao adicionadas apos o vol confirmar a sua oferta.
+ * 
+ * @author Ana Luis FC53563
  **/
 public class AidsCatalog extends Observable<DetectAidEvent>{
 

@@ -3,6 +3,7 @@ package pt.migrantmatcher.domain;
 /**
  * Instancia de Regiao
  *
+ * @author Ana Luis FC53563
  */
 public class Region {
 	

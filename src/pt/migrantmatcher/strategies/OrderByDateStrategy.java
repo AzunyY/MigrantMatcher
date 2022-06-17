@@ -8,7 +8,7 @@ import pt.migrantmatcher.domain.Aid;
 
 /**
  * Ordena as ajudas por ordem de chegada
- * @author azuny
+ * @author Ana Luis FC53563
  */
 
 public class OrderByDateStrategy implements OrderAids {

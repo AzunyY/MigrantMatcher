@@ -22,7 +22,7 @@ import tests.mocks.MockVolunteersCatalog;
 
 /**
  * Testar a interacao entre o voluntario e o migrante
- * @author azuny
+ * @author Ana Luis FC53563
  */
 class MigrantMatcherSystemTester {
 

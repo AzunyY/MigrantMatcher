@@ -10,7 +10,7 @@ import pt.migrantmatcher.domain.Aid;
 
 /**
  * Ordenas-se as ajudas por tipo de estrategia
- * @author azuny
+ * @author Ana Luis FC53563
  */
 public class OrderByStrategyType implements OrderAids{
 

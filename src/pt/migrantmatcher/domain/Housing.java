@@ -2,6 +2,8 @@ package pt.migrantmatcher.domain;
 
 /**
  * Esta classe e subclasse de Aid
+ * 
+ * @author Ana Luis FC53563
  **/
 public class Housing extends Aid {
 	private final TYPE type = TYPE.HOUSING;

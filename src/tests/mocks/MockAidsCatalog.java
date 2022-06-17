@@ -14,7 +14,7 @@ import pt.migrantmatcher.facade.DTO.AidDTO;
 
 /**
  * Pure Fabrication - classe artificial catalogo de ajudas
- * @author azuny
+ * @author Ana Luis FC53563
  */
 public class MockAidsCatalog extends AidsCatalog {
 

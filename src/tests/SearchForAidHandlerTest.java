@@ -16,8 +16,7 @@ import tests.mocks.MockAidsCatalog;
 import tests.mocks.MockMigrantsCatalog;
 /**
  * Testa o handler de procura ajuda
- * @author azuny
- *
+ * @author Ana Luis FC53563
  */
 class SearchForAidHandlerTest {
 

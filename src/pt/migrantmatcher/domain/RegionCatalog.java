@@ -7,7 +7,8 @@ import pt.migrantmatcher.exceptions.ErrorCreatingRegionsException;
 import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 /**
  * Classe com listas de Regioes
- *
+ * 
+ * @author Ana Luis FC53563
  */
 public class RegionCatalog {
 	

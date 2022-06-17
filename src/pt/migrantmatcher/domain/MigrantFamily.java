@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Esta classe e subclasse de Migrant
+ * 
+ * @author Ana Luis FC53563
  **/
 public class MigrantFamily extends Migrant {
 

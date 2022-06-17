@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Vai ter a lista com os varios Migrantes
+ * 
+ * @author Ana Luis FC53563
  **/
 public class MigrantsCatalog {
 	

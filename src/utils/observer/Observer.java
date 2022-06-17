@@ -5,6 +5,7 @@ package utils.observer;
  * eventos Event em objetos Observable
  *
  * @param <E> objeto que extende Event
+ * @author Ana Luis FC53563
  */
 
 public interface Observer<T extends Event> {

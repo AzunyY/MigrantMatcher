@@ -9,8 +9,7 @@ import pt.migrantmatcher.domain.MigrantsCatalog;
 
 /**
  * Pure Fabrication - classe artificial catalogo de migrantes
- * @author azuny
- *
+ * @author Ana Luis FC53563
  */
 public class MockMigrantsCatalog extends MigrantsCatalog{
 

@@ -22,6 +22,8 @@ import tests.mocks.MockVolunteersCatalog;
 
 /**
  * Handler do caso de uso registar ajuda - Controller
+ * 
+ * @author Ana Luis FC53563
  */
 public class RegisterAidHandler extends SendSMSHelper{
 

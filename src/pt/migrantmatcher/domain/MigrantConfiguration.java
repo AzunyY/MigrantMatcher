@@ -16,6 +16,8 @@ import pt.migrantmatcher.exceptions.PropertiesLoadingException;
  * Le dos ficheiros e devolve configuraçoes 
  * Padrao polimorfismo - pois estamos a fazer pois estamos a usar esta classe
  * para devolver varias implementacoes 
+ * 
+ * @author Ana Luis FC53563
  **/
 public class MigrantConfiguration {
 

@@ -4,6 +4,7 @@ import com.telegramsms.TelegramSMSSender;
 
 /** 
  * Adaptador do TelegramSMSSender
+ * @author Ana Luis FC53563
  */
 public class TelegramSMSSenderAdapter implements SenderType{
 

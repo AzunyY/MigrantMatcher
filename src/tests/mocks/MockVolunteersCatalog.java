@@ -5,8 +5,7 @@ import pt.migrantmatcher.domain.VolunteersCatalog;
 
 /**
  * Pure Fabrication - classe artificial catalogo de voluntarios
- * @author azuny
- *
+ * @author Ana Luis FC53563 
  */
 public class MockVolunteersCatalog extends VolunteersCatalog {
 		

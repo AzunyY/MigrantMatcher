@@ -19,8 +19,7 @@ import tests.mocks.MockVolunteersCatalog;
 
 /**
  * Testa o handler de regista ajuda
- * @author
- *
+ * @author Ana Luis FC53563
  */
 class RegisterAidHandlerTest {
 

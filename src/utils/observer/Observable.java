@@ -10,6 +10,7 @@ import java.util.Map.Entry;
  * a "observar" este objeto, ou seja, estejam na lista observers
  *
  * @param <E> objeto que extende a interface Event
+ * @author Ana Luis FC53563 
  */
 public class Observable<T extends Event> {
 

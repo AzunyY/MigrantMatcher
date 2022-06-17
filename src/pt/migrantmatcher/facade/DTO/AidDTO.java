@@ -2,6 +2,8 @@ package pt.migrantmatcher.facade.DTO;
 
 /**
  * Padrao DTO - Nao se quer enviar a Ajuda para o cliente
+ * 
+ * @author Ana Luis FC53563
  */
 public class AidDTO {
 

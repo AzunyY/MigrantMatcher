@@ -4,9 +4,8 @@ import pt.migrantmatcher.domain.MigrantConfiguration;
 import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 
 /**
- * Classe que trata de notificar 
- * @author azuny
- *
+ * Classe que trata de notificar - 	High Coehesion
+ * @author Ana Luis FC53563
  */
 public abstract class SendSMSHelper {
 

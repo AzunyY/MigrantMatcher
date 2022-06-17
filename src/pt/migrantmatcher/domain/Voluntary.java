@@ -2,6 +2,7 @@ package pt.migrantmatcher.domain;
 
 /**
  * Instancia de Voluntario
+ * @author Ana Luis FC53563
  **/
 public class Voluntary  {
 

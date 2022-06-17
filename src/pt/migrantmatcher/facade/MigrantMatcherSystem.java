@@ -13,6 +13,8 @@ import pt.migrantmatcher.facade.handlers.RegisterAidHandler;
 
 /**
  * Esta é a classe do sistema.
+ * 
+ * @author Ana Luis FC53563
  */
 public class MigrantMatcherSystem {
 
