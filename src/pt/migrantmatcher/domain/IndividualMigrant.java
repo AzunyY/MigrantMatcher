@@ -2,6 +2,7 @@ package pt.migrantmatcher.domain;
 
 /**
 * Esta classe e subclasse de Migrant
+* @author Ana Luis FC53563
 **/
 public class IndividualMigrant extends Migrant{
 	

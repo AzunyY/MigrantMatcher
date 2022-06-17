@@ -11,6 +11,8 @@ import utils.observer.Observer;
  * E absrtacta pois estou a utilizar o padrao Template method uma vez que 
  * ha pormenores para os tipos de migrantes que sao diferentes.
  * Oserver porque os migrantes querem ser notificados de quando houver uma ajuda disponivel
+ * 
+ * @author Ana Luis FC53563
  **/
 public abstract class Migrant extends SendSMSHelper implements Observer<DetectAidEvent>{
 

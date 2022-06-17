@@ -6,6 +6,8 @@ package pt.migrantmatcher.domain;
  * E absrtacta pois estou a utilizar o padrao Template method uma vez que 
  * ha pormenores para os tipos de ajudas que sao diferentes. O item tem desc
  * mas o Housing tem o nPersons e reg.
+ * 
+ * @author Ana Luis FC53563
  **/
 public abstract class Aid {
 		
