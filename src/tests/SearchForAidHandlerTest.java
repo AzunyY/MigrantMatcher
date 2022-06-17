@@ -10,17 +10,22 @@ import org.junit.jupiter.api.Test;
 import pt.migrantmatcher.exceptions.AidIsNonExistenceException;
 import pt.migrantmatcher.exceptions.InfoFamilyMemberException;
 import pt.migrantmatcher.exceptions.RegisterIsNotValidException;
+import pt.migrantmatcher.facade.MigrantMatcherSystem;
 import pt.migrantmatcher.facade.handlers.SearchForAidHandler;
 import tests.mocks.MockAidsCatalog;
 import tests.mocks.MockMigrantsCatalog;
-import tests.mocks.MockRegCatalog;
-
+/**
+ * Testa o handler de procura ajuda
+ * @author azuny
+ *
+ */
 class SearchForAidHandlerTest {
 
 
 	private List <String> reg;
 	private SearchForAidHandler searchAidHandler;
 	private List <String> familyMembersList;
+	private MigrantMatcherSystem mgMatch;
 
 	@BeforeEach
 	void setUp() {
@@ -45,8 +50,8 @@ class SearchForAidHandlerTest {
 		MockMigrantsCatalog mockMigsCat = new MockMigrantsCatalog();
 		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
 
-		MockRegCatalog mockRegCatalog = new MockRegCatalog("defaults.properties", reg);
-		searchAidHandler = new SearchForAidHandler("defaults.properties", mockAidCatalog, mockMigsCat, mockRegCatalog);
+		mgMatch = new MigrantMatcherSystem(mockMigsCat, mockAidCatalog, reg);
+		searchAidHandler = mgMatch.searchForAid();
 
 		Assertions.assertDoesNotThrow(() ->
 		searchAidHandler.startPersonalRegister("Joao", 93792373));
@@ -58,7 +63,7 @@ class SearchForAidHandlerTest {
 		Assertions.assertEquals(false, listReg.isEmpty());
 
 		Assertions.assertThrows(AidIsNonExistenceException.class, () ->
-		searchAidHandler.insertChoosenRegion("defaults.properties", listReg.get(0)));
+		searchAidHandler.insertChoosenRegion(listReg.get(0)));
 
 		Assertions.assertDoesNotThrow(() -> searchAidHandler.requestsToBeNotified(listReg.get(0)));
 
@@ -70,9 +75,9 @@ class SearchForAidHandlerTest {
 
 		MockMigrantsCatalog mockMigsCat = new MockMigrantsCatalog();
 		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
-
-		MockRegCatalog mockRegCatalog = new MockRegCatalog("defaults.properties", reg);
-		searchAidHandler = new SearchForAidHandler("defaults.properties", mockAidCatalog, mockMigsCat, mockRegCatalog);
+		
+		mgMatch = new MigrantMatcherSystem(mockMigsCat, mockAidCatalog, reg);
+		searchAidHandler = mgMatch.searchForAid();
 
 		Assertions.assertDoesNotThrow(() ->
 		searchAidHandler.startFamiltRegister(4));
@@ -89,7 +94,7 @@ class SearchForAidHandlerTest {
 		Assertions.assertEquals(false, listReg.isEmpty());
 
 		Assertions.assertThrows(AidIsNonExistenceException.class, () ->
-		searchAidHandler.insertChoosenRegion("defaults.properties", listReg.get(0)));
+		searchAidHandler.insertChoosenRegion(listReg.get(0)));
 
 		Assertions.assertDoesNotThrow(() -> searchAidHandler.requestsToBeNotified(listReg.get(0)));
 
@@ -101,9 +106,9 @@ class SearchForAidHandlerTest {
 		MockMigrantsCatalog mockMigsCat = new MockMigrantsCatalog();
 		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
 
-		MockRegCatalog mockRegCatalog = new MockRegCatalog("defaults.properties", reg);
-		searchAidHandler = new SearchForAidHandler("defaults.properties", mockAidCatalog, mockMigsCat, mockRegCatalog);
-
+		mgMatch = new MigrantMatcherSystem(mockMigsCat, mockAidCatalog, reg);
+		searchAidHandler = mgMatch.searchForAid();
+		
 		Assertions.assertDoesNotThrow(() ->
 		searchAidHandler.startFamiltRegister(6));
 
@@ -123,9 +128,9 @@ class SearchForAidHandlerTest {
 		MockMigrantsCatalog mockMigsCat = new MockMigrantsCatalog();
 		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
 
-		MockRegCatalog mockRegCatalog = new MockRegCatalog("defaults.properties", reg);
-		searchAidHandler = new SearchForAidHandler("defaults.properties", mockAidCatalog, mockMigsCat, mockRegCatalog);
-
+		mgMatch = new MigrantMatcherSystem(mockMigsCat, mockAidCatalog, reg);
+		searchAidHandler = mgMatch.searchForAid();
+		
 		Assertions.assertDoesNotThrow(() ->
 		searchAidHandler.startFamiltRegister(2));
 
@@ -144,10 +149,10 @@ class SearchForAidHandlerTest {
 
 		MockMigrantsCatalog mockMigsCat = new MockMigrantsCatalog();
 		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
-
-		MockRegCatalog mockRegCatalog = new MockRegCatalog("defaults.properties", reg);
-		searchAidHandler = new SearchForAidHandler("defaults.properties", mockAidCatalog, mockMigsCat, mockRegCatalog);
-
+		
+		mgMatch = new MigrantMatcherSystem(mockMigsCat, mockAidCatalog, reg);
+		searchAidHandler = mgMatch.searchForAid();
+		
 		Assertions.assertDoesNotThrow(() ->
 		searchAidHandler.startFamiltRegister(2));
 

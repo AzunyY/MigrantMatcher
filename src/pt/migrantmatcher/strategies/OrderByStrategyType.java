@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
 
 import pt.migrantmatcher.domain.Aid;
 
+/**
+ * Ordenas-se as ajudas por tipo de estrategia
+ * @author azuny
+ */
 public class OrderByStrategyType implements OrderAids{
 
 	@Override

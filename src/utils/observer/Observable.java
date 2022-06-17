@@ -15,7 +15,7 @@ public class Observable<T extends Event> {
 
 	private Map<Observer<T>, String> observers = new HashMap<>();
 
-	protected void notifyAllObservers(T event, String filename, String reg) {
+	protected void notifyAllObservers(T event, String reg) {
 		
 		System.out.println("Sending notification to the migrants...");
 		
@@ -24,7 +24,7 @@ public class Observable<T extends Event> {
 		for (Entry<Observer <T>, String> entry : observers.entrySet()) {
 		    if(entry.getValue().equals(reg)) {
 		    	isSent = true;
-		    	entry.getKey().receiveEvent(filename,event);
+		    	entry.getKey().receiveEvent(event);
 		    }
 		}
 		

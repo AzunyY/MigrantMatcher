@@ -1,34 +1,34 @@
 package pt.migrantmatcher.plugins;
 
 import pt.migrantmatcher.domain.MigrantConfiguration;
-import pt.migrantmatcher.exceptions.NoFileNameException;
 import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 
+/**
+ * Classe que trata de notificar 
+ * @author azuny
+ *
+ */
 public abstract class SendSMSHelper {
 
-	protected void sendSMS(String filename, String message, int tel) throws PropertiesLoadingException, NoFileNameException{
-		
-		MigrantConfiguration smsSender = MigrantConfiguration.getInstance(filename);
+	/**
+	 * Envia um sms para um determinado numero de telemovel
+	 * @param filename - ficheiro properties
+	 * @param tel - nr de telemovel do destino
+	 * @throws PropertiesLoadingException
+	 */
+	protected void sendSMS(String message, int tel) throws PropertiesLoadingException{
+
+		MigrantConfiguration smsSender = MigrantConfiguration.getInstance("defaults.propertie");
 		SenderType sender;
-		
-		if(filename == null || filename.isEmpty()) {
-			System.err.println("No file available, a default value will be used!");
+
+		try {
+			sender = smsSender.getClass("senderType");
+			sender.sendSMS(tel, message);
+		} catch (PropertiesLoadingException e) {
+			System.err.println("Parameters misssing in file, a default value will be used!");
 			sender = new PidgeonSMSSenderAdapter();
 			sender.sendSMS(tel, message);
-			throw new NoFileNameException();
-		}
-		else {
-			try {
-				sender = smsSender.getClass("senderType");
-				sender.sendSMS(tel, message);
-			} catch (PropertiesLoadingException e) {
-				System.err.println("Parameters misssing in file, a default value will be used!");
-				sender = new PidgeonSMSSenderAdapter();
-				sender.sendSMS(tel, message);
-				throw new PropertiesLoadingException();
-			}	
-		}
-
-
+			throw new PropertiesLoadingException();
+		}	
 	}
 }

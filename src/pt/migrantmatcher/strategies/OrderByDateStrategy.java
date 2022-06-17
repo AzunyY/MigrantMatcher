@@ -6,6 +6,11 @@ import java.util.Map;
 
 import pt.migrantmatcher.domain.Aid;
 
+/**
+ * Ordena as ajudas por ordem de chegada
+ * @author azuny
+ */
+
 public class OrderByDateStrategy implements OrderAids {
 	@Override
 	public List<Aid> order(Map<Integer, Aid> aidsList) {

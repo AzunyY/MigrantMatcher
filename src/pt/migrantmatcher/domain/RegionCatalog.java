@@ -5,39 +5,59 @@ import java.util.List;
 
 import pt.migrantmatcher.exceptions.ErrorCreatingRegionsException;
 import pt.migrantmatcher.exceptions.PropertiesLoadingException;
-
+/**
+ * Classe com listas de Regioes
+ *
+ */
 public class RegionCatalog {
-
-	//A lista das regioes deve estar no configuration
+	
 	protected List <Region> regsList;
+	
+	/***
+	 * Vai criar um catalogo de Regioes
+	 * @param filename - nome do ficheiro onde podem estar as regioes
+	 * @param mockRegCatalog - valor default
+	 * @throws ErrorCreatingRegionsException caso ambas as regions e filename estejam vazios
+	 * @throws PropertiesLoadingException caso nao haja regioes no ficheiro mas sim no valor default
+	 * 
+	 */
+	public RegionCatalog(List<String> reg) throws ErrorCreatingRegionsException, PropertiesLoadingException {
 
-	protected RegionCatalog(String filename, List <String> regions) throws ErrorCreatingRegionsException, PropertiesLoadingException {
-
-		MigrantConfiguration catReg = MigrantConfiguration.getInstance(filename);
-		List<String> listReg;
+		MigrantConfiguration catReg = MigrantConfiguration.getInstance("defaults.properties");
 
 		try {
-			listReg = catReg.getProperty("regioes");
-			addToList(listReg);
+			addToList(catReg.getProperty("regioes"));
 		} catch (PropertiesLoadingException e) {
 			
-			if(regions.isEmpty() || regions.equals(null))
+			if(reg.isEmpty() || reg.equals(null))
 				throw new ErrorCreatingRegionsException();
 			
-			addToList(regions);
+			addToList(reg);
 			System.err.println("There is a value missing in the properties file but it will be used a default value!");
 			throw new PropertiesLoadingException();
 		}		
 	}
 
-	protected void addToList(List<String> listReg) {
+	public RegionCatalog(String string, List<String> reg) {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * Metodo auxiliar para adiconar uma lista de regioes ao catalogo
+	 * @param listReg lista a adicionar ao catalogo
+	 */
+	public void addToList(List<String> listReg) {
 		regsList = new ArrayList <>();
 
 		for(String s : listReg) 
 			this.regsList.add(new Region(s));		
 	}
 
-	protected List<String> getRegions() {
+	/**
+	 * Devolve uma lista de Regioes
+	 * @return lista de regioes
+	 */
+	public List<String> getRegions() {
 
 		List <String> listReg = new ArrayList<>(); //1.1
 
@@ -48,7 +68,12 @@ public class RegionCatalog {
 		return listReg;
 	}
 
-	protected boolean isValid(String region) {
+	/**
+	 * Verifica se a regiao e valida
+	 * @param region regiao
+	 * @return true se a regiao estiver no catalog, false caso contrario
+	 */
+	public boolean isValid(String region) {
 		for(Region r : regsList) {
 			if(r.getName().equals(region))
 				return true;

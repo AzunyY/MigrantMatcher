@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,9 +16,14 @@ import pt.migrantmatcher.facade.MigrantMatcherSystem;
 import pt.migrantmatcher.facade.DTO.AidDTO;
 import pt.migrantmatcher.facade.handlers.RegisterAidHandler;
 import pt.migrantmatcher.facade.handlers.SearchForAidHandler;
-import tests.mocks.MockRegCatalog;
-import tests.mocks.ScannerMock;
+import tests.mocks.MockAidsCatalog;
+import tests.mocks.MockMigrantsCatalog;
+import tests.mocks.MockVolunteersCatalog;
 
+/**
+ * Testar a interacao entre o voluntario e o migrante
+ * @author azuny
+ */
 class MigrantMatcherSystemTester {
 
 
@@ -28,9 +34,7 @@ class MigrantMatcherSystemTester {
 	private RegisterAidHandler aidHandler;
 	List <String> regList = new ArrayList<>();
 	List<AidDTO> aidDtoList = new ArrayList<>();
-
-
-	ScannerMock sc;
+	Scanner sc;
 
 	@BeforeEach
 	@Test
@@ -45,17 +49,21 @@ class MigrantMatcherSystemTester {
 		familyMembersList.add("Paulo");
 	}
 
+	/**
+	 * Testa uma sessao simples para oferta de alojamentos
+	 */
 	@Test
 	void testeSystemSession(){
 
-		MockRegCatalog mockRegCatalog;
+		MockVolunteersCatalog mockVolCat = new MockVolunteersCatalog();
+		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
+		MockMigrantsCatalog mockMigCatalog = new MockMigrantsCatalog();
+
 		try {
-			mockRegCatalog = new MockRegCatalog("defaults.properties", reg);
+			mgMatch = new MigrantMatcherSystem(mockMigCatalog, mockAidCatalog,mockVolCat, reg);
 
 			assertDoesNotThrow(() ->
-			mgMatch = new MigrantMatcherSystem("defaults.properties", mockRegCatalog));
-
-			searchAidHandler = mgMatch.searchForAid();
+			searchAidHandler = mgMatch.searchForAid());
 			aidHandler = mgMatch.registerNewAid();
 
 			assertDoesNotThrow(() -> aidHandler.aidRegisterStart(932143121));
@@ -63,11 +71,11 @@ class MigrantMatcherSystemTester {
 			assertDoesNotThrow(() -> regList = aidHandler.offerHousing(3));
 
 			assertEquals(false, regList.isEmpty());
-			assertDoesNotThrow(() -> aidHandler.insertHousingRegion("defaults.properties", regList.get(2))); 
+			assertDoesNotThrow(() -> aidHandler.insertHousingRegion(regList.get(2))); 
 
-			ScannerMock sc = new ScannerMock(System.in);
-
-			assertDoesNotThrow(() -> aidHandler.offerConfirm(sc.ask()));
+			sc = new Scanner(System.in);
+			System.out.println("Insert your confirmation code: ");
+			assertDoesNotThrow(() -> aidHandler.offerConfirm(sc.nextLine()));
 
 			assertDoesNotThrow(()->
 			searchAidHandler.startFamiltRegister(4));
@@ -77,14 +85,14 @@ class MigrantMatcherSystemTester {
 
 
 			for(String s : familyMembersList)
-				assertDoesNotThrow(() -> { searchAidHandler.insertFamilyMemberRegister(s);
+				assertDoesNotThrow(() -> {searchAidHandler.insertFamilyMemberRegister(s);
 				});
 
 			assertDoesNotThrow(() -> regList = searchAidHandler.requestListOfRegions());
 			assertEquals(false, regList.isEmpty());
 
 			assertDoesNotThrow( () ->
-			aidDtoList = searchAidHandler.insertChoosenRegion("defaults.properties", regList.get(2))
+			aidDtoList = searchAidHandler.insertChoosenRegion(regList.get(2))
 					);
 
 			for(AidDTO aid: aidDtoList) {
@@ -99,17 +107,20 @@ class MigrantMatcherSystemTester {
 		} catch (ErrorCreatingRegionsException | PropertiesLoadingException e) {
 			//Do nothing
 		}
+
 	}
-	
+
+	/**
+	 * Testa uma sessao simples com oferta de item
+	 */
 	@Test
 	void testeSystemSessionItem(){
+		MockVolunteersCatalog mockVolCat = new MockVolunteersCatalog();
+		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
+		MockMigrantsCatalog mockMigrantsCatalog = new MockMigrantsCatalog();
 
-		MockRegCatalog mockRegCatalog;
 		try {
-			mockRegCatalog = new MockRegCatalog("defaults.properties", reg);
-
-			assertDoesNotThrow(() ->
-			mgMatch = new MigrantMatcherSystem("defaults.properties", mockRegCatalog));
+			mgMatch = new MigrantMatcherSystem(mockMigrantsCatalog, mockAidCatalog, mockVolCat,reg);
 
 			searchAidHandler = mgMatch.searchForAid();
 			aidHandler = mgMatch.registerNewAid();
@@ -118,9 +129,9 @@ class MigrantMatcherSystemTester {
 
 			assertDoesNotThrow(() -> aidHandler.offerItem("Roupa"));
 
-			ScannerMock sc = new ScannerMock(System.in);
-
-			assertDoesNotThrow(() -> aidHandler.offerConfirm(sc.ask()));
+			sc = new Scanner(System.in);
+			System.out.println("Insert your confirmation code: ");
+			assertDoesNotThrow(() -> aidHandler.offerConfirm(sc.nextLine()));
 
 			assertDoesNotThrow(()->
 			searchAidHandler.startFamiltRegister(4));
@@ -137,7 +148,7 @@ class MigrantMatcherSystemTester {
 			assertEquals(false, regList.isEmpty());
 
 			assertDoesNotThrow( () ->
-			aidDtoList = searchAidHandler.insertChoosenRegion("defaults.properties", regList.get(2))
+			aidDtoList = searchAidHandler.insertChoosenRegion(regList.get(2))
 					);
 
 			for(AidDTO aid: aidDtoList) {
@@ -154,17 +165,19 @@ class MigrantMatcherSystemTester {
 		}
 	}
 
-
+	/**
+	 * Testa um sistema em que os migrantes se registam antes de haver ajudas disponiveis
+	 */
 	@Test 
 	void systemTestMigrantFirst() {
 
-		MockRegCatalog mockRegCatalog;
+		MockVolunteersCatalog mockVolCat = new MockVolunteersCatalog();
+		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
+		MockMigrantsCatalog mockMigCatalog = new MockMigrantsCatalog();
+
 
 		try {
-			mockRegCatalog = new MockRegCatalog("defaults.properties", reg);
-
-			assertDoesNotThrow(() ->
-			mgMatch = new MigrantMatcherSystem("defaults.properties", mockRegCatalog));
+			mgMatch = new MigrantMatcherSystem(mockMigCatalog, mockAidCatalog, mockVolCat, reg);
 
 			searchAidHandler = mgMatch.searchForAid();
 			aidHandler = mgMatch.registerNewAid();
@@ -184,7 +197,7 @@ class MigrantMatcherSystemTester {
 			assertEquals(false, regList.isEmpty());
 
 			assertThrows(AidIsNonExistenceException.class, () ->
-			aidDtoList = searchAidHandler.insertChoosenRegion("defaults.properties", regList.get(2))
+			aidDtoList = searchAidHandler.insertChoosenRegion(regList.get(2))
 					);
 
 			assertDoesNotThrow(() -> searchAidHandler.requestsToBeNotified(regList.get(2)));
@@ -194,11 +207,11 @@ class MigrantMatcherSystemTester {
 			assertDoesNotThrow(() -> regList = aidHandler.offerHousing(3));
 
 			assertEquals(false, regList.isEmpty());
-			assertDoesNotThrow(() -> aidHandler.insertHousingRegion("defaults.properties", regList.get(2))); 
+			assertDoesNotThrow(() -> aidHandler.insertHousingRegion(regList.get(2))); 
 
-			ScannerMock sc = new ScannerMock(System.in);
-
-			assertDoesNotThrow(() -> aidHandler.offerConfirm(sc.ask()));
+			sc = new Scanner(System.in);
+			System.out.println("Insert your confirmation code: ");
+			assertDoesNotThrow(() -> aidHandler.offerConfirm(sc.nextLine()));
 
 		} catch (ErrorCreatingRegionsException | PropertiesLoadingException e) {
 			//Do nothing
@@ -206,20 +219,22 @@ class MigrantMatcherSystemTester {
 	}
 
 
+	/**
+	 * Mesmo que o de cima mas para item
+	 */
 	@Test 
 	void systemTestMigrantFirstWithItem() {
-
-		MockRegCatalog mockRegCatalog;
+		MockMigrantsCatalog mockMigsCat = new MockMigrantsCatalog();
+		MockAidsCatalog mockAidCatalog = new MockAidsCatalog();
+		MockVolunteersCatalog mockVolCatalog = new MockVolunteersCatalog();
 
 		try {
-			mockRegCatalog = new MockRegCatalog("defaults.properties", reg);
 
-			assertDoesNotThrow(() ->
-			mgMatch = new MigrantMatcherSystem("defaults.properties", mockRegCatalog));
+			mgMatch = new MigrantMatcherSystem(mockMigsCat, mockAidCatalog, mockVolCatalog, reg);
 
 			searchAidHandler = mgMatch.searchForAid();
 			aidHandler = mgMatch.registerNewAid();
-			
+
 			assertDoesNotThrow(() -> 
 			searchAidHandler.startPersonalRegister("Joao", 932394293));
 
@@ -227,17 +242,17 @@ class MigrantMatcherSystemTester {
 			assertEquals(false, regList.isEmpty());
 
 			assertThrows(AidIsNonExistenceException.class, () ->
-			aidDtoList = searchAidHandler.insertChoosenRegion("defaults.properties", regList.get(2))
+			aidDtoList = searchAidHandler.insertChoosenRegion(regList.get(2))
 					);
 
 			assertDoesNotThrow(() -> searchAidHandler.requestsToBeNotified(regList.get(2)));
-			
+
 			assertDoesNotThrow(()-> aidHandler.aidRegisterStart(93233231));
 			assertDoesNotThrow(() -> aidHandler.offerItem("Roupa"));
 
-			ScannerMock sc = new ScannerMock(System.in);
-
-			assertDoesNotThrow(() -> aidHandler.offerConfirm(sc.ask()));
+			sc = new Scanner(System.in);
+			System.out.println("Insert your confirmation code: ");
+			assertDoesNotThrow(() -> aidHandler.offerConfirm(sc.nextLine()));
 
 		} catch (ErrorCreatingRegionsException | PropertiesLoadingException e) {
 			//Do nothing

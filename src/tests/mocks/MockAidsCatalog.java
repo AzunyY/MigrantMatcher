@@ -11,6 +11,11 @@ import pt.migrantmatcher.domain.Region;
 import pt.migrantmatcher.domain.Voluntary;
 import pt.migrantmatcher.facade.DTO.AidDTO;
 
+
+/**
+ * Pure Fabrication - classe artificial catalogo de ajudas
+ * @author azuny
+ */
 public class MockAidsCatalog extends AidsCatalog {
 
 	public MockAidsCatalog () {
@@ -25,8 +30,8 @@ public class MockAidsCatalog extends AidsCatalog {
 		return super.getNewItem(desc);
 	}
 
-	public void addAid(String filename, Aid currAid, Voluntary volCurr, List <String> regList) {
-		 super.addAid(filename, currAid, volCurr, regList);
+	public void addAid(Aid currAid, Voluntary volCurr, List <String> regList) {
+		 super.addAid(currAid, volCurr, regList);
 	}
 
 	public Map<Integer,Aid> filterByReg(String reg) {

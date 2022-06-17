@@ -8,5 +8,5 @@ package utils.observer;
  */
 
 public interface Observer<T extends Event> {
-	public void receiveEvent(String filename, T e);
+	public void receiveEvent(T e);
 }

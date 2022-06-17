@@ -1,7 +1,9 @@
 package pt.migrantmatcher.plugins;
 
 import com.pidgeonsmssender.sdk.PidgeonSMSSender;
-
+/** 
+ * Adaptador do PidgeonSMSSender
+ */
 public class PidgeonSMSSenderAdapter implements SenderType {
 	
 	@Override

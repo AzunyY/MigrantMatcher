@@ -1,6 +1,5 @@
 package pt.migrantmatcher.domain;
 
-import pt.migrantmatcher.exceptions.NoFileNameException;
 import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 import pt.migrantmatcher.plugins.SendSMSHelper;
 import utils.observer.DetectAidEvent;
@@ -36,13 +35,12 @@ public abstract class Migrant extends SendSMSHelper implements Observer<DetectAi
 	
 	/**
 	 * Recebe a notificacao de se ter adicionada uma nova ajuda
-	 * Ver @SendSMSHelper 
+	 * Ver @SendSMSHelper
+	 *  
 	 **/
-	public void receiveEvent (String filename, DetectAidEvent e) {
+	public void receiveEvent (DetectAidEvent e) {
 		try {
-			sendSMS(filename, e.getMessage(), this.tel);
-		} catch (NoFileNameException e1) {
-			System.err.println("The filename is empty!");
+			sendSMS(e.getMessage(), this.tel);
 		} catch (PropertiesLoadingException e1) {
 			System.err.println("There was an error loading the file!");
 		}

@@ -6,10 +6,10 @@ import java.util.Map;
 
 import pt.migrantmatcher.domain.Aid;
 import pt.migrantmatcher.domain.MigrantFamily;
+import pt.migrantmatcher.domain.RegionCatalog;
 import pt.migrantmatcher.domain.MigrantConfiguration;
 import pt.migrantmatcher.domain.Migrant;
 import pt.migrantmatcher.exceptions.InfoFamilyMemberException;
-import pt.migrantmatcher.exceptions.NoFileNameException;
 import pt.migrantmatcher.exceptions.PropertiesLoadingException;
 import pt.migrantmatcher.exceptions.RegionInsertedIsNotValid;
 import pt.migrantmatcher.exceptions.AidIsNonExistenceException;
@@ -22,27 +22,39 @@ import pt.migrantmatcher.strategies.OrderAids;
 import pt.migrantmatcher.strategies.OrderByStrategyType;
 import tests.mocks.MockAidsCatalog;
 import tests.mocks.MockMigrantsCatalog;
-import tests.mocks.MockRegCatalog;
 
+/**
+ * Handler do caso de uso procurar ajuda - Controller
+ */
 public class SearchForAidHandler extends SendSMSHelper {
 
 	private MockMigrantsCatalog catMig;
 	private Migrant migCurr;
-	private MockRegCatalog catReg;
+	private RegionCatalog catReg;
 	private MockAidsCatalog catAids;
 	private String filename;
 	private Aid curAid;
 
-	public SearchForAidHandler(String filename, MockAidsCatalog mockAidCatalog, MockMigrantsCatalog mockMigsCat,
-			MockRegCatalog mockRegCatalog) {
+	/**
+	 * Cria um handler
+	 * @param mockAidCatalog - catalogo de ajudas
+	 * @param mockMigsCat - catalogo de migrantes
+	 * @param mockRegCatalog - catalogo de Reg
+	 */
+	public SearchForAidHandler(MockAidsCatalog mockAidCatalog, MockMigrantsCatalog mockMigsCat,
+			RegionCatalog regCatalog) {
 
 		this.catMig = mockMigsCat;
-		this.catReg = mockRegCatalog;
+		this.catReg = regCatalog;
 		this.catAids = mockAidCatalog;;
-		this.filename = filename;
-
 	}
 
+	/**
+	 * Inicia Registo Pessoal
+	 * @param name - nome do migrante
+	 * @param tel - numero telemovel do migrante
+	 * @throws RegisterIsNotValidException
+	 */
 	public void startPersonalRegister(String name, int tel) throws RegisterIsNotValidException {
 
 		if(name == null || name.isEmpty())
@@ -52,6 +64,11 @@ public class SearchForAidHandler extends SendSMSHelper {
 
 	}
 
+	/**
+	 * Inicia Registo de famila de migrantes
+	 * @param nPersons - numero de pessoas que a familia tem excluindo o cabeca
+	 * @throws RegisterIsNotValidException 
+	 */
 	public void startFamiltRegister(int nPersons) throws RegisterIsNotValidException {
 
 		if(nPersons <= 0)
@@ -61,6 +78,12 @@ public class SearchForAidHandler extends SendSMSHelper {
 
 	}
 
+	/**
+	 * Adiciona informacao do cabeca de famila
+	 * @param name - nome do cabeca
+	 * @param tel - nr de telemovel do cabeca
+	 * @throws RegisterIsNotValidException
+	 */
 	public void addHeadInfo(String name, int tel) throws RegisterIsNotValidException {
 
 		if(name == null || name.isEmpty())
@@ -70,6 +93,11 @@ public class SearchForAidHandler extends SendSMSHelper {
 
 	}
 
+	/**
+	 * Insere informacao dos familiares
+	 * @param name - nome dos familiares
+	 * @throws RegisterIsNotValidException
+	 */
 	public void insertFamilyMemberRegister (String name) throws RegisterIsNotValidException {
 
 		if(name == null || name.isEmpty())
@@ -79,6 +107,11 @@ public class SearchForAidHandler extends SendSMSHelper {
 
 	}
 
+	/**
+	 * Pede a lista de regioes
+	 * @return lista de regioes
+	 * @throws InfoFamilyMemberException
+	 */
 	public List <String> requestListOfRegions () throws InfoFamilyMemberException{
 
 		if(this.migCurr instanceof MigrantFamily && !((MigrantFamily) this.migCurr).numberOfFamilyMembersIsValid() )
@@ -87,7 +120,14 @@ public class SearchForAidHandler extends SendSMSHelper {
 		return this.catReg.getRegions(); //1
 	}
 
-	public List <AidDTO> insertChoosenRegion(String filename, String reg) throws AidIsNonExistenceException, PropertiesLoadingException {
+	/**
+	 * Insere uma regiao e devolve a sua lista de ajudas
+	 * @param filename - nome de ficheiro
+	 * @return lista de ajudas da regiao
+	 * @throws AidIsNonExistenceException
+	 * @throws PropertiesLoadingException
+	 */
+	public List <AidDTO> insertChoosenRegion(String reg) throws AidIsNonExistenceException, PropertiesLoadingException {
 
 		Map <Integer, Aid> aidsList = this.catAids.filterByReg(reg); //1
 
@@ -107,6 +147,12 @@ public class SearchForAidHandler extends SendSMSHelper {
 
 	}
 
+	/**
+	 * Auxiliar - ordena e devolve a lista de ajudas de uma regiao
+	 * @param order - estrategia de ordenar
+	 * @param aidsList - lista a ordenar
+	 * @return lista ordenada de ajudas
+	 */
 	private List<AidDTO> orderList(OrderAids order, Map<Integer, Aid> aidsList) {
 		List <AidDTO> aidDtoList = new ArrayList<>();
 
@@ -117,6 +163,12 @@ public class SearchForAidHandler extends SendSMSHelper {
 		return aidDtoList;
 	}
 
+	/**
+	 * Escolhe uma ajuda disponivel
+	 * @param aidDTO - ajuda 
+	 * @throws ErrorCreatingCurAidException
+	 * @throws AidIsNotValidException
+	 */
 	public void choosenAid(AidDTO aidDTO) throws ErrorCreatingCurAidException, AidIsNotValidException {
 
 		if(aidDTO == null)
@@ -128,14 +180,24 @@ public class SearchForAidHandler extends SendSMSHelper {
 			throw new ErrorCreatingCurAidException();
 	}
 
-	public void registerConfirm(AidDTO aidDTO) throws NoFileNameException, PropertiesLoadingException {
-		sendSMS(this.filename, "The migrant, " + this.migCurr.getName() + " wants your registered aid: " 
+	/**
+	 * Confirma o registo de ajuda
+	 * @param aidDTO - ajuda
+	 * @throws PropertiesLoadingException
+	 */
+	public void registerConfirm(AidDTO aidDTO) throws PropertiesLoadingException {
+		sendSMS("The migrant, " + this.migCurr.getName() + " wants your registered aid: " 
 				+ this.curAid.toString(), this.curAid.getVol());
 		
 		this.curAid.putAidToNotAvailable();
 		aidDTO.set(this.curAid.getAvailability());
 	}
 
+	/**
+	 * Pede para ser notificado caso nao haja ajudas na regiao
+	 * @param reg - regiao 
+	 * @throws RegionInsertedIsNotValid
+	 */
 	public void requestsToBeNotified(String reg) throws RegionInsertedIsNotValid {
 
 		if(reg == null)

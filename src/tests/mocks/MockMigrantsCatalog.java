@@ -7,6 +7,11 @@ import pt.migrantmatcher.domain.Migrant;
 import pt.migrantmatcher.domain.MigrantFamily;
 import pt.migrantmatcher.domain.MigrantsCatalog;
 
+/**
+ * Pure Fabrication - classe artificial catalogo de migrantes
+ * @author azuny
+ *
+ */
 public class MockMigrantsCatalog extends MigrantsCatalog{
 
 

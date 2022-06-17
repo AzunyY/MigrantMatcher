@@ -55,13 +55,12 @@ public class AidsCatalog extends Observable<DetectAidEvent>{
 
 	/**
 	 * Adiciona a ajuda corrente ao catalogo de ajudas
-	 * @param filename - nome do ficheiro properties
 	 * @param currAid - ajuda corrente
 	 * @param volCurr - voluntario que vai estah associado a ajuda
 	 * @ensures ajuda estah associada ao voluntario && listAids != null && listAids.size()!=0
 	 * && observers sao notificados corretamente
 	 */
-	protected void addAid(String filename, Aid currAid, Voluntary volCurr, List <String> regList) {
+	protected void addAid(Aid currAid, Voluntary volCurr, List <String> regList) {
 		
 		currAid.setRef(count);
 		currAid.setVol(volCurr); //2.1
@@ -72,12 +71,12 @@ public class AidsCatalog extends Observable<DetectAidEvent>{
 		
 		if(notifyAll) {
 			notifyingCorrectly = currAid instanceof Item ? true : false;;
-			for(String s : regList)
-				notifyAllObservers(new DetectAidEvent(s), filename,s);
+			for(Aid a : listAids.values())
+				notifyAllObservers(new DetectAidEvent(a.getInfo()), a.getInfo());
 		} else {
 			notifyingCorrectly = currAid instanceof Housing ? true : false;;
 			String reg = ((Housing) currAid).getRegion().getName();
-			notifyAllObservers(new DetectAidEvent(reg), filename, reg);
+			notifyAllObservers(new DetectAidEvent(reg), reg);
 		}
 	}
 

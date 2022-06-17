@@ -2,6 +2,9 @@ package pt.migrantmatcher.plugins;
 
 import com.telegramsms.TelegramSMSSender;
 
+/** 
+ * Adaptador do TelegramSMSSender
+ */
 public class TelegramSMSSenderAdapter implements SenderType{
 
 	public void sendSMS(int num, String cod) {

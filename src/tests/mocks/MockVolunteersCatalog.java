@@ -3,7 +3,11 @@ package tests.mocks;
 import pt.migrantmatcher.domain.Voluntary;
 import pt.migrantmatcher.domain.VolunteersCatalog;
 
-
+/**
+ * Pure Fabrication - classe artificial catalogo de voluntarios
+ * @author azuny
+ *
+ */
 public class MockVolunteersCatalog extends VolunteersCatalog {
 		
 	public MockVolunteersCatalog() {
